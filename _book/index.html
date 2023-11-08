@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Nested genes code</title>
+  <meta name="description" content="This is the description of the code employed in the research." />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Nested genes code" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is the description of the code employed in the research." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Nested genes code" />
+  
+  <meta name="twitter:description" content="This is the description of the code employed in the research." />
+  
+
+<meta name="author" content="Esmeralda G. Legarda" />
+
+
+<meta name="date" content="2023-11-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="blast-and-e-utilities.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#abstract"><i class="fa fa-check"></i><b>1.1</b> Abstract</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#additional-files"><i class="fa fa-check"></i><b>1.2</b> Additional files</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="blast-and-e-utilities.html"><a href="blast-and-e-utilities.html"><i class="fa fa-check"></i><b>2</b> Blast and E-utilities</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="blast-and-e-utilities.html"><a href="blast-and-e-utilities.html#psi-blast"><i class="fa fa-check"></i><b>2.1</b> PSI-BLAST</a></li>
+<li class="chapter" data-level="2.2" data-path="blast-and-e-utilities.html"><a href="blast-and-e-utilities.html#protein-id-to-nucleotides"><i class="fa fa-check"></i><b>2.2</b> Protein ID to nucleotides</a></li>
+<li class="chapter" data-level="2.3" data-path="blast-and-e-utilities.html"><a href="blast-and-e-utilities.html#species-to-family"><i class="fa fa-check"></i><b>2.3</b> Species to family</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="distances-with-clustering-in-clans.html"><a href="distances-with-clustering-in-clans.html"><i class="fa fa-check"></i><b>3</b> Distances with clustering in CLANS</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="distances-with-clustering-in-clans.html"><a href="distances-with-clustering-in-clans.html#read-clans-file"><i class="fa fa-check"></i><b>3.1</b> Read CLANS file</a></li>
+<li class="chapter" data-level="3.2" data-path="distances-with-clustering-in-clans.html"><a href="distances-with-clustering-in-clans.html#create-a-dataframe"><i class="fa fa-check"></i><b>3.2</b> Create a DataFrame</a></li>
+<li class="chapter" data-level="3.3" data-path="distances-with-clustering-in-clans.html"><a href="distances-with-clustering-in-clans.html#calculate-centroids-and-distances"><i class="fa fa-check"></i><b>3.3</b> Calculate centroids and distances</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="distances-with-clustering-in-clans.html"><a href="distances-with-clustering-in-clans.html#plot-the-clustermap"><i class="fa fa-check"></i><b>3.3.1</b> Plot the clustermap</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="distances-with-clustering-in-clans.html"><a href="distances-with-clustering-in-clans.html#run"><i class="fa fa-check"></i><b>3.4</b> Run</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html"><i class="fa fa-check"></i><b>4</b> Distances with ChimeraX</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#obtaining-rmsd-with-chimerax"><i class="fa fa-check"></i><b>4.1</b> Obtaining RMSD with ChimeraX</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#import-libraries-and-data"><i class="fa fa-check"></i><b>4.1.1</b> Import libraries and data</a></li>
+<li class="chapter" data-level="4.1.2" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#matchmaker"><i class="fa fa-check"></i><b>4.1.2</b> MatchMaker</a></li>
+<li class="chapter" data-level="4.1.3" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#save-csv-file"><i class="fa fa-check"></i><b>4.1.3</b> Save csv file</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#hiarachical-clustering"><i class="fa fa-check"></i><b>4.2</b> Hiarachical clustering</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#libraries-and-read-csv"><i class="fa fa-check"></i><b>4.2.1</b> Libraries and read csv</a></li>
+<li class="chapter" data-level="4.2.2" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#create-matrix"><i class="fa fa-check"></i><b>4.2.2</b> Create matrix</a></li>
+<li class="chapter" data-level="4.2.3" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#plot-the-clustermap-1"><i class="fa fa-check"></i><b>4.2.3</b> Plot the clustermap</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="compositional-analyses-of-biological-sequences.html"><a href="compositional-analyses-of-biological-sequences.html"><i class="fa fa-check"></i><b>5</b> Compositional analyses of biological sequences</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="compositional-analyses-of-biological-sequences.html"><a href="compositional-analyses-of-biological-sequences.html#amino-acids"><i class="fa fa-check"></i><b>5.1</b> Amino acids</a></li>
+<li class="chapter" data-level="5.2" data-path="compositional-analyses-of-biological-sequences.html"><a href="compositional-analyses-of-biological-sequences.html#nucleotides"><i class="fa fa-check"></i><b>5.2</b> Nucleotides</a></li>
+<li class="chapter" data-level="5.3" data-path="compositional-analyses-of-biological-sequences.html"><a href="compositional-analyses-of-biological-sequences.html#dinuclotides"><i class="fa fa-check"></i><b>5.3</b> Dinuclotides</a></li>
+<li class="chapter" data-level="5.4" data-path="compositional-analyses-of-biological-sequences.html"><a href="compositional-analyses-of-biological-sequences.html#codons"><i class="fa fa-check"></i><b>5.4</b> Codons</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html"><i class="fa fa-check"></i><b>6</b> Comparative analyses of selection</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#evolution-speed-with-absrel"><i class="fa fa-check"></i><b>6.1</b> Evolution speed with aBSREL</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#libraries-and-json-files"><i class="fa fa-check"></i><b>6.1.1</b> Libraries and json files</a></li>
+<li class="chapter" data-level="6.1.2" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#omega-and-significance"><i class="fa fa-check"></i><b>6.1.2</b> Omega and significance</a></li>
+<li class="chapter" data-level="6.1.3" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#relative-asinh-transformation"><i class="fa fa-check"></i><b>6.1.3</b> Relative asinh transformation</a></li>
+<li class="chapter" data-level="6.1.4" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#utilities"><i class="fa fa-check"></i><b>6.1.4</b> Utilities</a></li>
+<li class="chapter" data-level="6.1.5" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#boxplots-with-significance"><i class="fa fa-check"></i><b>6.1.5</b> Boxplots with significance</a></li>
+<li class="chapter" data-level="6.1.6" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#test-selection"><i class="fa fa-check"></i><b>6.1.6</b> Test selection</a></li>
+<li class="chapter" data-level="6.1.7" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#run-1"><i class="fa fa-check"></i><b>6.1.7</b> Run</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#fel-for-correlations"><i class="fa fa-check"></i><b>6.2</b> FEL for correlations</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#significance-and-difference"><i class="fa fa-check"></i><b>6.2.1</b> Significance and difference</a></li>
+<li class="chapter" data-level="6.2.2" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#plot-correlation"><i class="fa fa-check"></i><b>6.2.2</b> Plot correlation</a></li>
+<li class="chapter" data-level="6.2.3" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#test-correlation-of-selection"><i class="fa fa-check"></i><b>6.2.3</b> Test correlation of selection</a></li>
+<li class="chapter" data-level="6.2.4" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#correlation-2d"><i class="fa fa-check"></i><b>6.2.4</b> Correlation 2D</a></li>
+<li class="chapter" data-level="6.2.5" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#selection-in-2d"><i class="fa fa-check"></i><b>6.2.5</b> Selection in 2D</a></li>
+<li class="chapter" data-level="6.2.6" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#run-2"><i class="fa fa-check"></i><b>6.2.6</b> Run</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="miscellania.html"><a href="miscellania.html"><i class="fa fa-check"></i><b>7</b> Miscellania</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="miscellania.html"><a href="miscellania.html#representation-of-predicted-disordered-amino-acid-data"><i class="fa fa-check"></i><b>7.1</b> Representation of predicted disordered amino acid data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Nested genes code</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Nested genes code</h1>
+<p class="author"><em>Esmeralda G. Legarda</em></p>
+<p class="date"><em>2023-11-08</em></p>
+</div>
+<div id="about" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> About<a href="index.html#about" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>This is a code collection that contains the main steps for parsing, processing and visualizing data of the study of the nested genes p19 and p22. Each chapter is a part of the methodology of the study of the overlap of two genes. R, Python and Bash are the languages used for this purpose.</p>
+<p><strong>Imagen del artículo</strong></p>
+<div id="abstract" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Abstract<a href="index.html#abstract" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><em>Viruses with small genomes may encode overlapping or nested open reading frames that increase their coding capacity. The extent by which the constraints upon spatial structures of the two encoded proteins limit the evolvability of nested genes have not been deeply studied. Here, we examined the evolution of the tombusvirus proteins p22 and p19, encoded by nested genes. The structure of p19, the RNA silencing suppressor of the Tombusviridae family, has been determined experimentally; it belongs to the RAGNYA fold from the alpha + beta class. The structure of p22, the cell-to-cell movement protein (MP) from the 30K family common to many families of plant viruses, is not known. AlphaFold structure predictions suggest that the conserved structural core of p22, and of other 30K MPs, has a single jelly-roll fold from the all-beta class, structurally similar to capsid proteins from plant and animal viruses. The sequence and structure conservation within each of the p19 and p22 families coexists with asymmetric selection, mostly negative for p22 but positive for p19. The nucleotide sequence in the alternative reading frames imposes subtle limitations on the types of secondary structures that can be encoded. These limitations arise from specific preferences in the alternative frame due to the interplay of amino acid composition and selection pressures. Thus, the properties of the genetic code and of the encoded amino acid sequences permit the development of compact, well-ordered folds from different structural classes by two similarly-sized nested proteins. An ancient origin of p22 from icosahedral virus capsid protein is likely, whereas p19 may have emerged by stepwise increase in the length of the overprinted gene, acquisition of secondary structure elements by the protein product, and its convergent evolution towards the RAGNYA fold.</em></p>
+</div>
+<div id="additional-files" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Additional files<a href="index.html#additional-files" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Some additional files can be found in <a href="https://github.com/llobarts/nestedgenes">GitHub</a>.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="blast-and-e-utilities.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/index.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

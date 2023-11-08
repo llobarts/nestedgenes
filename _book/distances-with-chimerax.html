@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Distances with ChimeraX | Nested genes code</title>
+  <meta name="description" content="This is the description of the code employed in the research." />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Distances with ChimeraX | Nested genes code" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is the description of the code employed in the research." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Distances with ChimeraX | Nested genes code" />
+  
+  <meta name="twitter:description" content="This is the description of the code employed in the research." />
+  
+
+<meta name="author" content="Esmeralda G. Legarda" />
+
+
+<meta name="date" content="2023-11-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="distances-with-clustering-in-clans.html"/>
+<link rel="next" href="compositional-analyses-of-biological-sequences.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#abstract"><i class="fa fa-check"></i><b>1.1</b> Abstract</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#abstract-1"><i class="fa fa-check"></i><b>1.2</b> Abstract</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="blast-and-e-utilities.html"><a href="blast-and-e-utilities.html"><i class="fa fa-check"></i><b>2</b> Blast and E-utilities</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="blast-and-e-utilities.html"><a href="blast-and-e-utilities.html#psi-blast"><i class="fa fa-check"></i><b>2.1</b> PSI-BLAST</a></li>
+<li class="chapter" data-level="2.2" data-path="blast-and-e-utilities.html"><a href="blast-and-e-utilities.html#protein-id-to-nucleotides"><i class="fa fa-check"></i><b>2.2</b> Protein ID to nucleotides</a></li>
+<li class="chapter" data-level="2.3" data-path="blast-and-e-utilities.html"><a href="blast-and-e-utilities.html#species-to-family"><i class="fa fa-check"></i><b>2.3</b> Species to family</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="distances-with-clustering-in-clans.html"><a href="distances-with-clustering-in-clans.html"><i class="fa fa-check"></i><b>3</b> Distances with clustering in CLANS</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="distances-with-clustering-in-clans.html"><a href="distances-with-clustering-in-clans.html#read-clans-file"><i class="fa fa-check"></i><b>3.1</b> Read CLANS file</a></li>
+<li class="chapter" data-level="3.2" data-path="distances-with-clustering-in-clans.html"><a href="distances-with-clustering-in-clans.html#create-a-dataframe"><i class="fa fa-check"></i><b>3.2</b> Create a DataFrame</a></li>
+<li class="chapter" data-level="3.3" data-path="distances-with-clustering-in-clans.html"><a href="distances-with-clustering-in-clans.html#calculate-centroids-and-distances"><i class="fa fa-check"></i><b>3.3</b> Calculate centroids and distances</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="distances-with-clustering-in-clans.html"><a href="distances-with-clustering-in-clans.html#plot-the-clustermap"><i class="fa fa-check"></i><b>3.3.1</b> Plot the clustermap</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="distances-with-clustering-in-clans.html"><a href="distances-with-clustering-in-clans.html#run"><i class="fa fa-check"></i><b>3.4</b> Run</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html"><i class="fa fa-check"></i><b>4</b> Distances with ChimeraX</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#obtaining-rmsd-with-chimerax"><i class="fa fa-check"></i><b>4.1</b> Obtaining RMSD with ChimeraX</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#import-libraries-and-data"><i class="fa fa-check"></i><b>4.1.1</b> Import libraries and data</a></li>
+<li class="chapter" data-level="4.1.2" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#matchmaker"><i class="fa fa-check"></i><b>4.1.2</b> MatchMaker</a></li>
+<li class="chapter" data-level="4.1.3" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#save-csv-file"><i class="fa fa-check"></i><b>4.1.3</b> Save csv file</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#hiarachical-clustering"><i class="fa fa-check"></i><b>4.2</b> Hiarachical clustering</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#libraries-and-read-csv"><i class="fa fa-check"></i><b>4.2.1</b> Libraries and read csv</a></li>
+<li class="chapter" data-level="4.2.2" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#create-matrix"><i class="fa fa-check"></i><b>4.2.2</b> Create matrix</a></li>
+<li class="chapter" data-level="4.2.3" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#plot-the-clustermap-1"><i class="fa fa-check"></i><b>4.2.3</b> Plot the clustermap</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="compositional-analyses-of-biological-sequences.html"><a href="compositional-analyses-of-biological-sequences.html"><i class="fa fa-check"></i><b>5</b> Compositional analyses of biological sequences</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="compositional-analyses-of-biological-sequences.html"><a href="compositional-analyses-of-biological-sequences.html#amino-acids"><i class="fa fa-check"></i><b>5.1</b> Amino acids</a></li>
+<li class="chapter" data-level="5.2" data-path="compositional-analyses-of-biological-sequences.html"><a href="compositional-analyses-of-biological-sequences.html#nucleotides"><i class="fa fa-check"></i><b>5.2</b> Nucleotides</a></li>
+<li class="chapter" data-level="5.3" data-path="compositional-analyses-of-biological-sequences.html"><a href="compositional-analyses-of-biological-sequences.html#dinuclotides"><i class="fa fa-check"></i><b>5.3</b> Dinuclotides</a></li>
+<li class="chapter" data-level="5.4" data-path="compositional-analyses-of-biological-sequences.html"><a href="compositional-analyses-of-biological-sequences.html#codons"><i class="fa fa-check"></i><b>5.4</b> Codons</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html"><i class="fa fa-check"></i><b>6</b> Comparative analyses of selection</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#evolution-speed-with-absrel"><i class="fa fa-check"></i><b>6.1</b> Evolution speed with aBSREL</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#libraries-and-json-files"><i class="fa fa-check"></i><b>6.1.1</b> Libraries and json files</a></li>
+<li class="chapter" data-level="6.1.2" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#omega-and-significance"><i class="fa fa-check"></i><b>6.1.2</b> Omega and significance</a></li>
+<li class="chapter" data-level="6.1.3" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#relative-asinh-transformation"><i class="fa fa-check"></i><b>6.1.3</b> Relative asinh transformation</a></li>
+<li class="chapter" data-level="6.1.4" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#utilities"><i class="fa fa-check"></i><b>6.1.4</b> Utilities</a></li>
+<li class="chapter" data-level="6.1.5" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#boxplots-with-significance"><i class="fa fa-check"></i><b>6.1.5</b> Boxplots with significance</a></li>
+<li class="chapter" data-level="6.1.6" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#test-selection"><i class="fa fa-check"></i><b>6.1.6</b> Test selection</a></li>
+<li class="chapter" data-level="6.1.7" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#run-1"><i class="fa fa-check"></i><b>6.1.7</b> Run</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#fel-for-correlations"><i class="fa fa-check"></i><b>6.2</b> FEL for correlations</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#significance-and-difference"><i class="fa fa-check"></i><b>6.2.1</b> Significance and difference</a></li>
+<li class="chapter" data-level="6.2.2" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#plot-correlation"><i class="fa fa-check"></i><b>6.2.2</b> Plot correlation</a></li>
+<li class="chapter" data-level="6.2.3" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#test-correlation-of-selection"><i class="fa fa-check"></i><b>6.2.3</b> Test correlation of selection</a></li>
+<li class="chapter" data-level="6.2.4" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#correlation-2d"><i class="fa fa-check"></i><b>6.2.4</b> Correlation 2D</a></li>
+<li class="chapter" data-level="6.2.5" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#selection-in-2d"><i class="fa fa-check"></i><b>6.2.5</b> Selection in 2D</a></li>
+<li class="chapter" data-level="6.2.6" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#run-2"><i class="fa fa-check"></i><b>6.2.6</b> Run</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="miscellania.html"><a href="miscellania.html"><i class="fa fa-check"></i><b>7</b> Miscellania</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="miscellania.html"><a href="miscellania.html#representation-of-predicted-disordered-amino-acid-data"><i class="fa fa-check"></i><b>7.1</b> Representation of predicted disordered amino acid data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Nested genes code</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="distances-with-chimerax" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Distances with ChimeraX<a href="distances-with-chimerax.html#distances-with-chimerax" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>UCSF ChimeraX-1.6.1 has some routines implemented in Python 3.9 of which we can benefit. The purpose of this chapter is obtaining a matrix of RMSD (root-mean-square deviation) distances using a tool of ChimeraX named MatchMaker. This matrix will be used for hierarchical clustering.</p>
+<div id="obtaining-rmsd-with-chimerax" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Obtaining RMSD with ChimeraX<a href="distances-with-chimerax.html#obtaining-rmsd-with-chimerax" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>As we had a list of 29 PDB files, here is the automated pairwise comparison implemented. The following code of this first section has to be gathered and saved in a Python file (.py) and opened by the ChimeraX software open option.</p>
+<div id="import-libraries-and-data" class="section level3 hasAnchor" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> Import libraries and data<a href="distances-with-chimerax.html#import-libraries-and-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We use the package chimerax, previously installed with pip command. For the pairwise comparison, all the structures in PDB format were saved in the same directory.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="distances-with-chimerax.html#cb14-1" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb14-2"><a href="distances-with-chimerax.html#cb14-2" tabindex="-1"></a><span class="im">from</span> chimerax.core.commands <span class="im">import</span> run</span>
+<span id="cb14-3"><a href="distances-with-chimerax.html#cb14-3" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="distances-with-chimerax.html#cb14-4" tabindex="-1"></a><span class="co"># Directory containing the PDB files</span></span>
+<span id="cb14-5"><a href="distances-with-chimerax.html#cb14-5" tabindex="-1"></a>pdb_dir <span class="op">=</span> <span class="st">&#39;/Users/esmeralda/Documents/TFM/article/structures&#39;</span></span>
+<span id="cb14-6"><a href="distances-with-chimerax.html#cb14-6" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="distances-with-chimerax.html#cb14-7" tabindex="-1"></a><span class="co"># List all PDB files in the directory</span></span>
+<span id="cb14-8"><a href="distances-with-chimerax.html#cb14-8" tabindex="-1"></a>pdb_files <span class="op">=</span> [f <span class="cf">for</span> f <span class="kw">in</span> os.listdir(pdb_dir) <span class="cf">if</span> f.endswith(<span class="st">&#39;.pdb&#39;</span>)]</span>
+<span id="cb14-9"><a href="distances-with-chimerax.html#cb14-9" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="distances-with-chimerax.html#cb14-10" tabindex="-1"></a><span class="co"># Load PDB structures</span></span>
+<span id="cb14-11"><a href="distances-with-chimerax.html#cb14-11" tabindex="-1"></a>structures <span class="op">=</span> []</span>
+<span id="cb14-12"><a href="distances-with-chimerax.html#cb14-12" tabindex="-1"></a><span class="cf">for</span> pdb_file <span class="kw">in</span> pdb_files:</span>
+<span id="cb14-13"><a href="distances-with-chimerax.html#cb14-13" tabindex="-1"></a>    file_path <span class="op">=</span> os.path.join(pdb_dir, pdb_file)</span>
+<span id="cb14-14"><a href="distances-with-chimerax.html#cb14-14" tabindex="-1"></a>    structure <span class="op">=</span> run(session, <span class="st">&quot;open &quot;</span> <span class="op">+</span> file_path)</span>
+<span id="cb14-15"><a href="distances-with-chimerax.html#cb14-15" tabindex="-1"></a>    structures.append(structure[<span class="dv">0</span>])  <span class="co"># Append the first (and only) structure from the result list</span></span></code></pre></div>
+</div>
+<div id="matchmaker" class="section level3 hasAnchor" number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> MatchMaker<a href="distances-with-chimerax.html#matchmaker" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This step includes the setting of some parameters such as the type of alignment or the weight of secondary structure in the alignment. The names of the structures were formatted according to the type of nomenclature of the PDB files chosen previously. Notice that the function <code>run</code> allows the user to write any Chimera command. <code>session</code> refers to the current session. We choose to save full RMSD values.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="distances-with-chimerax.html#cb15-1" tabindex="-1"></a><span class="co"># Parameters for MatchMaker alignment</span></span>
+<span id="cb15-2"><a href="distances-with-chimerax.html#cb15-2" tabindex="-1"></a>alignment_type <span class="op">=</span> <span class="st">&#39;Needleman-Wunsch&#39;</span>  <span class="co"># Type of alignment: &#39;default&#39;, &#39;sequence&#39;, &#39;secondary_structure&#39;</span></span>
+<span id="cb15-3"><a href="distances-with-chimerax.html#cb15-3" tabindex="-1"></a>ss_weight <span class="op">=</span> <span class="fl">0.7</span>  <span class="co"># Weight of secondary structure in alignment (0.0 to 1.0)</span></span>
+<span id="cb15-4"><a href="distances-with-chimerax.html#cb15-4" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="distances-with-chimerax.html#cb15-5" tabindex="-1"></a>rmsd_values <span class="op">=</span> []</span>
+<span id="cb15-6"><a href="distances-with-chimerax.html#cb15-6" tabindex="-1"></a><span class="co"># Calculate RMSD all-against-all</span></span>
+<span id="cb15-7"><a href="distances-with-chimerax.html#cb15-7" tabindex="-1"></a><span class="cf">for</span> i, structure1 <span class="kw">in</span> <span class="bu">enumerate</span>(structures):</span>
+<span id="cb15-8"><a href="distances-with-chimerax.html#cb15-8" tabindex="-1"></a>    <span class="cf">for</span> j, structure2 <span class="kw">in</span> <span class="bu">enumerate</span>(structures[i<span class="op">+</span><span class="dv">1</span>:]):</span>
+<span id="cb15-9"><a href="distances-with-chimerax.html#cb15-9" tabindex="-1"></a>        rmsd_result <span class="op">=</span> run(session, <span class="ss">f&quot;matchmaker #</span><span class="sc">{</span>structure2<span class="sc">.</span>id_string<span class="sc">}</span><span class="ss"> to #</span><span class="sc">{</span>structure1<span class="sc">.</span>id_string<span class="sc">}</span><span class="ss"> alg </span><span class="sc">{</span>alignment_type<span class="sc">}</span><span class="ss"> ssFraction </span><span class="sc">{</span>ss_weight<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb15-10"><a href="distances-with-chimerax.html#cb15-10" tabindex="-1"></a>        rmsd_value <span class="op">=</span> rmsd_result[<span class="dv">0</span>]</span>
+<span id="cb15-11"><a href="distances-with-chimerax.html#cb15-11" tabindex="-1"></a>        <span class="bu">print</span>(rmsd_value.keys())</span>
+<span id="cb15-12"><a href="distances-with-chimerax.html#cb15-12" tabindex="-1"></a>        name1 <span class="op">=</span> structure1.name.split(<span class="st">&#39;_&#39;</span>)[<span class="dv">0</span>]</span>
+<span id="cb15-13"><a href="distances-with-chimerax.html#cb15-13" tabindex="-1"></a>        name2 <span class="op">=</span> structure2.name.split(<span class="st">&#39;_&#39;</span>)[<span class="dv">0</span>]</span>
+<span id="cb15-14"><a href="distances-with-chimerax.html#cb15-14" tabindex="-1"></a>        </span>
+<span id="cb15-15"><a href="distances-with-chimerax.html#cb15-15" tabindex="-1"></a>        rmsd_values.append([name1, name2, rmsd_value[<span class="st">&quot;full RMSD&quot;</span>]])</span></code></pre></div>
+</div>
+<div id="save-csv-file" class="section level3 hasAnchor" number="4.1.3">
+<h3><span class="header-section-number">4.1.3</span> Save csv file<a href="distances-with-chimerax.html#save-csv-file" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Pairwise RMSD values are saved in a CSV file, a comparison per line.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="distances-with-chimerax.html#cb16-1" tabindex="-1"></a><span class="co"># Save RMSD values to CSV file</span></span>
+<span id="cb16-2"><a href="distances-with-chimerax.html#cb16-2" tabindex="-1"></a>csv_file <span class="op">=</span> <span class="st">&#39;/Users/esmeralda/Documents/TFM/Chimera_compare/rmsd_values.csv&#39;</span></span>
+<span id="cb16-3"><a href="distances-with-chimerax.html#cb16-3" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(csv_file, <span class="st">&#39;w&#39;</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb16-4"><a href="distances-with-chimerax.html#cb16-4" tabindex="-1"></a>    <span class="bu">file</span>.write(<span class="st">&#39;Structure 1,Structure 2,RMSD</span><span class="ch">\n</span><span class="st">&#39;</span>)</span>
+<span id="cb16-5"><a href="distances-with-chimerax.html#cb16-5" tabindex="-1"></a>    <span class="cf">for</span> row <span class="kw">in</span> rmsd_values:</span>
+<span id="cb16-6"><a href="distances-with-chimerax.html#cb16-6" tabindex="-1"></a>        <span class="bu">file</span>.write(<span class="st">&#39;,&#39;</span>.join(<span class="bu">str</span>(value) <span class="cf">for</span> value <span class="kw">in</span> row) <span class="op">+</span> <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>)</span></code></pre></div>
+<p>Don’t forget to close the files! We have already finished the acquisition of data in ChimeraX software.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="distances-with-chimerax.html#cb17-1" tabindex="-1"></a><span class="co"># Close the structures</span></span>
+<span id="cb17-2"><a href="distances-with-chimerax.html#cb17-2" tabindex="-1"></a><span class="cf">for</span> structure <span class="kw">in</span> structures:</span>
+<span id="cb17-3"><a href="distances-with-chimerax.html#cb17-3" tabindex="-1"></a>    run(session, <span class="ss">f&#39;close #</span><span class="sc">{</span>structure<span class="sc">.</span>id_string<span class="sc">}</span><span class="ss">&#39;</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="hiarachical-clustering" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Hiarachical clustering<a href="distances-with-chimerax.html#hiarachical-clustering" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Now that we have the RMSD values in a csv file, we move on to construct the matrix of distances in our favorite code editor with the following code.</p>
+<div id="libraries-and-read-csv" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Libraries and read csv<a href="distances-with-chimerax.html#libraries-and-read-csv" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="distances-with-chimerax.html#cb18-1" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb18-2"><a href="distances-with-chimerax.html#cb18-2" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb18-3"><a href="distances-with-chimerax.html#cb18-3" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb18-4"><a href="distances-with-chimerax.html#cb18-4" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb18-5"><a href="distances-with-chimerax.html#cb18-5" tabindex="-1"></a><span class="im">from</span> scipy.cluster.hierarchy <span class="im">import</span> linkage</span>
+<span id="cb18-6"><a href="distances-with-chimerax.html#cb18-6" tabindex="-1"></a><span class="im">from</span> scipy.spatial.distance <span class="im">import</span> squareform</span>
+<span id="cb18-7"><a href="distances-with-chimerax.html#cb18-7" tabindex="-1"></a><span class="im">from</span> scipy.cluster <span class="im">import</span> hierarchy</span>
+<span id="cb18-8"><a href="distances-with-chimerax.html#cb18-8" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="distances-with-chimerax.html#cb18-9" tabindex="-1"></a><span class="co"># Read node pairs and distances from CSV file</span></span>
+<span id="cb18-10"><a href="distances-with-chimerax.html#cb18-10" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">&#39;/Users/esmeralda/Documents/TFM/Chimera_compare/rmsd_values.csv&#39;</span>, sep<span class="op">=</span><span class="st">&quot;,&quot;</span>)</span></code></pre></div>
+</div>
+<div id="create-matrix" class="section level3 hasAnchor" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> Create matrix<a href="distances-with-chimerax.html#create-matrix" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We create a matrix as a DataFrame of pandas package.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="distances-with-chimerax.html#cb19-1" tabindex="-1"></a><span class="co"># Extract unique node labels</span></span>
+<span id="cb19-2"><a href="distances-with-chimerax.html#cb19-2" tabindex="-1"></a>nodes <span class="op">=</span> <span class="bu">sorted</span>(<span class="bu">set</span>(df[<span class="st">&#39;Structure 1&#39;</span>]).union(df[<span class="st">&#39;Structure 2&#39;</span>]))</span>
+<span id="cb19-3"><a href="distances-with-chimerax.html#cb19-3" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="distances-with-chimerax.html#cb19-4" tabindex="-1"></a><span class="co"># Create a dictionary to map node labels to matrix indices</span></span>
+<span id="cb19-5"><a href="distances-with-chimerax.html#cb19-5" tabindex="-1"></a>node_indices <span class="op">=</span> {node: index <span class="cf">for</span> index, node <span class="kw">in</span> <span class="bu">enumerate</span>(nodes)}</span>
+<span id="cb19-6"><a href="distances-with-chimerax.html#cb19-6" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="distances-with-chimerax.html#cb19-7" tabindex="-1"></a><span class="co"># Initialize the distance matrix as a DataFrame</span></span>
+<span id="cb19-8"><a href="distances-with-chimerax.html#cb19-8" tabindex="-1"></a>matrix <span class="op">=</span> pd.DataFrame(index<span class="op">=</span>nodes, columns<span class="op">=</span>nodes)</span>
+<span id="cb19-9"><a href="distances-with-chimerax.html#cb19-9" tabindex="-1"></a>matrix <span class="op">=</span> matrix.fillna(<span class="fl">0.0</span>)</span>
+<span id="cb19-10"><a href="distances-with-chimerax.html#cb19-10" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="distances-with-chimerax.html#cb19-11" tabindex="-1"></a><span class="co"># Assign distances to matrix based on node pairs</span></span>
+<span id="cb19-12"><a href="distances-with-chimerax.html#cb19-12" tabindex="-1"></a><span class="cf">for</span> _, row <span class="kw">in</span> df.iterrows():</span>
+<span id="cb19-13"><a href="distances-with-chimerax.html#cb19-13" tabindex="-1"></a>    node1 <span class="op">=</span> row[<span class="st">&#39;Structure 1&#39;</span>]</span>
+<span id="cb19-14"><a href="distances-with-chimerax.html#cb19-14" tabindex="-1"></a>    node2 <span class="op">=</span> row[<span class="st">&#39;Structure 2&#39;</span>]</span>
+<span id="cb19-15"><a href="distances-with-chimerax.html#cb19-15" tabindex="-1"></a>    distance <span class="op">=</span> row[<span class="st">&#39;RMSD&#39;</span>]</span>
+<span id="cb19-16"><a href="distances-with-chimerax.html#cb19-16" tabindex="-1"></a>    matrix.loc[node1, node2] <span class="op">=</span> distance</span>
+<span id="cb19-17"><a href="distances-with-chimerax.html#cb19-17" tabindex="-1"></a>    matrix.loc[node2, node1] <span class="op">=</span> distance</span></code></pre></div>
+</div>
+<div id="plot-the-clustermap-1" class="section level3 hasAnchor" number="4.2.3">
+<h3><span class="header-section-number">4.2.3</span> Plot the clustermap<a href="distances-with-chimerax.html#plot-the-clustermap-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This function plots the distances with a hierarchical clustering that can be done with different methods. A metric to asses their ability for recreating the pairwise distances is the cophenetic correlation coefficient (the higher, the better it explains the pairwise relationships).</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="distances-with-chimerax.html#cb20-1" tabindex="-1"></a><span class="kw">def</span> plot_rmsd_distances(data, method):</span>
+<span id="cb20-2"><a href="distances-with-chimerax.html#cb20-2" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="distances-with-chimerax.html#cb20-3" tabindex="-1"></a>    <span class="co"># Compute the hierarchical clustering</span></span>
+<span id="cb20-4"><a href="distances-with-chimerax.html#cb20-4" tabindex="-1"></a>    data_square <span class="op">=</span> squareform(data)</span>
+<span id="cb20-5"><a href="distances-with-chimerax.html#cb20-5" tabindex="-1"></a>    linkage <span class="op">=</span> hierarchy.linkage(data_square, method<span class="op">=</span>method, optimal_ordering<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb20-6"><a href="distances-with-chimerax.html#cb20-6" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="distances-with-chimerax.html#cb20-7" tabindex="-1"></a>    <span class="co"># Plot the heatmap with clustered rows and columns</span></span>
+<span id="cb20-8"><a href="distances-with-chimerax.html#cb20-8" tabindex="-1"></a>    sns.clustermap(data,</span>
+<span id="cb20-9"><a href="distances-with-chimerax.html#cb20-9" tabindex="-1"></a>                   method<span class="op">=</span>method,</span>
+<span id="cb20-10"><a href="distances-with-chimerax.html#cb20-10" tabindex="-1"></a>                   figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">8</span>),</span>
+<span id="cb20-11"><a href="distances-with-chimerax.html#cb20-11" tabindex="-1"></a>                   row_linkage<span class="op">=</span>linkage,</span>
+<span id="cb20-12"><a href="distances-with-chimerax.html#cb20-12" tabindex="-1"></a>                   col_linkage<span class="op">=</span>linkage,</span>
+<span id="cb20-13"><a href="distances-with-chimerax.html#cb20-13" tabindex="-1"></a>                   cmap<span class="op">=</span><span class="st">&quot;viridis&quot;</span>,</span>
+<span id="cb20-14"><a href="distances-with-chimerax.html#cb20-14" tabindex="-1"></a>                   vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">25</span>,</span>
+<span id="cb20-15"><a href="distances-with-chimerax.html#cb20-15" tabindex="-1"></a>                   cbar_pos<span class="op">=</span>(<span class="fl">0.02</span>, <span class="fl">0.8225</span>, <span class="fl">0.02</span>, <span class="fl">0.18</span>)</span>
+<span id="cb20-16"><a href="distances-with-chimerax.html#cb20-16" tabindex="-1"></a>                   )</span>
+<span id="cb20-17"><a href="distances-with-chimerax.html#cb20-17" tabindex="-1"></a>    <span class="co"># Calculate cophenetic correlation coefficient</span></span>
+<span id="cb20-18"><a href="distances-with-chimerax.html#cb20-18" tabindex="-1"></a>    c, coph_dists <span class="op">=</span> hierarchy.cophenet(linkage, data_square)</span>
+<span id="cb20-19"><a href="distances-with-chimerax.html#cb20-19" tabindex="-1"></a></span>
+<span id="cb20-20"><a href="distances-with-chimerax.html#cb20-20" tabindex="-1"></a>    <span class="co"># Print the cophenetic correlation coefficient</span></span>
+<span id="cb20-21"><a href="distances-with-chimerax.html#cb20-21" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Cophenetic correlation coefficient:&quot;</span>, c)</span>
+<span id="cb20-22"><a href="distances-with-chimerax.html#cb20-22" tabindex="-1"></a>  </span>
+<span id="cb20-23"><a href="distances-with-chimerax.html#cb20-23" tabindex="-1"></a>    <span class="co"># Save in pdf format and show</span></span>
+<span id="cb20-24"><a href="distances-with-chimerax.html#cb20-24" tabindex="-1"></a>    plt.savefig(<span class="st">&quot;heatmap_structure.pdf&quot;</span>, <span class="bu">format</span><span class="op">=</span><span class="st">&quot;pdf&quot;</span>, bbox_inches<span class="op">=</span><span class="st">&quot;tight&quot;</span>)</span>
+<span id="cb20-25"><a href="distances-with-chimerax.html#cb20-25" tabindex="-1"></a>    plt.show()</span></code></pre></div>
+<p>We run the previous function to get the plot displayed and the cophenetic correlation coefficient printed. Some instances of methods are <code>simple</code>, <code>average</code>, <code>complete</code> or <code>centroid</code>.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="distances-with-chimerax.html#cb21-1" tabindex="-1"></a>method <span class="op">=</span> <span class="st">&quot;centroid&quot;</span></span>
+<span id="cb21-2"><a href="distances-with-chimerax.html#cb21-2" tabindex="-1"></a>plot_rmsd_distances(matrix, method)</span></code></pre></div>
+<p><strong>IMAGE PLOT</strong></p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="distances-with-clustering-in-clans.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="compositional-analyses-of-biological-sequences.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/03-chimera_dist.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
