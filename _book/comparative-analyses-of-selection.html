@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 Comparative analyses of selection | Nested genes code</title>
+  <meta name="description" content="This is the description of the code employed in the research." />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 Comparative analyses of selection | Nested genes code" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is the description of the code employed in the research." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Comparative analyses of selection | Nested genes code" />
+  
+  <meta name="twitter:description" content="This is the description of the code employed in the research." />
+  
+
+<meta name="author" content="Esmeralda G. Legarda" />
+
+
+<meta name="date" content="2023-11-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="compositional-analyses-of-biological-sequences.html"/>
+<link rel="next" href="miscellania.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#abstract"><i class="fa fa-check"></i><b>1.1</b> Abstract</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#abstract-1"><i class="fa fa-check"></i><b>1.2</b> Abstract</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="blast-and-e-utilities.html"><a href="blast-and-e-utilities.html"><i class="fa fa-check"></i><b>2</b> Blast and E-utilities</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="blast-and-e-utilities.html"><a href="blast-and-e-utilities.html#psi-blast"><i class="fa fa-check"></i><b>2.1</b> PSI-BLAST</a></li>
+<li class="chapter" data-level="2.2" data-path="blast-and-e-utilities.html"><a href="blast-and-e-utilities.html#protein-id-to-nucleotides"><i class="fa fa-check"></i><b>2.2</b> Protein ID to nucleotides</a></li>
+<li class="chapter" data-level="2.3" data-path="blast-and-e-utilities.html"><a href="blast-and-e-utilities.html#species-to-family"><i class="fa fa-check"></i><b>2.3</b> Species to family</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="distances-with-clustering-in-clans.html"><a href="distances-with-clustering-in-clans.html"><i class="fa fa-check"></i><b>3</b> Distances with clustering in CLANS</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="distances-with-clustering-in-clans.html"><a href="distances-with-clustering-in-clans.html#read-clans-file"><i class="fa fa-check"></i><b>3.1</b> Read CLANS file</a></li>
+<li class="chapter" data-level="3.2" data-path="distances-with-clustering-in-clans.html"><a href="distances-with-clustering-in-clans.html#create-a-dataframe"><i class="fa fa-check"></i><b>3.2</b> Create a DataFrame</a></li>
+<li class="chapter" data-level="3.3" data-path="distances-with-clustering-in-clans.html"><a href="distances-with-clustering-in-clans.html#calculate-centroids-and-distances"><i class="fa fa-check"></i><b>3.3</b> Calculate centroids and distances</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="distances-with-clustering-in-clans.html"><a href="distances-with-clustering-in-clans.html#plot-the-clustermap"><i class="fa fa-check"></i><b>3.3.1</b> Plot the clustermap</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="distances-with-clustering-in-clans.html"><a href="distances-with-clustering-in-clans.html#run"><i class="fa fa-check"></i><b>3.4</b> Run</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html"><i class="fa fa-check"></i><b>4</b> Distances with ChimeraX</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#obtaining-rmsd-with-chimerax"><i class="fa fa-check"></i><b>4.1</b> Obtaining RMSD with ChimeraX</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#import-libraries-and-data"><i class="fa fa-check"></i><b>4.1.1</b> Import libraries and data</a></li>
+<li class="chapter" data-level="4.1.2" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#matchmaker"><i class="fa fa-check"></i><b>4.1.2</b> MatchMaker</a></li>
+<li class="chapter" data-level="4.1.3" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#save-csv-file"><i class="fa fa-check"></i><b>4.1.3</b> Save csv file</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#hiarachical-clustering"><i class="fa fa-check"></i><b>4.2</b> Hiarachical clustering</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#libraries-and-read-csv"><i class="fa fa-check"></i><b>4.2.1</b> Libraries and read csv</a></li>
+<li class="chapter" data-level="4.2.2" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#create-matrix"><i class="fa fa-check"></i><b>4.2.2</b> Create matrix</a></li>
+<li class="chapter" data-level="4.2.3" data-path="distances-with-chimerax.html"><a href="distances-with-chimerax.html#plot-the-clustermap-1"><i class="fa fa-check"></i><b>4.2.3</b> Plot the clustermap</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="compositional-analyses-of-biological-sequences.html"><a href="compositional-analyses-of-biological-sequences.html"><i class="fa fa-check"></i><b>5</b> Compositional analyses of biological sequences</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="compositional-analyses-of-biological-sequences.html"><a href="compositional-analyses-of-biological-sequences.html#amino-acids"><i class="fa fa-check"></i><b>5.1</b> Amino acids</a></li>
+<li class="chapter" data-level="5.2" data-path="compositional-analyses-of-biological-sequences.html"><a href="compositional-analyses-of-biological-sequences.html#nucleotides"><i class="fa fa-check"></i><b>5.2</b> Nucleotides</a></li>
+<li class="chapter" data-level="5.3" data-path="compositional-analyses-of-biological-sequences.html"><a href="compositional-analyses-of-biological-sequences.html#dinuclotides"><i class="fa fa-check"></i><b>5.3</b> Dinuclotides</a></li>
+<li class="chapter" data-level="5.4" data-path="compositional-analyses-of-biological-sequences.html"><a href="compositional-analyses-of-biological-sequences.html#codons"><i class="fa fa-check"></i><b>5.4</b> Codons</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html"><i class="fa fa-check"></i><b>6</b> Comparative analyses of selection</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#evolution-speed-with-absrel"><i class="fa fa-check"></i><b>6.1</b> Evolution speed with aBSREL</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#libraries-and-json-files"><i class="fa fa-check"></i><b>6.1.1</b> Libraries and json files</a></li>
+<li class="chapter" data-level="6.1.2" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#omega-and-significance"><i class="fa fa-check"></i><b>6.1.2</b> Omega and significance</a></li>
+<li class="chapter" data-level="6.1.3" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#relative-asinh-transformation"><i class="fa fa-check"></i><b>6.1.3</b> Relative asinh transformation</a></li>
+<li class="chapter" data-level="6.1.4" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#utilities"><i class="fa fa-check"></i><b>6.1.4</b> Utilities</a></li>
+<li class="chapter" data-level="6.1.5" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#boxplots-with-significance"><i class="fa fa-check"></i><b>6.1.5</b> Boxplots with significance</a></li>
+<li class="chapter" data-level="6.1.6" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#test-selection"><i class="fa fa-check"></i><b>6.1.6</b> Test selection</a></li>
+<li class="chapter" data-level="6.1.7" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#run-1"><i class="fa fa-check"></i><b>6.1.7</b> Run</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#fel-for-correlations"><i class="fa fa-check"></i><b>6.2</b> FEL for correlations</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#significance-and-difference"><i class="fa fa-check"></i><b>6.2.1</b> Significance and difference</a></li>
+<li class="chapter" data-level="6.2.2" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#plot-correlation"><i class="fa fa-check"></i><b>6.2.2</b> Plot correlation</a></li>
+<li class="chapter" data-level="6.2.3" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#test-correlation-of-selection"><i class="fa fa-check"></i><b>6.2.3</b> Test correlation of selection</a></li>
+<li class="chapter" data-level="6.2.4" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#correlation-2d"><i class="fa fa-check"></i><b>6.2.4</b> Correlation 2D</a></li>
+<li class="chapter" data-level="6.2.5" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#selection-in-2d"><i class="fa fa-check"></i><b>6.2.5</b> Selection in 2D</a></li>
+<li class="chapter" data-level="6.2.6" data-path="comparative-analyses-of-selection.html"><a href="comparative-analyses-of-selection.html#run-2"><i class="fa fa-check"></i><b>6.2.6</b> Run</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="miscellania.html"><a href="miscellania.html"><i class="fa fa-check"></i><b>7</b> Miscellania</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="miscellania.html"><a href="miscellania.html#representation-of-predicted-disordered-amino-acid-data"><i class="fa fa-check"></i><b>7.1</b> Representation of predicted disordered amino acid data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Nested genes code</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="comparative-analyses-of-selection" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Comparative analyses of selection<a href="comparative-analyses-of-selection.html#comparative-analyses-of-selection" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="evolution-speed-with-absrel" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Evolution speed with aBSREL<a href="comparative-analyses-of-selection.html#evolution-speed-with-absrel" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Here we take advantage of the complete sequences of tombusvirus genomes available in NCBI. We use the adaptive branch-site random effects likelihood (aBSREL) method to estimate the omega = dN/dS rates ratio per branch for p19 and p22 as well as for RdRp as a reference. For each branch, estimated omega p19 and omega p22 values are normalized by the corresponding omega RdRp values, so all branches were brought to a common relative scale and asinh-transformed: ω_x^=ω_x⁄ω_RdRp with x  {p19, p22}.</p>
+<div id="libraries-and-json-files" class="section level3 hasAnchor" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Libraries and json files<a href="comparative-analyses-of-selection.html#libraries-and-json-files" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb37"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb37-1"><a href="comparative-analyses-of-selection.html#cb37-1" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb37-2"><a href="comparative-analyses-of-selection.html#cb37-2" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb37-3"><a href="comparative-analyses-of-selection.html#cb37-3" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb37-4"><a href="comparative-analyses-of-selection.html#cb37-4" tabindex="-1"></a><span class="im">import</span> scipy.stats</span>
+<span id="cb37-5"><a href="comparative-analyses-of-selection.html#cb37-5" tabindex="-1"></a><span class="im">from</span> statannotations.Annotator <span class="im">import</span> Annotator</span></code></pre></div>
+<p>First, we need to read the json files that contain the results of aBSREL with different genes from the same genomes.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb38-1"><a href="comparative-analyses-of-selection.html#cb38-1" tabindex="-1"></a><span class="co"># Read json files of each gene</span></span>
+<span id="cb38-2"><a href="comparative-analyses-of-selection.html#cb38-2" tabindex="-1"></a>paths <span class="op">=</span> [path_p22, path_p19, path_RdRp, path_cp]</span>
+<span id="cb38-3"><a href="comparative-analyses-of-selection.html#cb38-3" tabindex="-1"></a><span class="cf">for</span> path <span class="kw">in</span> paths:</span>
+<span id="cb38-4"><a href="comparative-analyses-of-selection.html#cb38-4" tabindex="-1"></a>  df <span class="op">=</span> read_branches(path)</span>
+<span id="cb38-5"><a href="comparative-analyses-of-selection.html#cb38-5" tabindex="-1"></a>  dfs.append(add_info(df, significance))</span></code></pre></div>
+</div>
+<div id="omega-and-significance" class="section level3 hasAnchor" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Omega and significance<a href="comparative-analyses-of-selection.html#omega-and-significance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Afterwards, information about the significance is added and the overall omega is calculated. Besides, we need to detect what nodes are missing in the output of aBSREL and then, we define them as null and non-significative.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb39-1"><a href="comparative-analyses-of-selection.html#cb39-1" tabindex="-1"></a><span class="kw">def</span> add_info(data, significance):</span>
+<span id="cb39-2"><a href="comparative-analyses-of-selection.html#cb39-2" tabindex="-1"></a>    </span>
+<span id="cb39-3"><a href="comparative-analyses-of-selection.html#cb39-3" tabindex="-1"></a>    data[<span class="st">&#39;omega_avg&#39;</span>] <span class="op">=</span> (data[<span class="st">&#39;omega1&#39;</span>]<span class="op">*</span>data[<span class="st">&#39;prop1&#39;</span>]) <span class="op">+</span> (data[<span class="st">&#39;omega2&#39;</span>]<span class="op">*</span>data[<span class="st">&#39;prop2&#39;</span>])</span>
+<span id="cb39-4"><a href="comparative-analyses-of-selection.html#cb39-4" tabindex="-1"></a>    data[<span class="st">&quot;signif&quot;</span>] <span class="op">=</span> np.where(data[<span class="st">&#39;pvalue&#39;</span>] <span class="op">&lt;</span> significance, <span class="va">True</span>, <span class="va">False</span>)</span>
+<span id="cb39-5"><a href="comparative-analyses-of-selection.html#cb39-5" tabindex="-1"></a></span>
+<span id="cb39-6"><a href="comparative-analyses-of-selection.html#cb39-6" tabindex="-1"></a>    <span class="cf">return</span> data</span>
+<span id="cb39-7"><a href="comparative-analyses-of-selection.html#cb39-7" tabindex="-1"></a></span>
+<span id="cb39-8"><a href="comparative-analyses-of-selection.html#cb39-8" tabindex="-1"></a><span class="kw">def</span> fill_missing_nodes(data, missing_nodes):</span>
+<span id="cb39-9"><a href="comparative-analyses-of-selection.html#cb39-9" tabindex="-1"></a>    </span>
+<span id="cb39-10"><a href="comparative-analyses-of-selection.html#cb39-10" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> missing_nodes:</span>
+<span id="cb39-11"><a href="comparative-analyses-of-selection.html#cb39-11" tabindex="-1"></a>        new_row <span class="op">=</span> {<span class="st">&quot;name&quot;</span>: i,</span>
+<span id="cb39-12"><a href="comparative-analyses-of-selection.html#cb39-12" tabindex="-1"></a>                   <span class="st">&quot;type&quot;</span> : <span class="st">&quot;Node&quot;</span>,</span>
+<span id="cb39-13"><a href="comparative-analyses-of-selection.html#cb39-13" tabindex="-1"></a>                   <span class="st">&quot;omega1&quot;</span>: <span class="fl">0.0</span>,</span>
+<span id="cb39-14"><a href="comparative-analyses-of-selection.html#cb39-14" tabindex="-1"></a>                   <span class="st">&quot;prop1&quot;</span> : <span class="fl">0.0</span>,</span>
+<span id="cb39-15"><a href="comparative-analyses-of-selection.html#cb39-15" tabindex="-1"></a>                   <span class="st">&quot;omega2&quot;</span>: <span class="fl">0.0</span>,</span>
+<span id="cb39-16"><a href="comparative-analyses-of-selection.html#cb39-16" tabindex="-1"></a>                   <span class="st">&quot;prop2&quot;</span> : <span class="fl">0.0</span>,</span>
+<span id="cb39-17"><a href="comparative-analyses-of-selection.html#cb39-17" tabindex="-1"></a>                   <span class="st">&quot;pvalue&quot;</span> : <span class="fl">1.0</span>,</span>
+<span id="cb39-18"><a href="comparative-analyses-of-selection.html#cb39-18" tabindex="-1"></a>                   <span class="st">&quot;omega_avg&quot;</span> : <span class="fl">0.0</span>,</span>
+<span id="cb39-19"><a href="comparative-analyses-of-selection.html#cb39-19" tabindex="-1"></a>                   <span class="st">&quot;Signif.&quot;</span> : <span class="va">False</span>}</span>
+<span id="cb39-20"><a href="comparative-analyses-of-selection.html#cb39-20" tabindex="-1"></a>    </span>
+<span id="cb39-21"><a href="comparative-analyses-of-selection.html#cb39-21" tabindex="-1"></a>        data <span class="op">=</span> data.append(new_row, ignore_index<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb39-22"><a href="comparative-analyses-of-selection.html#cb39-22" tabindex="-1"></a></span>
+<span id="cb39-23"><a href="comparative-analyses-of-selection.html#cb39-23" tabindex="-1"></a>    <span class="cf">return</span> data</span></code></pre></div>
+</div>
+<div id="relative-asinh-transformation" class="section level3 hasAnchor" number="6.1.3">
+<h3><span class="header-section-number">6.1.3</span> Relative asinh transformation<a href="comparative-analyses-of-selection.html#relative-asinh-transformation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Next step consists of calculating the relative measure for comparing the different genes, based on an asinh transformation.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb40-1"><a href="comparative-analyses-of-selection.html#cb40-1" tabindex="-1"></a><span class="kw">def</span> relativize(genes, gene_ref):</span>
+<span id="cb40-2"><a href="comparative-analyses-of-selection.html#cb40-2" tabindex="-1"></a>    </span>
+<span id="cb40-3"><a href="comparative-analyses-of-selection.html#cb40-3" tabindex="-1"></a>    results <span class="op">=</span> []</span>
+<span id="cb40-4"><a href="comparative-analyses-of-selection.html#cb40-4" tabindex="-1"></a>    type_tree <span class="op">=</span> []</span>
+<span id="cb40-5"><a href="comparative-analyses-of-selection.html#cb40-5" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="comparative-analyses-of-selection.html#cb40-6" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb40-7"><a href="comparative-analyses-of-selection.html#cb40-7" tabindex="-1"></a>        results_gene <span class="op">=</span> []</span>
+<span id="cb40-8"><a href="comparative-analyses-of-selection.html#cb40-8" tabindex="-1"></a>        <span class="cf">for</span> name <span class="kw">in</span> gene_ref[<span class="st">&quot;name&quot;</span>]:</span>
+<span id="cb40-9"><a href="comparative-analyses-of-selection.html#cb40-9" tabindex="-1"></a></span>
+<span id="cb40-10"><a href="comparative-analyses-of-selection.html#cb40-10" tabindex="-1"></a>            omega_x <span class="op">=</span> <span class="bu">float</span>(genes[i][genes[i][<span class="st">&quot;name&quot;</span>] <span class="op">==</span> name][<span class="st">&quot;omega_avg&quot;</span>])</span>
+<span id="cb40-11"><a href="comparative-analyses-of-selection.html#cb40-11" tabindex="-1"></a>            omega_std <span class="op">=</span> <span class="bu">float</span>(gene_ref[gene_ref[<span class="st">&quot;name&quot;</span>] <span class="op">==</span> name][<span class="st">&quot;omega_avg&quot;</span>])</span>
+<span id="cb40-12"><a href="comparative-analyses-of-selection.html#cb40-12" tabindex="-1"></a></span>
+<span id="cb40-13"><a href="comparative-analyses-of-selection.html#cb40-13" tabindex="-1"></a>            results_gene.append(np.log(omega_x <span class="op">+</span> (np.sqrt(omega_x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>))<span class="op">/</span>(omega_std <span class="op">+</span> (np.sqrt(omega_std<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>)))))</span>
+<span id="cb40-14"><a href="comparative-analyses-of-selection.html#cb40-14" tabindex="-1"></a>        </span>
+<span id="cb40-15"><a href="comparative-analyses-of-selection.html#cb40-15" tabindex="-1"></a>        results.append(results_gene)</span>
+<span id="cb40-16"><a href="comparative-analyses-of-selection.html#cb40-16" tabindex="-1"></a></span>
+<span id="cb40-17"><a href="comparative-analyses-of-selection.html#cb40-17" tabindex="-1"></a>    <span class="cf">return</span> results</span></code></pre></div>
+</div>
+<div id="utilities" class="section level3 hasAnchor" number="6.1.4">
+<h3><span class="header-section-number">6.1.4</span> Utilities<a href="comparative-analyses-of-selection.html#utilities" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Some other functions are employed in order to change the structure of data for its visualization and other to calculate p values with Wilcoxon-Mann-Whitney test.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb41-1"><a href="comparative-analyses-of-selection.html#cb41-1" tabindex="-1"></a><span class="kw">def</span> divide_branches(results, gene_ref):</span>
+<span id="cb41-2"><a href="comparative-analyses-of-selection.html#cb41-2" tabindex="-1"></a>    pos_tips <span class="op">=</span> gene_ref.index[gene_ref[<span class="st">&#39;type&#39;</span>] <span class="op">==</span> <span class="st">&quot;Tip&quot;</span>].tolist()</span>
+<span id="cb41-3"><a href="comparative-analyses-of-selection.html#cb41-3" tabindex="-1"></a>    tips <span class="op">=</span> []</span>
+<span id="cb41-4"><a href="comparative-analyses-of-selection.html#cb41-4" tabindex="-1"></a>    nodes <span class="op">=</span> []</span>
+<span id="cb41-5"><a href="comparative-analyses-of-selection.html#cb41-5" tabindex="-1"></a></span>
+<span id="cb41-6"><a href="comparative-analyses-of-selection.html#cb41-6" tabindex="-1"></a>    <span class="cf">for</span> gene <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb41-7"><a href="comparative-analyses-of-selection.html#cb41-7" tabindex="-1"></a>        tip_selection <span class="op">=</span> []</span>
+<span id="cb41-8"><a href="comparative-analyses-of-selection.html#cb41-8" tabindex="-1"></a>        node_selection <span class="op">=</span> []</span>
+<span id="cb41-9"><a href="comparative-analyses-of-selection.html#cb41-9" tabindex="-1"></a>        <span class="cf">for</span> i, value <span class="kw">in</span> <span class="bu">enumerate</span>(results[gene]):</span>
+<span id="cb41-10"><a href="comparative-analyses-of-selection.html#cb41-10" tabindex="-1"></a>            <span class="cf">if</span> i <span class="kw">in</span> pos_tips:</span>
+<span id="cb41-11"><a href="comparative-analyses-of-selection.html#cb41-11" tabindex="-1"></a>                tip_selection.append(value)</span>
+<span id="cb41-12"><a href="comparative-analyses-of-selection.html#cb41-12" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb41-13"><a href="comparative-analyses-of-selection.html#cb41-13" tabindex="-1"></a>                node_selection.append(value)</span>
+<span id="cb41-14"><a href="comparative-analyses-of-selection.html#cb41-14" tabindex="-1"></a>                </span>
+<span id="cb41-15"><a href="comparative-analyses-of-selection.html#cb41-15" tabindex="-1"></a>        tips.append(tip_selection)</span>
+<span id="cb41-16"><a href="comparative-analyses-of-selection.html#cb41-16" tabindex="-1"></a>        nodes.append(node_selection)</span>
+<span id="cb41-17"><a href="comparative-analyses-of-selection.html#cb41-17" tabindex="-1"></a>    </span>
+<span id="cb41-18"><a href="comparative-analyses-of-selection.html#cb41-18" tabindex="-1"></a>    <span class="cf">return</span> (tips, nodes)</span>
+<span id="cb41-19"><a href="comparative-analyses-of-selection.html#cb41-19" tabindex="-1"></a></span>
+<span id="cb41-20"><a href="comparative-analyses-of-selection.html#cb41-20" tabindex="-1"></a><span class="kw">def</span> calc_pvalues(chunk):</span>
+<span id="cb41-21"><a href="comparative-analyses-of-selection.html#cb41-21" tabindex="-1"></a>    pvalues_tips <span class="op">=</span> [scipy.stats.wilcoxon(chunk[<span class="dv">0</span>], chunk[<span class="dv">1</span>], alternative<span class="op">=</span><span class="st">&quot;two-sided&quot;</span>).pvalue, <span class="co"># p22 vs p19</span></span>
+<span id="cb41-22"><a href="comparative-analyses-of-selection.html#cb41-22" tabindex="-1"></a>    scipy.stats.wilcoxon(chunk[<span class="dv">0</span>], chunk[<span class="dv">2</span>], alternative<span class="op">=</span><span class="st">&quot;two-sided&quot;</span>).pvalue, <span class="co"># p22 vs CP</span></span>
+<span id="cb41-23"><a href="comparative-analyses-of-selection.html#cb41-23" tabindex="-1"></a>    scipy.stats.wilcoxon(chunk[<span class="dv">1</span>], chunk[<span class="dv">2</span>], alternative<span class="op">=</span><span class="st">&quot;two-sided&quot;</span>).pvalue]   <span class="co"># p19 vs CP</span></span>
+<span id="cb41-24"><a href="comparative-analyses-of-selection.html#cb41-24" tabindex="-1"></a></span>
+<span id="cb41-25"><a href="comparative-analyses-of-selection.html#cb41-25" tabindex="-1"></a>    <span class="cf">return</span> pvalues_tips</span>
+<span id="cb41-26"><a href="comparative-analyses-of-selection.html#cb41-26" tabindex="-1"></a></span>
+<span id="cb41-27"><a href="comparative-analyses-of-selection.html#cb41-27" tabindex="-1"></a><span class="kw">def</span> format_pvalues(pvalues_1to1):</span>
+<span id="cb41-28"><a href="comparative-analyses-of-selection.html#cb41-28" tabindex="-1"></a>    <span class="cf">return</span> [[<span class="ss">f&#39;p=</span><span class="sc">{</span>pvalue<span class="sc">:.3e}</span><span class="ss">&#39;</span> <span class="cf">for</span> pvalue <span class="kw">in</span> pvalues_1to1[<span class="dv">0</span>]], </span>
+<span id="cb41-29"><a href="comparative-analyses-of-selection.html#cb41-29" tabindex="-1"></a>            [<span class="ss">f&#39;p=</span><span class="sc">{</span>pvalue<span class="sc">:.3e}</span><span class="ss">&#39;</span> <span class="cf">for</span> pvalue <span class="kw">in</span> pvalues_1to1[<span class="dv">1</span>]], </span>
+<span id="cb41-30"><a href="comparative-analyses-of-selection.html#cb41-30" tabindex="-1"></a>            [<span class="ss">f&#39;p=</span><span class="sc">{</span>pvalue<span class="sc">:.3e}</span><span class="ss">&#39;</span> <span class="cf">for</span> pvalue <span class="kw">in</span> pvalues_1to1[<span class="dv">2</span>]]]</span>
+<span id="cb41-31"><a href="comparative-analyses-of-selection.html#cb41-31" tabindex="-1"></a></span>
+<span id="cb41-32"><a href="comparative-analyses-of-selection.html#cb41-32" tabindex="-1"></a><span class="kw">def</span> info_to_dataframe(data):</span>
+<span id="cb41-33"><a href="comparative-analyses-of-selection.html#cb41-33" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame.from_dict({<span class="st">&quot;omega&quot;</span>: data[<span class="dv">0</span>] <span class="op">+</span> data[<span class="dv">1</span>] <span class="op">+</span> data[<span class="dv">2</span>], </span>
+<span id="cb41-34"><a href="comparative-analyses-of-selection.html#cb41-34" tabindex="-1"></a>                            <span class="st">&quot;Gene&quot;</span> : <span class="bu">len</span>(data[<span class="dv">0</span>])<span class="op">*</span>[<span class="st">&#39;p22&#39;</span>] <span class="op">+</span> <span class="bu">len</span>(data[<span class="dv">0</span>])<span class="op">*</span>[<span class="st">&#39;p19&#39;</span>] <span class="op">+</span> <span class="bu">len</span>(data[<span class="dv">0</span>])<span class="op">*</span>[<span class="st">&#39;CP&#39;</span>]})</span></code></pre></div>
+</div>
+<div id="boxplots-with-significance" class="section level3 hasAnchor" number="6.1.5">
+<h3><span class="header-section-number">6.1.5</span> Boxplots with significance<a href="comparative-analyses-of-selection.html#boxplots-with-significance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Two different plots can be generated with the following plots. The first one includes all, only nodes (or branches) and only tips, while the second is only focused on the whole tree. Both includes p-value annotation.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb42-1"><a href="comparative-analyses-of-selection.html#cb42-1" tabindex="-1"></a><span class="kw">def</span> plot_diff_types(data, pvalues_1to1, formatted_pvalues):</span>
+<span id="cb42-2"><a href="comparative-analyses-of-selection.html#cb42-2" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="comparative-analyses-of-selection.html#cb42-3" tabindex="-1"></a>    colors <span class="op">=</span> sns.color_palette(<span class="st">&quot;colorblind&quot;</span>, <span class="dv">5</span>)</span>
+<span id="cb42-4"><a href="comparative-analyses-of-selection.html#cb42-4" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplot_mosaic(<span class="st">&quot;ABC&quot;</span>, figsize <span class="op">=</span> (<span class="dv">20</span>,<span class="dv">8</span>))</span>
+<span id="cb42-5"><a href="comparative-analyses-of-selection.html#cb42-5" tabindex="-1"></a>    axes <span class="op">=</span> [ax[<span class="st">&quot;A&quot;</span>], ax[<span class="st">&quot;B&quot;</span>], ax[<span class="st">&quot;C&quot;</span>]]</span>
+<span id="cb42-6"><a href="comparative-analyses-of-selection.html#cb42-6" tabindex="-1"></a>    annot <span class="op">=</span> []</span>
+<span id="cb42-7"><a href="comparative-analyses-of-selection.html#cb42-7" tabindex="-1"></a>    pairs <span class="op">=</span> [(<span class="st">&quot;p22&quot;</span>, <span class="st">&quot;p19&quot;</span>),(<span class="st">&quot;p22&quot;</span>, <span class="st">&quot;CP&quot;</span>), (<span class="st">&quot;p19&quot;</span>, <span class="st">&quot;CP&quot;</span>)]</span>
+<span id="cb42-8"><a href="comparative-analyses-of-selection.html#cb42-8" tabindex="-1"></a>    titles <span class="op">=</span> [<span class="st">&quot;TIPS&quot;</span>, <span class="st">&quot;BRANCHES&quot;</span>, <span class="st">&quot;TREE&quot;</span>]</span>
+<span id="cb42-9"><a href="comparative-analyses-of-selection.html#cb42-9" tabindex="-1"></a></span>
+<span id="cb42-10"><a href="comparative-analyses-of-selection.html#cb42-10" tabindex="-1"></a>    <span class="cf">for</span> part <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(data)):</span>
+<span id="cb42-11"><a href="comparative-analyses-of-selection.html#cb42-11" tabindex="-1"></a>        <span class="cf">with</span> sns.plotting_context(<span class="st">&#39;notebook&#39;</span>, font_scale <span class="op">=</span> <span class="fl">1.2</span>):</span>
+<span id="cb42-12"><a href="comparative-analyses-of-selection.html#cb42-12" tabindex="-1"></a>                        sns.swarmplot(data<span class="op">=</span>data[part], x<span class="op">=</span><span class="st">&quot;Gene&quot;</span>, y<span class="op">=</span><span class="st">&quot;omega&quot;</span>, ax<span class="op">=</span>axes[part],palette<span class="op">=</span>colors, zorder<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb42-13"><a href="comparative-analyses-of-selection.html#cb42-13" tabindex="-1"></a>                        sns.boxplot(data<span class="op">=</span>data[part], x<span class="op">=</span><span class="st">&quot;Gene&quot;</span>, y<span class="op">=</span><span class="st">&quot;omega&quot;</span>, dodge<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>axes[part], boxprops<span class="op">=</span>{<span class="st">&#39;facecolor&#39;</span>:<span class="st">&#39;None&#39;</span>})</span>
+<span id="cb42-14"><a href="comparative-analyses-of-selection.html#cb42-14" tabindex="-1"></a>                        axes[part].set_title(titles[part])</span>
+<span id="cb42-15"><a href="comparative-analyses-of-selection.html#cb42-15" tabindex="-1"></a>                        plt.axhline(<span class="dv">1</span>)</span>
+<span id="cb42-16"><a href="comparative-analyses-of-selection.html#cb42-16" tabindex="-1"></a></span>
+<span id="cb42-17"><a href="comparative-analyses-of-selection.html#cb42-17" tabindex="-1"></a>                        <span class="co"># Add annotations</span></span>
+<span id="cb42-18"><a href="comparative-analyses-of-selection.html#cb42-18" tabindex="-1"></a>                        annot.append(Annotator(ax<span class="op">=</span>axes[part], pairs <span class="op">=</span> pairs, data<span class="op">=</span>data[part], x<span class="op">=</span><span class="st">&quot;Gene&quot;</span>, y<span class="op">=</span><span class="st">&quot;omega&quot;</span>)) </span>
+<span id="cb42-19"><a href="comparative-analyses-of-selection.html#cb42-19" tabindex="-1"></a>                        annot[part].set_custom_annotations(formatted_pvalues[part])</span>
+<span id="cb42-20"><a href="comparative-analyses-of-selection.html#cb42-20" tabindex="-1"></a>                        annot[part].configure(test_short_name<span class="op">=</span><span class="st">&quot;MWW&quot;</span>)  <span class="co"># text_format is still simple</span></span>
+<span id="cb42-21"><a href="comparative-analyses-of-selection.html#cb42-21" tabindex="-1"></a>                        annot[part].set_pvalues_and_annotate(pvalues_1to1[part])</span>
+<span id="cb42-22"><a href="comparative-analyses-of-selection.html#cb42-22" tabindex="-1"></a>    </span>
+<span id="cb42-23"><a href="comparative-analyses-of-selection.html#cb42-23" tabindex="-1"></a>    plt.tight_layout(pad<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb42-24"><a href="comparative-analyses-of-selection.html#cb42-24" tabindex="-1"></a>    plt.show()</span>
+<span id="cb42-25"><a href="comparative-analyses-of-selection.html#cb42-25" tabindex="-1"></a></span>
+<span id="cb42-26"><a href="comparative-analyses-of-selection.html#cb42-26" tabindex="-1"></a><span class="kw">def</span> plot_one_type(data, pvalues_1to1, formatted_pvalues, one):</span>
+<span id="cb42-27"><a href="comparative-analyses-of-selection.html#cb42-27" tabindex="-1"></a>    colors <span class="op">=</span> [<span class="st">&quot;#9867F4&quot;</span>, <span class="st">&quot;#FFD500&quot;</span>]</span>
+<span id="cb42-28"><a href="comparative-analyses-of-selection.html#cb42-28" tabindex="-1"></a>    plt.style.use(<span class="st">&quot;default&quot;</span>)</span>
+<span id="cb42-29"><a href="comparative-analyses-of-selection.html#cb42-29" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots(figsize <span class="op">=</span> (<span class="dv">6</span>,<span class="dv">12</span>))</span>
+<span id="cb42-30"><a href="comparative-analyses-of-selection.html#cb42-30" tabindex="-1"></a>    part <span class="op">=</span> <span class="dv">2</span> <span class="co"># 2: tree</span></span>
+<span id="cb42-31"><a href="comparative-analyses-of-selection.html#cb42-31" tabindex="-1"></a>    annot <span class="op">=</span> []</span>
+<span id="cb42-32"><a href="comparative-analyses-of-selection.html#cb42-32" tabindex="-1"></a>    pairs <span class="op">=</span> [(<span class="st">&quot;p22&quot;</span>, <span class="st">&quot;p19&quot;</span>)]</span>
+<span id="cb42-33"><a href="comparative-analyses-of-selection.html#cb42-33" tabindex="-1"></a>    size_labels <span class="op">=</span> <span class="dv">24</span></span>
+<span id="cb42-34"><a href="comparative-analyses-of-selection.html#cb42-34" tabindex="-1"></a></span>
+<span id="cb42-35"><a href="comparative-analyses-of-selection.html#cb42-35" tabindex="-1"></a>    <span class="cf">with</span> sns.plotting_context(<span class="st">&#39;notebook&#39;</span>, font_scale <span class="op">=</span> <span class="fl">1.2</span>):</span>
+<span id="cb42-36"><a href="comparative-analyses-of-selection.html#cb42-36" tabindex="-1"></a>        sns.<span class="bu">set</span>(font_scale<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb42-37"><a href="comparative-analyses-of-selection.html#cb42-37" tabindex="-1"></a></span>
+<span id="cb42-38"><a href="comparative-analyses-of-selection.html#cb42-38" tabindex="-1"></a>        sns.swarmplot(data<span class="op">=</span>data[part][data[part][<span class="st">&quot;Gene&quot;</span>] <span class="op">!=</span> <span class="st">&quot;CP&quot;</span>], x<span class="op">=</span><span class="st">&quot;Gene&quot;</span>, y<span class="op">=</span><span class="st">&quot;omega&quot;</span>, palette<span class="op">=</span>colors, zorder<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb42-39"><a href="comparative-analyses-of-selection.html#cb42-39" tabindex="-1"></a>        sns.boxplot(data<span class="op">=</span>data[part][data[part][<span class="st">&quot;Gene&quot;</span>] <span class="op">!=</span> <span class="st">&quot;CP&quot;</span>], x<span class="op">=</span><span class="st">&quot;Gene&quot;</span>, y<span class="op">=</span><span class="st">&quot;omega&quot;</span>, dodge<span class="op">=</span><span class="va">True</span>, boxprops<span class="op">=</span>{<span class="st">&#39;facecolor&#39;</span>:<span class="st">&#39;None&#39;</span>})</span>
+<span id="cb42-40"><a href="comparative-analyses-of-selection.html#cb42-40" tabindex="-1"></a>        plt.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">&#39;grey&#39;</span>, linestyle<span class="op">=</span><span class="st">&#39;dotted&#39;</span>)</span>
+<span id="cb42-41"><a href="comparative-analyses-of-selection.html#cb42-41" tabindex="-1"></a>        ax.set_xlabel(<span class="st">&quot;Gene sequence&quot;</span>, fontsize <span class="op">=</span> size_labels)</span>
+<span id="cb42-42"><a href="comparative-analyses-of-selection.html#cb42-42" tabindex="-1"></a>        ax.set_ylabel(<span class="st">&quot;Transformed omega ratio&quot;</span>, fontsize <span class="op">=</span> size_labels)</span>
+<span id="cb42-43"><a href="comparative-analyses-of-selection.html#cb42-43" tabindex="-1"></a>        ax.yaxis.set_tick_params(labelsize <span class="op">=</span> size_labels <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb42-44"><a href="comparative-analyses-of-selection.html#cb42-44" tabindex="-1"></a>        ax.xaxis.set_tick_params(labelsize <span class="op">=</span> size_labels <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb42-45"><a href="comparative-analyses-of-selection.html#cb42-45" tabindex="-1"></a></span>
+<span id="cb42-46"><a href="comparative-analyses-of-selection.html#cb42-46" tabindex="-1"></a>        <span class="co"># Add annotations</span></span>
+<span id="cb42-47"><a href="comparative-analyses-of-selection.html#cb42-47" tabindex="-1"></a>        annot <span class="op">=</span> Annotator(ax<span class="op">=</span>ax, pairs <span class="op">=</span> pairs, data<span class="op">=</span>data[part][data[part][<span class="st">&quot;Gene&quot;</span>] <span class="op">!=</span> <span class="st">&quot;CP&quot;</span>], x<span class="op">=</span><span class="st">&quot;Gene&quot;</span>, y<span class="op">=</span><span class="st">&quot;omega&quot;</span>)</span>
+<span id="cb42-48"><a href="comparative-analyses-of-selection.html#cb42-48" tabindex="-1"></a>        annot.set_custom_annotations([formatted_pvalues[part][one]])</span>
+<span id="cb42-49"><a href="comparative-analyses-of-selection.html#cb42-49" tabindex="-1"></a>        annot.configure(test_short_name<span class="op">=</span><span class="st">&quot;MWW&quot;</span>)  <span class="co"># text_format is still simple</span></span>
+<span id="cb42-50"><a href="comparative-analyses-of-selection.html#cb42-50" tabindex="-1"></a>        annot.set_pvalues_and_annotate([pvalues_1to1[part][one]])</span>
+<span id="cb42-51"><a href="comparative-analyses-of-selection.html#cb42-51" tabindex="-1"></a></span>
+<span id="cb42-52"><a href="comparative-analyses-of-selection.html#cb42-52" tabindex="-1"></a>    plt.tight_layout(pad<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb42-53"><a href="comparative-analyses-of-selection.html#cb42-53" tabindex="-1"></a>    <span class="co"># plt.savefig(&quot;/Users/esmeralda/Documents/TFM/article/omegaratio.pdf&quot;, format= &quot;pdf&quot;)</span></span>
+<span id="cb42-54"><a href="comparative-analyses-of-selection.html#cb42-54" tabindex="-1"></a>    plt.show()</span></code></pre></div>
+</div>
+<div id="test-selection" class="section level3 hasAnchor" number="6.1.6">
+<h3><span class="header-section-number">6.1.6</span> Test selection<a href="comparative-analyses-of-selection.html#test-selection" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Finally, we determine whether the omega values are different from zero (no selection).</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb43-1"><a href="comparative-analyses-of-selection.html#cb43-1" tabindex="-1"></a><span class="kw">def</span> test_one(df_values, mean):</span>
+<span id="cb43-2"><a href="comparative-analyses-of-selection.html#cb43-2" tabindex="-1"></a>    results_test <span class="op">=</span> {<span class="st">&quot;Tips:&quot;</span>: [scipy.stats.ttest_1samp(df_values[<span class="dv">0</span>][<span class="dv">0</span>], popmean<span class="op">=</span>mean).pvalue,</span>
+<span id="cb43-3"><a href="comparative-analyses-of-selection.html#cb43-3" tabindex="-1"></a>                              scipy.stats.ttest_1samp(df_values[<span class="dv">0</span>][<span class="dv">1</span>], popmean<span class="op">=</span>mean).pvalue,</span>
+<span id="cb43-4"><a href="comparative-analyses-of-selection.html#cb43-4" tabindex="-1"></a>                              scipy.stats.ttest_1samp(df_values[<span class="dv">0</span>][<span class="dv">2</span>], popmean<span class="op">=</span>mean).pvalue],</span>
+<span id="cb43-5"><a href="comparative-analyses-of-selection.html#cb43-5" tabindex="-1"></a>                    <span class="st">&quot;Branches:&quot;</span>: [scipy.stats.ttest_1samp(df_values[<span class="dv">1</span>][<span class="dv">0</span>], popmean<span class="op">=</span>mean).pvalue,</span>
+<span id="cb43-6"><a href="comparative-analyses-of-selection.html#cb43-6" tabindex="-1"></a>                                 scipy.stats.ttest_1samp(df_values[<span class="dv">1</span>][<span class="dv">1</span>], popmean<span class="op">=</span>mean).pvalue,</span>
+<span id="cb43-7"><a href="comparative-analyses-of-selection.html#cb43-7" tabindex="-1"></a>                                 scipy.stats.ttest_1samp(df_values[<span class="dv">1</span>][<span class="dv">2</span>], popmean<span class="op">=</span>mean).pvalue],</span>
+<span id="cb43-8"><a href="comparative-analyses-of-selection.html#cb43-8" tabindex="-1"></a>                    <span class="st">&quot;Tree&quot;</span>: [scipy.stats.ttest_1samp(df_values[<span class="dv">2</span>][<span class="dv">0</span>], popmean<span class="op">=</span>mean).pvalue,</span>
+<span id="cb43-9"><a href="comparative-analyses-of-selection.html#cb43-9" tabindex="-1"></a>                             scipy.stats.ttest_1samp(df_values[<span class="dv">2</span>][<span class="dv">1</span>], popmean<span class="op">=</span>mean).pvalue,</span>
+<span id="cb43-10"><a href="comparative-analyses-of-selection.html#cb43-10" tabindex="-1"></a>                             scipy.stats.ttest_1samp(df_values[<span class="dv">2</span>][<span class="dv">2</span>], popmean<span class="op">=</span>mean).pvalue]}</span>
+<span id="cb43-11"><a href="comparative-analyses-of-selection.html#cb43-11" tabindex="-1"></a>    </span>
+<span id="cb43-12"><a href="comparative-analyses-of-selection.html#cb43-12" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame.from_dict(results_test)</span>
+<span id="cb43-13"><a href="comparative-analyses-of-selection.html#cb43-13" tabindex="-1"></a>    df.index <span class="op">=</span> [<span class="st">&quot;p22&quot;</span>, <span class="st">&quot;p19&quot;</span>, <span class="st">&quot;CP&quot;</span>]</span>
+<span id="cb43-14"><a href="comparative-analyses-of-selection.html#cb43-14" tabindex="-1"></a></span>
+<span id="cb43-15"><a href="comparative-analyses-of-selection.html#cb43-15" tabindex="-1"></a>    <span class="cf">return</span> df</span></code></pre></div>
+</div>
+<div id="run-1" class="section level3 hasAnchor" number="6.1.7">
+<h3><span class="header-section-number">6.1.7</span> Run<a href="comparative-analyses-of-selection.html#run-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb44"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb44-1"><a href="comparative-analyses-of-selection.html#cb44-1" tabindex="-1"></a><span class="kw">def</span> main():</span>
+<span id="cb44-2"><a href="comparative-analyses-of-selection.html#cb44-2" tabindex="-1"></a>    dfs <span class="op">=</span> [] </span>
+<span id="cb44-3"><a href="comparative-analyses-of-selection.html#cb44-3" tabindex="-1"></a>    significance <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb44-4"><a href="comparative-analyses-of-selection.html#cb44-4" tabindex="-1"></a></span>
+<span id="cb44-5"><a href="comparative-analyses-of-selection.html#cb44-5" tabindex="-1"></a>    path_p22 <span class="op">=</span> <span class="st">&#39;p22_nt_alignment.fasta.ABSREL.json&#39;</span></span>
+<span id="cb44-6"><a href="comparative-analyses-of-selection.html#cb44-6" tabindex="-1"></a>    path_p19 <span class="op">=</span> <span class="st">&#39;p19_nt_alignment.fasta.ABSREL.json&#39;</span></span>
+<span id="cb44-7"><a href="comparative-analyses-of-selection.html#cb44-7" tabindex="-1"></a>    path_RdRp <span class="op">=</span> <span class="st">&#39;RdRp_nt_alignment.fasta.ABSREL.json&#39;</span></span>
+<span id="cb44-8"><a href="comparative-analyses-of-selection.html#cb44-8" tabindex="-1"></a>    path_cp <span class="op">=</span> <span class="st">&#39;cp_nt_alignment.fasta.ABSREL.json&#39;</span></span>
+<span id="cb44-9"><a href="comparative-analyses-of-selection.html#cb44-9" tabindex="-1"></a></span>
+<span id="cb44-10"><a href="comparative-analyses-of-selection.html#cb44-10" tabindex="-1"></a>    <span class="co"># Read json files of each gene</span></span>
+<span id="cb44-11"><a href="comparative-analyses-of-selection.html#cb44-11" tabindex="-1"></a>    paths <span class="op">=</span> [path_p22, path_p19, path_RdRp, path_cp]</span>
+<span id="cb44-12"><a href="comparative-analyses-of-selection.html#cb44-12" tabindex="-1"></a>    <span class="cf">for</span> path <span class="kw">in</span> paths:</span>
+<span id="cb44-13"><a href="comparative-analyses-of-selection.html#cb44-13" tabindex="-1"></a>        df <span class="op">=</span> read_branches(path)</span>
+<span id="cb44-14"><a href="comparative-analyses-of-selection.html#cb44-14" tabindex="-1"></a>        dfs.append(add_info(df, significance))</span>
+<span id="cb44-15"><a href="comparative-analyses-of-selection.html#cb44-15" tabindex="-1"></a></span>
+<span id="cb44-16"><a href="comparative-analyses-of-selection.html#cb44-16" tabindex="-1"></a>    <span class="co"># Filling missing nodes with zero values</span></span>
+<span id="cb44-17"><a href="comparative-analyses-of-selection.html#cb44-17" tabindex="-1"></a>    missing_nodes_p22 <span class="op">=</span> [<span class="st">&quot;Node11&quot;</span>, <span class="st">&quot;Node18&quot;</span>, <span class="st">&quot;Node6&quot;</span>]</span>
+<span id="cb44-18"><a href="comparative-analyses-of-selection.html#cb44-18" tabindex="-1"></a>    missing_nodes_p19 <span class="op">=</span> [<span class="st">&quot;Node11&quot;</span>, <span class="st">&quot;Node18&quot;</span>, <span class="st">&quot;Node3&quot;</span>, <span class="st">&quot;Node6&quot;</span>]</span>
+<span id="cb44-19"><a href="comparative-analyses-of-selection.html#cb44-19" tabindex="-1"></a></span>
+<span id="cb44-20"><a href="comparative-analyses-of-selection.html#cb44-20" tabindex="-1"></a>    df_p22 <span class="op">=</span> fill_missing_nodes(dfs[<span class="dv">0</span>], missing_nodes_p22)</span>
+<span id="cb44-21"><a href="comparative-analyses-of-selection.html#cb44-21" tabindex="-1"></a>    df_p19 <span class="op">=</span> fill_missing_nodes(dfs[<span class="dv">1</span>], missing_nodes_p19)</span>
+<span id="cb44-22"><a href="comparative-analyses-of-selection.html#cb44-22" tabindex="-1"></a>    df_RdRp <span class="op">=</span> dfs[<span class="dv">2</span>]</span>
+<span id="cb44-23"><a href="comparative-analyses-of-selection.html#cb44-23" tabindex="-1"></a>    df_cp <span class="op">=</span> dfs[<span class="dv">3</span>]</span>
+<span id="cb44-24"><a href="comparative-analyses-of-selection.html#cb44-24" tabindex="-1"></a></span>
+<span id="cb44-25"><a href="comparative-analyses-of-selection.html#cb44-25" tabindex="-1"></a>    <span class="co"># Generate relative values for all, tips and nodes</span></span>
+<span id="cb44-26"><a href="comparative-analyses-of-selection.html#cb44-26" tabindex="-1"></a>    genes <span class="op">=</span> [df_p22, df_p19, df_cp]</span>
+<span id="cb44-27"><a href="comparative-analyses-of-selection.html#cb44-27" tabindex="-1"></a>    results <span class="op">=</span> relativize(genes, df_RdRp)</span>
+<span id="cb44-28"><a href="comparative-analyses-of-selection.html#cb44-28" tabindex="-1"></a>    tips, nodes <span class="op">=</span> divide_branches(results, df_RdRp)</span>
+<span id="cb44-29"><a href="comparative-analyses-of-selection.html#cb44-29" tabindex="-1"></a></span>
+<span id="cb44-30"><a href="comparative-analyses-of-selection.html#cb44-30" tabindex="-1"></a>    <span class="co"># Calculate pvalues in pairs</span></span>
+<span id="cb44-31"><a href="comparative-analyses-of-selection.html#cb44-31" tabindex="-1"></a>    pvalues_1to1 <span class="op">=</span> []</span>
+<span id="cb44-32"><a href="comparative-analyses-of-selection.html#cb44-32" tabindex="-1"></a>    df_values <span class="op">=</span> []</span>
+<span id="cb44-33"><a href="comparative-analyses-of-selection.html#cb44-33" tabindex="-1"></a>    sep_types <span class="op">=</span> [tips, nodes, results]</span>
+<span id="cb44-34"><a href="comparative-analyses-of-selection.html#cb44-34" tabindex="-1"></a>    </span>
+<span id="cb44-35"><a href="comparative-analyses-of-selection.html#cb44-35" tabindex="-1"></a>    <span class="cf">for</span> chunk <span class="kw">in</span> sep_types:</span>
+<span id="cb44-36"><a href="comparative-analyses-of-selection.html#cb44-36" tabindex="-1"></a>        pvalues_1to1.append(calc_pvalues(chunk))</span>
+<span id="cb44-37"><a href="comparative-analyses-of-selection.html#cb44-37" tabindex="-1"></a>        df_values.append(info_to_dataframe(chunk))</span>
+<span id="cb44-38"><a href="comparative-analyses-of-selection.html#cb44-38" tabindex="-1"></a></span>
+<span id="cb44-39"><a href="comparative-analyses-of-selection.html#cb44-39" tabindex="-1"></a>    <span class="co"># Get formatted pvalues</span></span>
+<span id="cb44-40"><a href="comparative-analyses-of-selection.html#cb44-40" tabindex="-1"></a>    formatted_pvalues <span class="op">=</span> format_pvalues(pvalues_1to1)</span>
+<span id="cb44-41"><a href="comparative-analyses-of-selection.html#cb44-41" tabindex="-1"></a></span>
+<span id="cb44-42"><a href="comparative-analyses-of-selection.html#cb44-42" tabindex="-1"></a>    <span class="co"># Boxplots with significance</span></span>
+<span id="cb44-43"><a href="comparative-analyses-of-selection.html#cb44-43" tabindex="-1"></a>    plot_diff_types(df_values, pvalues_1to1, formatted_pvalues)</span>
+<span id="cb44-44"><a href="comparative-analyses-of-selection.html#cb44-44" tabindex="-1"></a>    plot_one_type(df_values,  pvalues_1to1, formatted_pvalues, <span class="dv">0</span>)</span>
+<span id="cb44-45"><a href="comparative-analyses-of-selection.html#cb44-45" tabindex="-1"></a></span>
+<span id="cb44-46"><a href="comparative-analyses-of-selection.html#cb44-46" tabindex="-1"></a>    <span class="co"># T test one sample vs mean = 0</span></span>
+<span id="cb44-47"><a href="comparative-analyses-of-selection.html#cb44-47" tabindex="-1"></a>    <span class="bu">print</span>(test_one(sep_types, <span class="dv">0</span>))</span></code></pre></div>
+</div>
+</div>
+<div id="fel-for-correlations" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> FEL for correlations<a href="comparative-analyses-of-selection.html#fel-for-correlations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this section, we read json files of p19 and p22 analysis, generated with FEL method of Hyphy. The objective here is to obtain correlations between selection and infer in which measure the correlation is determined by the secondary structure of the proteins both encode.</p>
+<p>###Libraries and json files</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb45-1"><a href="comparative-analyses-of-selection.html#cb45-1" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb45-2"><a href="comparative-analyses-of-selection.html#cb45-2" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb45-3"><a href="comparative-analyses-of-selection.html#cb45-3" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb45-4"><a href="comparative-analyses-of-selection.html#cb45-4" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb45-5"><a href="comparative-analyses-of-selection.html#cb45-5" tabindex="-1"></a><span class="im">import</span> scipy.stats</span>
+<span id="cb45-6"><a href="comparative-analyses-of-selection.html#cb45-6" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span></code></pre></div>
+<p>First, we need to read the json files that contain the results of FEL with both genes.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb46-1"><a href="comparative-analyses-of-selection.html#cb46-1" tabindex="-1"></a><span class="kw">def</span> read_json(path):</span>
+<span id="cb46-2"><a href="comparative-analyses-of-selection.html#cb46-2" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(path) <span class="im">as</span> user_file:</span>
+<span id="cb46-3"><a href="comparative-analyses-of-selection.html#cb46-3" tabindex="-1"></a>        file_contents <span class="op">=</span> user_file.read()</span>
+<span id="cb46-4"><a href="comparative-analyses-of-selection.html#cb46-4" tabindex="-1"></a>    parsed_json <span class="op">=</span> json.loads(file_contents)</span>
+<span id="cb46-5"><a href="comparative-analyses-of-selection.html#cb46-5" tabindex="-1"></a></span>
+<span id="cb46-6"><a href="comparative-analyses-of-selection.html#cb46-6" tabindex="-1"></a>    values <span class="op">=</span> {<span class="st">&quot;codon&quot;</span>: <span class="bu">list</span>(<span class="bu">range</span>(<span class="bu">len</span>(parsed_json[<span class="st">&#39;MLE&#39;</span>][<span class="st">&#39;content&#39;</span>][<span class="st">&quot;0&quot;</span>]))),</span>
+<span id="cb46-7"><a href="comparative-analyses-of-selection.html#cb46-7" tabindex="-1"></a>               <span class="st">&quot;alpha&quot;</span>: [], </span>
+<span id="cb46-8"><a href="comparative-analyses-of-selection.html#cb46-8" tabindex="-1"></a>               <span class="st">&quot;beta&quot;</span>: [],</span>
+<span id="cb46-9"><a href="comparative-analyses-of-selection.html#cb46-9" tabindex="-1"></a>               <span class="st">&quot;pvalue&quot;</span>: []}</span>
+<span id="cb46-10"><a href="comparative-analyses-of-selection.html#cb46-10" tabindex="-1"></a></span>
+<span id="cb46-11"><a href="comparative-analyses-of-selection.html#cb46-11" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(parsed_json[<span class="st">&#39;MLE&#39;</span>][<span class="st">&#39;content&#39;</span>][<span class="st">&quot;0&quot;</span>])):</span>
+<span id="cb46-12"><a href="comparative-analyses-of-selection.html#cb46-12" tabindex="-1"></a>        values[<span class="st">&#39;alpha&#39;</span>].append(parsed_json[<span class="st">&#39;MLE&#39;</span>][<span class="st">&#39;content&#39;</span>][<span class="st">&quot;0&quot;</span>][i][<span class="dv">0</span>])</span>
+<span id="cb46-13"><a href="comparative-analyses-of-selection.html#cb46-13" tabindex="-1"></a>        values[<span class="st">&#39;beta&#39;</span>].append(parsed_json[<span class="st">&#39;MLE&#39;</span>][<span class="st">&#39;content&#39;</span>][<span class="st">&quot;0&quot;</span>][i][<span class="dv">1</span>])</span>
+<span id="cb46-14"><a href="comparative-analyses-of-selection.html#cb46-14" tabindex="-1"></a>        values[<span class="st">&#39;pvalue&#39;</span>].append(parsed_json[<span class="st">&#39;MLE&#39;</span>][<span class="st">&#39;content&#39;</span>][<span class="st">&quot;0&quot;</span>][i][<span class="dv">4</span>])</span>
+<span id="cb46-15"><a href="comparative-analyses-of-selection.html#cb46-15" tabindex="-1"></a></span>
+<span id="cb46-16"><a href="comparative-analyses-of-selection.html#cb46-16" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame.from_dict(values)</span></code></pre></div>
+<div id="significance-and-difference" class="section level3 hasAnchor" number="6.2.1">
+<h3><span class="header-section-number">6.2.1</span> Significance and difference<a href="comparative-analyses-of-selection.html#significance-and-difference" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Now, information about significance and the difference between the estimated rates of non-synonymous (beta) and synonymous (alpha) substitutions are added.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb47-1"><a href="comparative-analyses-of-selection.html#cb47-1" tabindex="-1"></a><span class="kw">def</span> add_info(data, significance):</span>
+<span id="cb47-2"><a href="comparative-analyses-of-selection.html#cb47-2" tabindex="-1"></a>    data[<span class="st">&#39;beta - alpha&#39;</span>] <span class="op">=</span> data[<span class="st">&#39;beta&#39;</span>] <span class="op">-</span> data[<span class="st">&#39;alpha&#39;</span>]</span>
+<span id="cb47-3"><a href="comparative-analyses-of-selection.html#cb47-3" tabindex="-1"></a>    data[<span class="st">&quot;signif&quot;</span>] <span class="op">=</span> np.where(data[<span class="st">&#39;pvalue&#39;</span>] <span class="op">&lt;</span> significance, <span class="va">True</span>, <span class="va">False</span>)</span>
+<span id="cb47-4"><a href="comparative-analyses-of-selection.html#cb47-4" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="comparative-analyses-of-selection.html#cb47-5" tabindex="-1"></a>    <span class="cf">return</span> data</span></code></pre></div>
+<p>We can even print the codon positions that are detected under selection significantly.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb48-1"><a href="comparative-analyses-of-selection.html#cb48-1" tabindex="-1"></a><span class="kw">def</span> significative_codons(data):</span>
+<span id="cb48-2"><a href="comparative-analyses-of-selection.html#cb48-2" tabindex="-1"></a>    <span class="cf">return</span> (<span class="bu">list</span>(data[(data[<span class="st">&quot;signif&quot;</span>] <span class="op">==</span> <span class="va">True</span>) <span class="op">&amp;</span> (data[<span class="st">&quot;beta - alpha&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>)].index <span class="op">+</span> <span class="dv">1</span>) <span class="op">+\</span></span>
+<span id="cb48-3"><a href="comparative-analyses-of-selection.html#cb48-3" tabindex="-1"></a>            <span class="bu">list</span>(data[(data[<span class="st">&quot;signif&quot;</span>] <span class="op">==</span> <span class="va">True</span>) <span class="op">&amp;</span> (data[<span class="st">&quot;beta - alpha&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>)].index <span class="op">+</span> <span class="dv">1</span>))</span></code></pre></div>
+</div>
+<div id="plot-correlation" class="section level3 hasAnchor" number="6.2.2">
+<h3><span class="header-section-number">6.2.2</span> Plot correlation<a href="comparative-analyses-of-selection.html#plot-correlation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>As we know the frameshift of one gene, we can plot selection values (here the difference beta-alpha) by positions in p19 and p22. Besides, we can mark the significance by colors.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb49-1"><a href="comparative-analyses-of-selection.html#cb49-1" tabindex="-1"></a><span class="kw">def</span> plot_correlation(data1, data2, shift, colors):</span>
+<span id="cb49-2"><a href="comparative-analyses-of-selection.html#cb49-2" tabindex="-1"></a>    plt.style.use(<span class="st">&#39;default&#39;</span>)</span>
+<span id="cb49-3"><a href="comparative-analyses-of-selection.html#cb49-3" tabindex="-1"></a>    fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">12</span>))</span>
+<span id="cb49-4"><a href="comparative-analyses-of-selection.html#cb49-4" tabindex="-1"></a>    ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>)</span>
+<span id="cb49-5"><a href="comparative-analyses-of-selection.html#cb49-5" tabindex="-1"></a>    fontsize <span class="op">=</span> <span class="dv">24</span></span>
+<span id="cb49-6"><a href="comparative-analyses-of-selection.html#cb49-6" tabindex="-1"></a>    points_size <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb49-7"><a href="comparative-analyses-of-selection.html#cb49-7" tabindex="-1"></a></span>
+<span id="cb49-8"><a href="comparative-analyses-of-selection.html#cb49-8" tabindex="-1"></a>    plt.ylim(<span class="op">-</span><span class="dv">14</span>,<span class="dv">11</span>)</span>
+<span id="cb49-9"><a href="comparative-analyses-of-selection.html#cb49-9" tabindex="-1"></a>    plt.xlim(<span class="op">-</span><span class="dv">16</span>,<span class="dv">7</span>)</span>
+<span id="cb49-10"><a href="comparative-analyses-of-selection.html#cb49-10" tabindex="-1"></a></span>
+<span id="cb49-11"><a href="comparative-analyses-of-selection.html#cb49-11" tabindex="-1"></a>    plt.scatter(data2[<span class="st">&quot;beta - alpha&quot;</span>][shift:<span class="bu">len</span>(data1[<span class="st">&quot;beta - alpha&quot;</span>]) <span class="op">+</span> shift], data1[<span class="st">&quot;beta - alpha&quot;</span>], s<span class="op">=</span>points_size, c<span class="op">=</span>colors)</span>
+<span id="cb49-12"><a href="comparative-analyses-of-selection.html#cb49-12" tabindex="-1"></a></span>
+<span id="cb49-13"><a href="comparative-analyses-of-selection.html#cb49-13" tabindex="-1"></a>    plt.xlabel(<span class="st">&quot;$</span><span class="ch">\\</span><span class="st">beta$ - $</span><span class="ch">\\</span><span class="st">alpha$ (p22)&quot;</span>)</span>
+<span id="cb49-14"><a href="comparative-analyses-of-selection.html#cb49-14" tabindex="-1"></a>    plt.ylabel(<span class="st">&quot;$</span><span class="ch">\\</span><span class="st">beta$ - $</span><span class="ch">\\</span><span class="st">alpha$ (p19)&quot;</span>)</span>
+<span id="cb49-15"><a href="comparative-analyses-of-selection.html#cb49-15" tabindex="-1"></a></span>
+<span id="cb49-16"><a href="comparative-analyses-of-selection.html#cb49-16" tabindex="-1"></a>    plt.axhline(<span class="dv">0</span>,color<span class="op">=</span><span class="st">&#39;black&#39;</span>,</span>
+<span id="cb49-17"><a href="comparative-analyses-of-selection.html#cb49-17" tabindex="-1"></a>                linewidth<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb49-18"><a href="comparative-analyses-of-selection.html#cb49-18" tabindex="-1"></a>                ls<span class="op">=</span><span class="st">&quot;--&quot;</span>, </span>
+<span id="cb49-19"><a href="comparative-analyses-of-selection.html#cb49-19" tabindex="-1"></a>                alpha<span class="op">=</span><span class="fl">0.5</span>) <span class="co"># x = 0</span></span>
+<span id="cb49-20"><a href="comparative-analyses-of-selection.html#cb49-20" tabindex="-1"></a>    plt.axvline(<span class="dv">0</span>,color<span class="op">=</span><span class="st">&#39;black&#39;</span>,</span>
+<span id="cb49-21"><a href="comparative-analyses-of-selection.html#cb49-21" tabindex="-1"></a>                linewidth<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb49-22"><a href="comparative-analyses-of-selection.html#cb49-22" tabindex="-1"></a>                ls<span class="op">=</span><span class="st">&quot;--&quot;</span>,</span>
+<span id="cb49-23"><a href="comparative-analyses-of-selection.html#cb49-23" tabindex="-1"></a>                alpha<span class="op">=</span><span class="fl">0.5</span>) <span class="co"># x = 0</span></span>
+<span id="cb49-24"><a href="comparative-analyses-of-selection.html#cb49-24" tabindex="-1"></a></span>
+<span id="cb49-25"><a href="comparative-analyses-of-selection.html#cb49-25" tabindex="-1"></a>    ax.xaxis.label.set_fontsize(fontsize)</span>
+<span id="cb49-26"><a href="comparative-analyses-of-selection.html#cb49-26" tabindex="-1"></a>    ax.yaxis.label.set_fontsize(fontsize)</span>
+<span id="cb49-27"><a href="comparative-analyses-of-selection.html#cb49-27" tabindex="-1"></a>    plt.xticks(fontsize<span class="op">=</span>fontsize <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb49-28"><a href="comparative-analyses-of-selection.html#cb49-28" tabindex="-1"></a>    plt.yticks(fontsize<span class="op">=</span>fontsize <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb49-29"><a href="comparative-analyses-of-selection.html#cb49-29" tabindex="-1"></a></span>
+<span id="cb49-30"><a href="comparative-analyses-of-selection.html#cb49-30" tabindex="-1"></a>    plt.tight_layout(pad<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb49-31"><a href="comparative-analyses-of-selection.html#cb49-31" tabindex="-1"></a>    plt.show()</span>
+<span id="cb49-32"><a href="comparative-analyses-of-selection.html#cb49-32" tabindex="-1"></a></span>
+<span id="cb49-33"><a href="comparative-analyses-of-selection.html#cb49-33" tabindex="-1"></a><span class="kw">def</span> define_colors(data1, data2):</span>
+<span id="cb49-34"><a href="comparative-analyses-of-selection.html#cb49-34" tabindex="-1"></a>    color_p19 <span class="op">=</span> <span class="st">&quot;#FFD500&quot;</span></span>
+<span id="cb49-35"><a href="comparative-analyses-of-selection.html#cb49-35" tabindex="-1"></a>    color_p22 <span class="op">=</span> <span class="st">&quot;#9867F4&quot;</span></span>
+<span id="cb49-36"><a href="comparative-analyses-of-selection.html#cb49-36" tabindex="-1"></a>    color_both <span class="op">=</span> <span class="st">&quot;#242038&quot;</span></span>
+<span id="cb49-37"><a href="comparative-analyses-of-selection.html#cb49-37" tabindex="-1"></a>    others <span class="op">=</span> <span class="st">&quot;#A2A2A2&quot;</span></span>
+<span id="cb49-38"><a href="comparative-analyses-of-selection.html#cb49-38" tabindex="-1"></a></span>
+<span id="cb49-39"><a href="comparative-analyses-of-selection.html#cb49-39" tabindex="-1"></a>    colors <span class="op">=</span> []</span>
+<span id="cb49-40"><a href="comparative-analyses-of-selection.html#cb49-40" tabindex="-1"></a></span>
+<span id="cb49-41"><a href="comparative-analyses-of-selection.html#cb49-41" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(data1)):</span>
+<span id="cb49-42"><a href="comparative-analyses-of-selection.html#cb49-42" tabindex="-1"></a>        <span class="cf">if</span> data1[<span class="st">&quot;signif&quot;</span>][i] <span class="kw">and</span> data2[<span class="st">&quot;signif&quot;</span>][i]:</span>
+<span id="cb49-43"><a href="comparative-analyses-of-selection.html#cb49-43" tabindex="-1"></a>            colors.append(color_both)</span>
+<span id="cb49-44"><a href="comparative-analyses-of-selection.html#cb49-44" tabindex="-1"></a>        <span class="cf">elif</span> data2[<span class="st">&quot;signif&quot;</span>][i]:</span>
+<span id="cb49-45"><a href="comparative-analyses-of-selection.html#cb49-45" tabindex="-1"></a>            colors.append(color_p22)</span>
+<span id="cb49-46"><a href="comparative-analyses-of-selection.html#cb49-46" tabindex="-1"></a>        <span class="cf">elif</span> data1[<span class="st">&quot;signif&quot;</span>][i]:</span>
+<span id="cb49-47"><a href="comparative-analyses-of-selection.html#cb49-47" tabindex="-1"></a>            colors.append(color_p19)</span>
+<span id="cb49-48"><a href="comparative-analyses-of-selection.html#cb49-48" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb49-49"><a href="comparative-analyses-of-selection.html#cb49-49" tabindex="-1"></a>            colors.append(others)</span>
+<span id="cb49-50"><a href="comparative-analyses-of-selection.html#cb49-50" tabindex="-1"></a></span>
+<span id="cb49-51"><a href="comparative-analyses-of-selection.html#cb49-51" tabindex="-1"></a>    <span class="cf">return</span> colors</span></code></pre></div>
+</div>
+<div id="test-correlation-of-selection" class="section level3 hasAnchor" number="6.2.3">
+<h3><span class="header-section-number">6.2.3</span> Test correlation of selection<a href="comparative-analyses-of-selection.html#test-correlation-of-selection" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>After creating a combined dataframe based on the shift between both genes, we proceed to search correlation including all values or those that were significant (of p19, p22, both or at least one of them). We found that there could be a linear dependence in the upper left quadrant, so a Pearson correlation coefficient and its corresponding p value are calculated.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb50-1"><a href="comparative-analyses-of-selection.html#cb50-1" tabindex="-1"></a><span class="kw">def</span> combine_genes(data1, data2, shift):</span>
+<span id="cb50-2"><a href="comparative-analyses-of-selection.html#cb50-2" tabindex="-1"></a>    combi <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb50-3"><a href="comparative-analyses-of-selection.html#cb50-3" tabindex="-1"></a>    combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">=</span> <span class="bu">list</span>(data2[<span class="st">&quot;beta - alpha&quot;</span>][shift:<span class="bu">len</span>(data1[<span class="st">&quot;beta - alpha&quot;</span>]) <span class="op">+</span> shift])</span>
+<span id="cb50-4"><a href="comparative-analyses-of-selection.html#cb50-4" tabindex="-1"></a>    combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">=</span> <span class="bu">list</span>(data1[<span class="st">&quot;beta - alpha&quot;</span>])</span>
+<span id="cb50-5"><a href="comparative-analyses-of-selection.html#cb50-5" tabindex="-1"></a></span>
+<span id="cb50-6"><a href="comparative-analyses-of-selection.html#cb50-6" tabindex="-1"></a>    combi[<span class="st">&quot;p22_signif&quot;</span>] <span class="op">=</span> <span class="bu">list</span>(data2[<span class="st">&quot;signif&quot;</span>][shift:<span class="bu">len</span>(data1[<span class="st">&quot;beta - alpha&quot;</span>]) <span class="op">+</span> shift])</span>
+<span id="cb50-7"><a href="comparative-analyses-of-selection.html#cb50-7" tabindex="-1"></a>    combi[<span class="st">&quot;p19_signif&quot;</span>] <span class="op">=</span> <span class="bu">list</span>(data1[<span class="st">&quot;signif&quot;</span>])</span>
+<span id="cb50-8"><a href="comparative-analyses-of-selection.html#cb50-8" tabindex="-1"></a></span>
+<span id="cb50-9"><a href="comparative-analyses-of-selection.html#cb50-9" tabindex="-1"></a>    <span class="cf">return</span> combi</span>
+<span id="cb50-10"><a href="comparative-analyses-of-selection.html#cb50-10" tabindex="-1"></a></span>
+<span id="cb50-11"><a href="comparative-analyses-of-selection.html#cb50-11" tabindex="-1"></a><span class="kw">def</span> search_correlation(combi, num):</span>
+<span id="cb50-12"><a href="comparative-analyses-of-selection.html#cb50-12" tabindex="-1"></a>    <span class="cf">if</span> num <span class="op">==</span> <span class="dv">0</span>: <span class="co"># ALL</span></span>
+<span id="cb50-13"><a href="comparative-analyses-of-selection.html#cb50-13" tabindex="-1"></a>        corr <span class="op">=</span> correl_total(combi)</span>
+<span id="cb50-14"><a href="comparative-analyses-of-selection.html#cb50-14" tabindex="-1"></a>    <span class="cf">elif</span> num <span class="op">==</span> <span class="dv">1</span>:  <span class="co"># p19</span></span>
+<span id="cb50-15"><a href="comparative-analyses-of-selection.html#cb50-15" tabindex="-1"></a>        corr <span class="op">=</span> correl_one(combi, num)</span>
+<span id="cb50-16"><a href="comparative-analyses-of-selection.html#cb50-16" tabindex="-1"></a>    <span class="cf">elif</span> num <span class="op">==</span> <span class="dv">2</span>:  <span class="co"># p22</span></span>
+<span id="cb50-17"><a href="comparative-analyses-of-selection.html#cb50-17" tabindex="-1"></a>        corr <span class="op">=</span> correl_one(combi, num)</span>
+<span id="cb50-18"><a href="comparative-analyses-of-selection.html#cb50-18" tabindex="-1"></a>    <span class="cf">elif</span> num <span class="op">==</span> <span class="dv">3</span>: <span class="co"># At least one</span></span>
+<span id="cb50-19"><a href="comparative-analyses-of-selection.html#cb50-19" tabindex="-1"></a>        corr <span class="op">=</span> correl_least_one(combi)</span>
+<span id="cb50-20"><a href="comparative-analyses-of-selection.html#cb50-20" tabindex="-1"></a>    <span class="cf">else</span>: <span class="co"># Both significative</span></span>
+<span id="cb50-21"><a href="comparative-analyses-of-selection.html#cb50-21" tabindex="-1"></a>        corr <span class="op">=</span> correl_both(combi)</span>
+<span id="cb50-22"><a href="comparative-analyses-of-selection.html#cb50-22" tabindex="-1"></a>    </span>
+<span id="cb50-23"><a href="comparative-analyses-of-selection.html#cb50-23" tabindex="-1"></a>    <span class="cf">return</span> (corr, scipy.stats.fisher_exact(corr))</span>
+<span id="cb50-24"><a href="comparative-analyses-of-selection.html#cb50-24" tabindex="-1"></a></span>
+<span id="cb50-25"><a href="comparative-analyses-of-selection.html#cb50-25" tabindex="-1"></a><span class="kw">def</span> correl_total(combi):</span>
+<span id="cb50-26"><a href="comparative-analyses-of-selection.html#cb50-26" tabindex="-1"></a>    total <span class="op">=</span> [[<span class="bu">len</span>(combi[(combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>)]),</span>
+<span id="cb50-27"><a href="comparative-analyses-of-selection.html#cb50-27" tabindex="-1"></a>    <span class="bu">len</span>(combi[(combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>)])],</span>
+<span id="cb50-28"><a href="comparative-analyses-of-selection.html#cb50-28" tabindex="-1"></a>    [<span class="bu">len</span>(combi[(combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>)]),</span>
+<span id="cb50-29"><a href="comparative-analyses-of-selection.html#cb50-29" tabindex="-1"></a>    <span class="bu">len</span>(combi[(combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>)])]]</span>
+<span id="cb50-30"><a href="comparative-analyses-of-selection.html#cb50-30" tabindex="-1"></a></span>
+<span id="cb50-31"><a href="comparative-analyses-of-selection.html#cb50-31" tabindex="-1"></a>    <span class="cf">return</span> total</span>
+<span id="cb50-32"><a href="comparative-analyses-of-selection.html#cb50-32" tabindex="-1"></a></span>
+<span id="cb50-33"><a href="comparative-analyses-of-selection.html#cb50-33" tabindex="-1"></a><span class="kw">def</span> correl_least_one(combi):</span>
+<span id="cb50-34"><a href="comparative-analyses-of-selection.html#cb50-34" tabindex="-1"></a>    one_atleast <span class="op">=</span> [[<span class="bu">len</span>(combi[(((combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>)) <span class="op">&amp;</span> (combi[<span class="st">&quot;p22_signif&quot;</span>] <span class="op">|</span> combi[<span class="st">&quot;p19_signif&quot;</span>]))]),</span>
+<span id="cb50-35"><a href="comparative-analyses-of-selection.html#cb50-35" tabindex="-1"></a>    <span class="bu">len</span>(combi[(((combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>)) <span class="op">&amp;</span> (combi[<span class="st">&quot;p22_signif&quot;</span>] <span class="op">|</span> combi[<span class="st">&quot;p19_signif&quot;</span>]))])],</span>
+<span id="cb50-36"><a href="comparative-analyses-of-selection.html#cb50-36" tabindex="-1"></a>    [<span class="bu">len</span>(combi[(((combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>)) <span class="op">&amp;</span> (combi[<span class="st">&quot;p22_signif&quot;</span>] <span class="op">|</span> combi[<span class="st">&quot;p19_signif&quot;</span>]))]),</span>
+<span id="cb50-37"><a href="comparative-analyses-of-selection.html#cb50-37" tabindex="-1"></a>    <span class="bu">len</span>(combi[(((combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>)) <span class="op">&amp;</span> (combi[<span class="st">&quot;p22_signif&quot;</span>] <span class="op">|</span> combi[<span class="st">&quot;p19_signif&quot;</span>]))])]]</span>
+<span id="cb50-38"><a href="comparative-analyses-of-selection.html#cb50-38" tabindex="-1"></a></span>
+<span id="cb50-39"><a href="comparative-analyses-of-selection.html#cb50-39" tabindex="-1"></a>    <span class="cf">return</span> one_atleast</span>
+<span id="cb50-40"><a href="comparative-analyses-of-selection.html#cb50-40" tabindex="-1"></a></span>
+<span id="cb50-41"><a href="comparative-analyses-of-selection.html#cb50-41" tabindex="-1"></a><span class="kw">def</span> correl_both(combi):</span>
+<span id="cb50-42"><a href="comparative-analyses-of-selection.html#cb50-42" tabindex="-1"></a>    both_sig_table <span class="op">=</span> [[<span class="bu">len</span>(combi[(((combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>)) <span class="op">&amp;</span> (combi[<span class="st">&quot;p22_signif&quot;</span>] <span class="op">&amp;</span> combi[<span class="st">&quot;p19_signif&quot;</span>]))]),</span>
+<span id="cb50-43"><a href="comparative-analyses-of-selection.html#cb50-43" tabindex="-1"></a>    <span class="bu">len</span>(combi[(((combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>)) <span class="op">&amp;</span> (combi[<span class="st">&quot;p22_signif&quot;</span>] <span class="op">|</span> combi[<span class="st">&quot;p19_signif&quot;</span>]))])],</span>
+<span id="cb50-44"><a href="comparative-analyses-of-selection.html#cb50-44" tabindex="-1"></a>    [<span class="bu">len</span>(combi[(((combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>)) <span class="op">&amp;</span> (combi[<span class="st">&quot;p22_signif&quot;</span>] <span class="op">|</span> combi[<span class="st">&quot;p19_signif&quot;</span>]))]),</span>
+<span id="cb50-45"><a href="comparative-analyses-of-selection.html#cb50-45" tabindex="-1"></a>    <span class="bu">len</span>(combi[(((combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>)) <span class="op">&amp;</span> (combi[<span class="st">&quot;p22_signif&quot;</span>] <span class="op">|</span> combi[<span class="st">&quot;p19_signif&quot;</span>]))])]]</span>
+<span id="cb50-46"><a href="comparative-analyses-of-selection.html#cb50-46" tabindex="-1"></a></span>
+<span id="cb50-47"><a href="comparative-analyses-of-selection.html#cb50-47" tabindex="-1"></a>    <span class="cf">return</span> both_sig_table</span>
+<span id="cb50-48"><a href="comparative-analyses-of-selection.html#cb50-48" tabindex="-1"></a></span>
+<span id="cb50-49"><a href="comparative-analyses-of-selection.html#cb50-49" tabindex="-1"></a><span class="kw">def</span> correl_one(combi, num):</span>
+<span id="cb50-50"><a href="comparative-analyses-of-selection.html#cb50-50" tabindex="-1"></a>    <span class="cf">if</span> num <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb50-51"><a href="comparative-analyses-of-selection.html#cb50-51" tabindex="-1"></a>        sig_table <span class="op">=</span> [[<span class="bu">len</span>(combi[(((combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>)) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19_signif&quot;</span>]))]),</span>
+<span id="cb50-52"><a href="comparative-analyses-of-selection.html#cb50-52" tabindex="-1"></a>        <span class="bu">len</span>(combi[(((combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>)) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19_signif&quot;</span>]))])],</span>
+<span id="cb50-53"><a href="comparative-analyses-of-selection.html#cb50-53" tabindex="-1"></a>        [<span class="bu">len</span>(combi[(((combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>)) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19_signif&quot;</span>]))]),</span>
+<span id="cb50-54"><a href="comparative-analyses-of-selection.html#cb50-54" tabindex="-1"></a>        <span class="bu">len</span>(combi[(((combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>)) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19_signif&quot;</span>]))])]]</span>
+<span id="cb50-55"><a href="comparative-analyses-of-selection.html#cb50-55" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb50-56"><a href="comparative-analyses-of-selection.html#cb50-56" tabindex="-1"></a>        sig_table <span class="op">=</span> [[<span class="bu">len</span>(combi[(((combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>)) <span class="op">&amp;</span> (combi[<span class="st">&quot;p22_signif&quot;</span>]))]),</span>
+<span id="cb50-57"><a href="comparative-analyses-of-selection.html#cb50-57" tabindex="-1"></a>        <span class="bu">len</span>(combi[(((combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>)) <span class="op">&amp;</span> (combi[<span class="st">&quot;p22_signif&quot;</span>]))])],</span>
+<span id="cb50-58"><a href="comparative-analyses-of-selection.html#cb50-58" tabindex="-1"></a>        [<span class="bu">len</span>(combi[(((combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>)) <span class="op">&amp;</span> (combi[<span class="st">&quot;p22_signif&quot;</span>]))]),</span>
+<span id="cb50-59"><a href="comparative-analyses-of-selection.html#cb50-59" tabindex="-1"></a>        <span class="bu">len</span>(combi[(((combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>)) <span class="op">&amp;</span> (combi[<span class="st">&quot;p22_signif&quot;</span>]))])]]</span>
+<span id="cb50-60"><a href="comparative-analyses-of-selection.html#cb50-60" tabindex="-1"></a></span>
+<span id="cb50-61"><a href="comparative-analyses-of-selection.html#cb50-61" tabindex="-1"></a>    <span class="cf">return</span> sig_table</span>
+<span id="cb50-62"><a href="comparative-analyses-of-selection.html#cb50-62" tabindex="-1"></a></span>
+<span id="cb50-63"><a href="comparative-analyses-of-selection.html#cb50-63" tabindex="-1"></a><span class="kw">def</span> pearson_upper_left(combi):</span>
+<span id="cb50-64"><a href="comparative-analyses-of-selection.html#cb50-64" tabindex="-1"></a>    upper_left <span class="op">=</span> combi[(combi[<span class="st">&quot;p19 diff&quot;</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (combi[<span class="st">&quot;p22 diff&quot;</span>] <span class="op">&lt;</span> <span class="dv">0</span>)]</span>
+<span id="cb50-65"><a href="comparative-analyses-of-selection.html#cb50-65" tabindex="-1"></a>    y <span class="op">=</span> upper_left[<span class="st">&quot;p19 diff&quot;</span>]</span>
+<span id="cb50-66"><a href="comparative-analyses-of-selection.html#cb50-66" tabindex="-1"></a>    x <span class="op">=</span> upper_left[<span class="st">&quot;p22 diff&quot;</span>]</span>
+<span id="cb50-67"><a href="comparative-analyses-of-selection.html#cb50-67" tabindex="-1"></a>    </span>
+<span id="cb50-68"><a href="comparative-analyses-of-selection.html#cb50-68" tabindex="-1"></a>    <span class="cf">return</span> scipy.stats.pearsonr(x, y)</span></code></pre></div>
+</div>
+<div id="correlation-2d" class="section level3 hasAnchor" number="6.2.4">
+<h3><span class="header-section-number">6.2.4</span> Correlation 2D<a href="comparative-analyses-of-selection.html#correlation-2d" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Another point to be inquired is the possible correlation between secondary structure of both proteins.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb51-1"><a href="comparative-analyses-of-selection.html#cb51-1" tabindex="-1"></a><span class="kw">def</span> corr_struct(struct1, struct2, shift):</span>
+<span id="cb51-2"><a href="comparative-analyses-of-selection.html#cb51-2" tabindex="-1"></a>    combinations_3d <span class="op">=</span> pd.DataFrame(<span class="dv">0</span>, columns<span class="op">=</span>[<span class="st">&quot;H&quot;</span>, <span class="st">&quot;S&quot;</span>, <span class="st">&quot;L&quot;</span>],</span>
+<span id="cb51-3"><a href="comparative-analyses-of-selection.html#cb51-3" tabindex="-1"></a>                                    index<span class="op">=</span>[<span class="st">&quot;H&quot;</span>, <span class="st">&quot;S&quot;</span>, <span class="st">&quot;L&quot;</span>])</span>
+<span id="cb51-4"><a href="comparative-analyses-of-selection.html#cb51-4" tabindex="-1"></a>    <span class="cf">for</span> pos <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(struct1)):</span>
+<span id="cb51-5"><a href="comparative-analyses-of-selection.html#cb51-5" tabindex="-1"></a>        combinations_3d[struct2[pos<span class="op">+</span>shift]][struct1[pos]] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb51-6"><a href="comparative-analyses-of-selection.html#cb51-6" tabindex="-1"></a>    res <span class="op">=</span> <span class="bu">list</span>(scipy.stats.chi2_contingency(combinations_3d))</span>
+<span id="cb51-7"><a href="comparative-analyses-of-selection.html#cb51-7" tabindex="-1"></a>    res.append(combinations_3d)</span>
+<span id="cb51-8"><a href="comparative-analyses-of-selection.html#cb51-8" tabindex="-1"></a>    </span>
+<span id="cb51-9"><a href="comparative-analyses-of-selection.html#cb51-9" tabindex="-1"></a>    <span class="cf">return</span> res</span></code></pre></div>
+<p>The resulting table of contingency can be plotted to show with colors where and how is the data distribution. It can be also combined with the expected frequencies and therefore, we can plot a table with the ratio real/expected, what can be very informative too.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb52-1"><a href="comparative-analyses-of-selection.html#cb52-1" tabindex="-1"></a><span class="kw">def</span> plot_dist_3D(combinations_3d, expected<span class="op">=</span><span class="dv">0</span>):</span>
+<span id="cb52-2"><a href="comparative-analyses-of-selection.html#cb52-2" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(expected, <span class="bu">int</span>):</span>
+<span id="cb52-3"><a href="comparative-analyses-of-selection.html#cb52-3" tabindex="-1"></a>        data <span class="op">=</span> combinations_3d </span>
+<span id="cb52-4"><a href="comparative-analyses-of-selection.html#cb52-4" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb52-5"><a href="comparative-analyses-of-selection.html#cb52-5" tabindex="-1"></a>        data <span class="op">=</span> combinations_3d <span class="op">/</span> pd.DataFrame(expected, columns<span class="op">=</span>[<span class="st">&quot;H&quot;</span>, <span class="st">&quot;S&quot;</span>, <span class="st">&quot;L&quot;</span>], index<span class="op">=</span>[<span class="st">&quot;H&quot;</span>, <span class="st">&quot;S&quot;</span>, <span class="st">&quot;L&quot;</span>])</span>
+<span id="cb52-6"><a href="comparative-analyses-of-selection.html#cb52-6" tabindex="-1"></a></span>
+<span id="cb52-7"><a href="comparative-analyses-of-selection.html#cb52-7" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb52-8"><a href="comparative-analyses-of-selection.html#cb52-8" tabindex="-1"></a>    sns.heatmap(data, annot<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">&#39;YlGnBu&#39;</span>)</span>
+<span id="cb52-9"><a href="comparative-analyses-of-selection.html#cb52-9" tabindex="-1"></a>    plt.xlabel(<span class="st">&#39;p22&#39;</span>)</span>
+<span id="cb52-10"><a href="comparative-analyses-of-selection.html#cb52-10" tabindex="-1"></a>    plt.ylabel(<span class="st">&#39;p19&#39;</span>)</span>
+<span id="cb52-11"><a href="comparative-analyses-of-selection.html#cb52-11" tabindex="-1"></a>    plt.show()</span></code></pre></div>
+</div>
+<div id="selection-in-2d" class="section level3 hasAnchor" number="6.2.5">
+<h3><span class="header-section-number">6.2.5</span> Selection in 2D<a href="comparative-analyses-of-selection.html#selection-in-2d" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This additional division aims to focus the attention on the secondary structures separately. With the following function, nine contingency tables 3x3 are calculated considering neutral, positive and negative selection in both frames. The difference between these tables is the exclusive presence of codons that belong to regions which form helices, strands or loops (or all).</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb53-1"><a href="comparative-analyses-of-selection.html#cb53-1" tabindex="-1"></a><span class="kw">def</span> selection_structure(p19_struct, p22_struct, df_p19, df_p22, </span>
+<span id="cb53-2"><a href="comparative-analyses-of-selection.html#cb53-2" tabindex="-1"></a>                        comparison_letters, shift):</span>
+<span id="cb53-3"><a href="comparative-analyses-of-selection.html#cb53-3" tabindex="-1"></a>    macro_results <span class="op">=</span> []</span>
+<span id="cb53-4"><a href="comparative-analyses-of-selection.html#cb53-4" tabindex="-1"></a></span>
+<span id="cb53-5"><a href="comparative-analyses-of-selection.html#cb53-5" tabindex="-1"></a>    <span class="cf">for</span> letters <span class="kw">in</span> comparison_letters:</span>
+<span id="cb53-6"><a href="comparative-analyses-of-selection.html#cb53-6" tabindex="-1"></a>        result <span class="op">=</span> pd.DataFrame(<span class="dv">0</span>, columns <span class="op">=</span> [<span class="st">&quot;Neg.&quot;</span>, <span class="st">&quot;Pos.&quot;</span>, <span class="st">&quot;-&quot;</span>], index <span class="op">=</span> [<span class="st">&quot;Neg.&quot;</span>, <span class="st">&quot;Pos.&quot;</span>, <span class="st">&quot;-&quot;</span>])</span>
+<span id="cb53-7"><a href="comparative-analyses-of-selection.html#cb53-7" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(p19_struct)):</span>
+<span id="cb53-8"><a href="comparative-analyses-of-selection.html#cb53-8" tabindex="-1"></a>            <span class="cf">if</span> p19_struct[i] <span class="op">==</span> letters[<span class="dv">0</span>] <span class="kw">and</span> p22_struct[i<span class="op">+</span>shift] <span class="op">==</span> letters[<span class="dv">1</span>]:</span>
+<span id="cb53-9"><a href="comparative-analyses-of-selection.html#cb53-9" tabindex="-1"></a>                </span>
+<span id="cb53-10"><a href="comparative-analyses-of-selection.html#cb53-10" tabindex="-1"></a>                p19_value <span class="op">=</span> df_p19[<span class="st">&quot;beta - alpha&quot;</span>][i]</span>
+<span id="cb53-11"><a href="comparative-analyses-of-selection.html#cb53-11" tabindex="-1"></a>                p22_value <span class="op">=</span> df_p22[<span class="st">&quot;beta - alpha&quot;</span>][i<span class="op">+</span>shift]</span>
+<span id="cb53-12"><a href="comparative-analyses-of-selection.html#cb53-12" tabindex="-1"></a></span>
+<span id="cb53-13"><a href="comparative-analyses-of-selection.html#cb53-13" tabindex="-1"></a>                <span class="cf">if</span> p19_value <span class="op">==</span> <span class="dv">0</span> <span class="kw">and</span> p22_value <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb53-14"><a href="comparative-analyses-of-selection.html#cb53-14" tabindex="-1"></a>                    result[<span class="st">&quot;-&quot;</span>][<span class="st">&quot;-&quot;</span>] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb53-15"><a href="comparative-analyses-of-selection.html#cb53-15" tabindex="-1"></a>                <span class="cf">elif</span> p19_value <span class="op">==</span> <span class="dv">0</span> <span class="kw">and</span> p22_value <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb53-16"><a href="comparative-analyses-of-selection.html#cb53-16" tabindex="-1"></a>                    result[<span class="st">&quot;Pos.&quot;</span>][<span class="st">&quot;-&quot;</span>] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb53-17"><a href="comparative-analyses-of-selection.html#cb53-17" tabindex="-1"></a>                <span class="cf">elif</span> p19_value <span class="op">==</span> <span class="dv">0</span> <span class="kw">and</span> p22_value <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb53-18"><a href="comparative-analyses-of-selection.html#cb53-18" tabindex="-1"></a>                    result[<span class="st">&quot;Neg.&quot;</span>][<span class="st">&quot;-&quot;</span>] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb53-19"><a href="comparative-analyses-of-selection.html#cb53-19" tabindex="-1"></a>                <span class="cf">elif</span> p19_value <span class="op">&gt;</span> <span class="dv">0</span> <span class="kw">and</span> p22_value <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb53-20"><a href="comparative-analyses-of-selection.html#cb53-20" tabindex="-1"></a>                    result[<span class="st">&quot;-&quot;</span>][<span class="st">&quot;Pos.&quot;</span>] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb53-21"><a href="comparative-analyses-of-selection.html#cb53-21" tabindex="-1"></a>                <span class="cf">elif</span> p19_value <span class="op">&lt;</span> <span class="dv">0</span> <span class="kw">and</span> p22_value <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb53-22"><a href="comparative-analyses-of-selection.html#cb53-22" tabindex="-1"></a>                    result[<span class="st">&quot;-&quot;</span>][<span class="st">&quot;Neg.&quot;</span>] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb53-23"><a href="comparative-analyses-of-selection.html#cb53-23" tabindex="-1"></a>                <span class="cf">elif</span> p19_value <span class="op">&gt;</span> <span class="dv">0</span> <span class="kw">and</span> p22_value <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb53-24"><a href="comparative-analyses-of-selection.html#cb53-24" tabindex="-1"></a>                    result[<span class="st">&quot;Pos.&quot;</span>][<span class="st">&quot;Pos.&quot;</span>] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb53-25"><a href="comparative-analyses-of-selection.html#cb53-25" tabindex="-1"></a>                <span class="cf">elif</span> p19_value <span class="op">&lt;</span> <span class="dv">0</span> <span class="kw">and</span> p22_value <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb53-26"><a href="comparative-analyses-of-selection.html#cb53-26" tabindex="-1"></a>                    result[<span class="st">&quot;Neg.&quot;</span>][<span class="st">&quot;Neg.&quot;</span>] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb53-27"><a href="comparative-analyses-of-selection.html#cb53-27" tabindex="-1"></a>                <span class="cf">elif</span> p19_value <span class="op">&gt;</span> <span class="dv">0</span> <span class="kw">and</span> p22_value <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb53-28"><a href="comparative-analyses-of-selection.html#cb53-28" tabindex="-1"></a>                    result[<span class="st">&quot;Neg.&quot;</span>][<span class="st">&quot;Pos.&quot;</span>] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb53-29"><a href="comparative-analyses-of-selection.html#cb53-29" tabindex="-1"></a>                <span class="cf">elif</span> p19_value <span class="op">&lt;</span> <span class="dv">0</span> <span class="kw">and</span> p22_value <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb53-30"><a href="comparative-analyses-of-selection.html#cb53-30" tabindex="-1"></a>                    result[<span class="st">&quot;Pos.&quot;</span>][<span class="st">&quot;Neg.&quot;</span>] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb53-31"><a href="comparative-analyses-of-selection.html#cb53-31" tabindex="-1"></a>            </span>
+<span id="cb53-32"><a href="comparative-analyses-of-selection.html#cb53-32" tabindex="-1"></a>        macro_results.append(result)</span>
+<span id="cb53-33"><a href="comparative-analyses-of-selection.html#cb53-33" tabindex="-1"></a></span>
+<span id="cb53-34"><a href="comparative-analyses-of-selection.html#cb53-34" tabindex="-1"></a>    <span class="cf">return</span> macro_results</span></code></pre></div>
+</div>
+<div id="run-2" class="section level3 hasAnchor" number="6.2.6">
+<h3><span class="header-section-number">6.2.6</span> Run<a href="comparative-analyses-of-selection.html#run-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Notice that we indicate for every position of p19 and p22 the corresponding secondary structure. H: helix, S:strand and L: loop.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb54-1"><a href="comparative-analyses-of-selection.html#cb54-1" tabindex="-1"></a><span class="kw">def</span> main():</span>
+<span id="cb54-2"><a href="comparative-analyses-of-selection.html#cb54-2" tabindex="-1"></a>    path_p19 <span class="op">=</span> <span class="st">&#39;/Users/esmeralda/Documents/TFM/RevTrans/final/nt/alignments/FEL_p19_local/p19_FEL.json&#39;</span></span>
+<span id="cb54-3"><a href="comparative-analyses-of-selection.html#cb54-3" tabindex="-1"></a>    path_p22 <span class="op">=</span> <span class="st">&#39;/Users/esmeralda/Documents/TFM/RevTrans/final/nt/alignments/FEL_p22_local/firts.json&#39;</span></span>
+<span id="cb54-4"><a href="comparative-analyses-of-selection.html#cb54-4" tabindex="-1"></a>    </span>
+<span id="cb54-5"><a href="comparative-analyses-of-selection.html#cb54-5" tabindex="-1"></a>    <span class="co"># Read json files and add information</span></span>
+<span id="cb54-6"><a href="comparative-analyses-of-selection.html#cb54-6" tabindex="-1"></a>    significance <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb54-7"><a href="comparative-analyses-of-selection.html#cb54-7" tabindex="-1"></a>    df_p19 <span class="op">=</span> add_info(read_json(path_p19), significance)</span>
+<span id="cb54-8"><a href="comparative-analyses-of-selection.html#cb54-8" tabindex="-1"></a>    df_p22 <span class="op">=</span> add_info(read_json(path_p22), significance)</span>
+<span id="cb54-9"><a href="comparative-analyses-of-selection.html#cb54-9" tabindex="-1"></a></span>
+<span id="cb54-10"><a href="comparative-analyses-of-selection.html#cb54-10" tabindex="-1"></a>    <span class="co"># Print significative codons</span></span>
+<span id="cb54-11"><a href="comparative-analyses-of-selection.html#cb54-11" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Signif. p19:&quot;</span>, significative_codons(df_p19), </span>
+<span id="cb54-12"><a href="comparative-analyses-of-selection.html#cb54-12" tabindex="-1"></a>          <span class="st">&quot;Signif. p22:&quot;</span>, significative_codons(df_p22))</span>
+<span id="cb54-13"><a href="comparative-analyses-of-selection.html#cb54-13" tabindex="-1"></a></span>
+<span id="cb54-14"><a href="comparative-analyses-of-selection.html#cb54-14" tabindex="-1"></a>    <span class="co"># Plot dots +10 and +11 codons</span></span>
+<span id="cb54-15"><a href="comparative-analyses-of-selection.html#cb54-15" tabindex="-1"></a>    colors <span class="op">=</span> define_colors(df_p19, df_p22)</span>
+<span id="cb54-16"><a href="comparative-analyses-of-selection.html#cb54-16" tabindex="-1"></a>    plot_correlation(df_p19, df_p22, <span class="dv">10</span>, colors)</span>
+<span id="cb54-17"><a href="comparative-analyses-of-selection.html#cb54-17" tabindex="-1"></a>    plot_correlation(df_p19, df_p22, <span class="dv">11</span>, colors)</span>
+<span id="cb54-18"><a href="comparative-analyses-of-selection.html#cb54-18" tabindex="-1"></a></span>
+<span id="cb54-19"><a href="comparative-analyses-of-selection.html#cb54-19" tabindex="-1"></a>    <span class="co"># Combine both sequences with a shift</span></span>
+<span id="cb54-20"><a href="comparative-analyses-of-selection.html#cb54-20" tabindex="-1"></a>    p19_p22 <span class="op">=</span> combine_genes(df_p19, df_p22, <span class="dv">10</span>)</span>
+<span id="cb54-21"><a href="comparative-analyses-of-selection.html#cb54-21" tabindex="-1"></a></span>
+<span id="cb54-22"><a href="comparative-analyses-of-selection.html#cb54-22" tabindex="-1"></a>    <span class="co"># Search correlations</span></span>
+<span id="cb54-23"><a href="comparative-analyses-of-selection.html#cb54-23" tabindex="-1"></a>    correlations <span class="op">=</span> [<span class="st">&quot;All&quot;</span>, <span class="st">&quot;Only p19 significant&quot;</span>, <span class="st">&quot;Only p22 significant&quot;</span>, </span>
+<span id="cb54-24"><a href="comparative-analyses-of-selection.html#cb54-24" tabindex="-1"></a>                    <span class="st">&quot;At least one significant&quot;</span>, <span class="st">&quot;Both significant&quot;</span>]</span>
+<span id="cb54-25"><a href="comparative-analyses-of-selection.html#cb54-25" tabindex="-1"></a>    <span class="cf">for</span> option <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
+<span id="cb54-26"><a href="comparative-analyses-of-selection.html#cb54-26" tabindex="-1"></a>        len_hyphen <span class="op">=</span> (<span class="dv">50</span><span class="op">-</span><span class="bu">len</span>(correlations[option]))<span class="op">//</span><span class="dv">2</span></span>
+<span id="cb54-27"><a href="comparative-analyses-of-selection.html#cb54-27" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;-&quot;</span><span class="op">*</span>len_hyphen, correlations[option], <span class="st">&quot;-&quot;</span><span class="op">*</span>len_hyphen)</span>
+<span id="cb54-28"><a href="comparative-analyses-of-selection.html#cb54-28" tabindex="-1"></a>        res <span class="op">=</span> search_correlation(p19_p22, option)</span>
+<span id="cb54-29"><a href="comparative-analyses-of-selection.html#cb54-29" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;Contingency table:</span><span class="ch">\n</span><span class="st">&quot;</span>, res[<span class="dv">0</span>])</span>
+<span id="cb54-30"><a href="comparative-analyses-of-selection.html#cb54-30" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;Statistic (Fisher&#39;s exact test):</span><span class="ch">\n</span><span class="st">&quot;</span>, res[<span class="dv">0</span>][<span class="dv">0</span>])    </span>
+<span id="cb54-31"><a href="comparative-analyses-of-selection.html#cb54-31" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;p value (Fisher&#39;s exact test):</span><span class="ch">\n</span><span class="st">&quot;</span>, res[<span class="dv">0</span>][<span class="dv">1</span>])</span>
+<span id="cb54-32"><a href="comparative-analyses-of-selection.html#cb54-32" tabindex="-1"></a></span>
+<span id="cb54-33"><a href="comparative-analyses-of-selection.html#cb54-33" tabindex="-1"></a>    <span class="co"># Pearson correlation</span></span>
+<span id="cb54-34"><a href="comparative-analyses-of-selection.html#cb54-34" tabindex="-1"></a>    correlation_coef, p_value <span class="op">=</span> pearson_upper_left(p19_p22)</span>
+<span id="cb54-35"><a href="comparative-analyses-of-selection.html#cb54-35" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Pearson correlation coefficient:&quot;</span>, correlation_coef)</span>
+<span id="cb54-36"><a href="comparative-analyses-of-selection.html#cb54-36" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;p-value:&quot;</span>, p_value)</span>
+<span id="cb54-37"><a href="comparative-analyses-of-selection.html#cb54-37" tabindex="-1"></a></span>
+<span id="cb54-38"><a href="comparative-analyses-of-selection.html#cb54-38" tabindex="-1"></a>    <span class="co"># Info structure</span></span>
+<span id="cb54-39"><a href="comparative-analyses-of-selection.html#cb54-39" tabindex="-1"></a>    order <span class="op">=</span> [<span class="st">&quot;H&quot;</span>, <span class="st">&quot;S&quot;</span>, <span class="st">&quot;L&quot;</span>]</span>
+<span id="cb54-40"><a href="comparative-analyses-of-selection.html#cb54-40" tabindex="-1"></a>    p22_struct <span class="op">=</span> [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">16</span> <span class="op">+</span> [<span class="st">&quot;S&quot;</span>]<span class="op">*</span><span class="dv">4</span> <span class="op">+</span> [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">4</span> <span class="op">+</span> [<span class="st">&quot;S&quot;</span>]<span class="op">*</span><span class="dv">4</span> <span class="op">+</span> [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">6</span> <span class="op">+</span> [<span class="st">&quot;S&quot;</span>]<span class="op">*</span><span class="dv">3</span> <span class="op">+\</span></span>
+<span id="cb54-41"><a href="comparative-analyses-of-selection.html#cb54-41" tabindex="-1"></a>                 [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">3</span> <span class="op">+</span> [<span class="st">&quot;H&quot;</span>]<span class="op">*</span><span class="dv">10</span> <span class="op">+</span> [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">4</span> <span class="op">+</span> [<span class="st">&quot;S&quot;</span>]<span class="op">*</span><span class="dv">13</span> <span class="op">+</span> [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">10</span> <span class="op">+</span> [<span class="st">&quot;S&quot;</span>]<span class="op">*</span><span class="dv">5</span> <span class="op">+\</span></span>
+<span id="cb54-42"><a href="comparative-analyses-of-selection.html#cb54-42" tabindex="-1"></a>                 [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">9</span> <span class="op">+</span> [<span class="st">&quot;S&quot;</span>]<span class="op">*</span><span class="dv">3</span> <span class="op">+</span> [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">9</span> <span class="op">+</span> [<span class="st">&quot;S&quot;</span>]<span class="op">*</span><span class="dv">5</span> <span class="op">+</span> [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">15</span> <span class="op">+</span> [<span class="st">&quot;S&quot;</span>]<span class="op">*</span><span class="dv">5</span> <span class="op">+\</span></span>
+<span id="cb54-43"><a href="comparative-analyses-of-selection.html#cb54-43" tabindex="-1"></a>                 [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">10</span> <span class="op">+</span> [<span class="st">&quot;S&quot;</span>]<span class="op">*</span><span class="dv">14</span> <span class="op">+</span> [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">11</span> <span class="op">+</span> [<span class="st">&quot;S&quot;</span>]<span class="op">*</span><span class="dv">4</span> <span class="op">+</span> [<span class="st">&quot;H&quot;</span>]<span class="op">*</span><span class="dv">20</span> <span class="op">+</span> [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">2</span></span>
+<span id="cb54-44"><a href="comparative-analyses-of-selection.html#cb54-44" tabindex="-1"></a></span>
+<span id="cb54-45"><a href="comparative-analyses-of-selection.html#cb54-45" tabindex="-1"></a>    p19_struct <span class="op">=</span> [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">5</span> <span class="op">+</span> [<span class="st">&quot;H&quot;</span>]<span class="op">*</span><span class="dv">13</span> <span class="op">+</span> [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">19</span> <span class="op">+</span> [<span class="st">&quot;H&quot;</span>]<span class="op">*</span><span class="dv">9</span> <span class="op">+</span> [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">11</span> <span class="op">+</span> [<span class="st">&quot;S&quot;</span>]<span class="op">*</span><span class="dv">8</span> <span class="op">+\</span></span>
+<span id="cb54-46"><a href="comparative-analyses-of-selection.html#cb54-46" tabindex="-1"></a>                 [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">2</span> <span class="op">+</span> [<span class="st">&quot;S&quot;</span>]<span class="op">*</span><span class="dv">8</span> <span class="op">+</span> [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">3</span> <span class="op">+</span> [<span class="st">&quot;H&quot;</span>]<span class="op">*</span><span class="dv">10</span> <span class="op">+</span> [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">2</span> <span class="op">+</span> [<span class="st">&quot;H&quot;</span>]<span class="op">*</span><span class="dv">11</span> <span class="op">+\</span></span>
+<span id="cb54-47"><a href="comparative-analyses-of-selection.html#cb54-47" tabindex="-1"></a>                 [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">7</span> <span class="op">+</span> [<span class="st">&quot;S&quot;</span>]<span class="op">*</span><span class="dv">8</span> <span class="op">+</span> [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">2</span> <span class="op">+</span> [<span class="st">&quot;S&quot;</span>]<span class="op">*</span><span class="dv">8</span> <span class="op">+</span> [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">2</span> <span class="op">+</span> [<span class="st">&quot;H&quot;</span>]<span class="op">*</span><span class="dv">17</span> <span class="op">+\</span></span>
+<span id="cb54-48"><a href="comparative-analyses-of-selection.html#cb54-48" tabindex="-1"></a>                 [<span class="st">&quot;L&quot;</span>]<span class="op">*</span><span class="dv">27</span></span>
+<span id="cb54-49"><a href="comparative-analyses-of-selection.html#cb54-49" tabindex="-1"></a>    </span>
+<span id="cb54-50"><a href="comparative-analyses-of-selection.html#cb54-50" tabindex="-1"></a>    <span class="co"># (+10) Combinations 3D; Columns: p22 ; Rows: p19 ; PLOT</span></span>
+<span id="cb54-51"><a href="comparative-analyses-of-selection.html#cb54-51" tabindex="-1"></a>    chi2_stat, p_value, dof, expected, cont_table<span class="op">=</span> <span class="op">\</span></span>
+<span id="cb54-52"><a href="comparative-analyses-of-selection.html#cb54-52" tabindex="-1"></a>                                        corr_struct(p19_struct, p22_struct, <span class="dv">10</span>)</span>
+<span id="cb54-53"><a href="comparative-analyses-of-selection.html#cb54-53" tabindex="-1"></a>    expected <span class="op">=</span> pd.DataFrame(expected, index<span class="op">=</span>order, columns<span class="op">=</span>order)</span>
+<span id="cb54-54"><a href="comparative-analyses-of-selection.html#cb54-54" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;+10</span><span class="ch">\n</span><span class="st">Chi-Square Statistic:&quot;</span>, chi2_stat)</span>
+<span id="cb54-55"><a href="comparative-analyses-of-selection.html#cb54-55" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;P-value:&quot;</span>, p_value)</span>
+<span id="cb54-56"><a href="comparative-analyses-of-selection.html#cb54-56" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Degrees of Freedom:&quot;</span>, dof)</span>
+<span id="cb54-57"><a href="comparative-analyses-of-selection.html#cb54-57" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Expected Frequencies:</span><span class="ch">\n</span><span class="st">&quot;</span>, expected,</span>
+<span id="cb54-58"><a href="comparative-analyses-of-selection.html#cb54-58" tabindex="-1"></a>           <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Counts:</span><span class="ch">\n</span><span class="st">&quot;</span>, cont_table)</span>
+<span id="cb54-59"><a href="comparative-analyses-of-selection.html#cb54-59" tabindex="-1"></a>    plot_dist_3D(cont_table)</span>
+<span id="cb54-60"><a href="comparative-analyses-of-selection.html#cb54-60" tabindex="-1"></a>    plot_dist_3D(cont_table, expected)</span>
+<span id="cb54-61"><a href="comparative-analyses-of-selection.html#cb54-61" tabindex="-1"></a>    </span>
+<span id="cb54-62"><a href="comparative-analyses-of-selection.html#cb54-62" tabindex="-1"></a>    <span class="co"># (+11) Combinations 3D; Columns: p22 ; Rows: p19 ; PLOT</span></span>
+<span id="cb54-63"><a href="comparative-analyses-of-selection.html#cb54-63" tabindex="-1"></a>    chi2_stat, p_value, dof, expected, cont_table <span class="op">=</span> <span class="op">\</span></span>
+<span id="cb54-64"><a href="comparative-analyses-of-selection.html#cb54-64" tabindex="-1"></a>                                        corr_struct(p19_struct, p22_struct, <span class="dv">11</span>)</span>
+<span id="cb54-65"><a href="comparative-analyses-of-selection.html#cb54-65" tabindex="-1"></a>    expected <span class="op">=</span> pd.DataFrame(expected, index<span class="op">=</span>order, columns<span class="op">=</span>order)</span>
+<span id="cb54-66"><a href="comparative-analyses-of-selection.html#cb54-66" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;+11</span><span class="ch">\n</span><span class="st">Chi-Square Statistic:&quot;</span>, chi2_stat)</span>
+<span id="cb54-67"><a href="comparative-analyses-of-selection.html#cb54-67" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;P-value:&quot;</span>, p_value)</span>
+<span id="cb54-68"><a href="comparative-analyses-of-selection.html#cb54-68" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Degrees of Freedom:&quot;</span>, dof)</span>
+<span id="cb54-69"><a href="comparative-analyses-of-selection.html#cb54-69" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Expected Frequencies:</span><span class="ch">\n</span><span class="st">&quot;</span>, expected,</span>
+<span id="cb54-70"><a href="comparative-analyses-of-selection.html#cb54-70" tabindex="-1"></a>          <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Counts:</span><span class="ch">\n</span><span class="st">&quot;</span>, cont_table)</span>
+<span id="cb54-71"><a href="comparative-analyses-of-selection.html#cb54-71" tabindex="-1"></a>    plot_dist_3D(cont_table)</span>
+<span id="cb54-72"><a href="comparative-analyses-of-selection.html#cb54-72" tabindex="-1"></a>    plot_dist_3D(cont_table, expected)</span>
+<span id="cb54-73"><a href="comparative-analyses-of-selection.html#cb54-73" tabindex="-1"></a></span>
+<span id="cb54-74"><a href="comparative-analyses-of-selection.html#cb54-74" tabindex="-1"></a>    <span class="co"># Comparison selection structure</span></span>
+<span id="cb54-75"><a href="comparative-analyses-of-selection.html#cb54-75" tabindex="-1"></a>    comparison_letters <span class="op">=</span> [(<span class="st">&quot;H&quot;</span>, <span class="st">&quot;H&quot;</span>), </span>
+<span id="cb54-76"><a href="comparative-analyses-of-selection.html#cb54-76" tabindex="-1"></a>                      (<span class="st">&quot;H&quot;</span>, <span class="st">&quot;S&quot;</span>),</span>
+<span id="cb54-77"><a href="comparative-analyses-of-selection.html#cb54-77" tabindex="-1"></a>                      (<span class="st">&quot;H&quot;</span>, <span class="st">&quot;L&quot;</span>),</span>
+<span id="cb54-78"><a href="comparative-analyses-of-selection.html#cb54-78" tabindex="-1"></a>                      (<span class="st">&quot;S&quot;</span>, <span class="st">&quot;S&quot;</span>),</span>
+<span id="cb54-79"><a href="comparative-analyses-of-selection.html#cb54-79" tabindex="-1"></a>                      (<span class="st">&quot;S&quot;</span>, <span class="st">&quot;L&quot;</span>),</span>
+<span id="cb54-80"><a href="comparative-analyses-of-selection.html#cb54-80" tabindex="-1"></a>                      (<span class="st">&quot;S&quot;</span>, <span class="st">&quot;H&quot;</span>),</span>
+<span id="cb54-81"><a href="comparative-analyses-of-selection.html#cb54-81" tabindex="-1"></a>                      (<span class="st">&quot;L&quot;</span>, <span class="st">&quot;L&quot;</span>),</span>
+<span id="cb54-82"><a href="comparative-analyses-of-selection.html#cb54-82" tabindex="-1"></a>                      (<span class="st">&quot;L&quot;</span>, <span class="st">&quot;S&quot;</span>),</span>
+<span id="cb54-83"><a href="comparative-analyses-of-selection.html#cb54-83" tabindex="-1"></a>                      (<span class="st">&quot;L&quot;</span>, <span class="st">&quot;H&quot;</span>)]</span>
+<span id="cb54-84"><a href="comparative-analyses-of-selection.html#cb54-84" tabindex="-1"></a>    </span>
+<span id="cb54-85"><a href="comparative-analyses-of-selection.html#cb54-85" tabindex="-1"></a>    list_tables <span class="op">=</span>  selection_structure(p19_struct, p22_struct, df_p19, </span>
+<span id="cb54-86"><a href="comparative-analyses-of-selection.html#cb54-86" tabindex="-1"></a>                                                df_p22, comparison_letters, <span class="dv">10</span>)</span>
+<span id="cb54-87"><a href="comparative-analyses-of-selection.html#cb54-87" tabindex="-1"></a>    <span class="bu">print</span>(<span class="dv">25</span><span class="op">*</span><span class="st">&quot;-&quot;</span> <span class="op">+</span> <span class="st">&quot;+10&quot;</span> <span class="op">+</span> <span class="dv">25</span><span class="op">*</span><span class="st">&quot;-&quot;</span>)</span>
+<span id="cb54-88"><a href="comparative-analyses-of-selection.html#cb54-88" tabindex="-1"></a></span>
+<span id="cb54-89"><a href="comparative-analyses-of-selection.html#cb54-89" tabindex="-1"></a>    <span class="cf">for</span> pos, res  <span class="kw">in</span> <span class="bu">enumerate</span>(comparison_letters):</span>
+<span id="cb54-90"><a href="comparative-analyses-of-selection.html#cb54-90" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Comparison:&quot;</span>, res)</span>
+<span id="cb54-91"><a href="comparative-analyses-of-selection.html#cb54-91" tabindex="-1"></a>        <span class="bu">print</span>(list_tables[pos])</span>
+<span id="cb54-92"><a href="comparative-analyses-of-selection.html#cb54-92" tabindex="-1"></a>    </span>
+<span id="cb54-93"><a href="comparative-analyses-of-selection.html#cb54-93" tabindex="-1"></a>    list_tables <span class="op">=</span>  selection_structure(p19_struct, p22_struct, df_p19, </span>
+<span id="cb54-94"><a href="comparative-analyses-of-selection.html#cb54-94" tabindex="-1"></a>                                                df_p22, comparison_letters, <span class="dv">11</span>)</span>
+<span id="cb54-95"><a href="comparative-analyses-of-selection.html#cb54-95" tabindex="-1"></a>    <span class="bu">print</span>(<span class="dv">25</span><span class="op">*</span><span class="st">&quot;-&quot;</span> <span class="op">+</span> <span class="st">&quot;+11&quot;</span> <span class="op">+</span> <span class="dv">25</span><span class="op">*</span><span class="st">&quot;-&quot;</span>)</span>
+<span id="cb54-96"><a href="comparative-analyses-of-selection.html#cb54-96" tabindex="-1"></a>    <span class="cf">for</span> pos, res  <span class="kw">in</span> <span class="bu">enumerate</span>(comparison_letters):</span>
+<span id="cb54-97"><a href="comparative-analyses-of-selection.html#cb54-97" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Comparison:&quot;</span>, res)</span>
+<span id="cb54-98"><a href="comparative-analyses-of-selection.html#cb54-98" tabindex="-1"></a>        <span class="bu">print</span>(list_tables[pos])</span>
+<span id="cb54-99"><a href="comparative-analyses-of-selection.html#cb54-99" tabindex="-1"></a></span>
+<span id="cb54-100"><a href="comparative-analyses-of-selection.html#cb54-100" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&quot;__main__&quot;</span>:</span>
+<span id="cb54-101"><a href="comparative-analyses-of-selection.html#cb54-101" tabindex="-1"></a>    main()</span>
+<span id="cb54-102"><a href="comparative-analyses-of-selection.html#cb54-102" tabindex="-1"></a>    </span></code></pre></div>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="compositional-analyses-of-biological-sequences.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="miscellania.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/05-selection.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
