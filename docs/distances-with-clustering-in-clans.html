@@ -23,7 +23,7 @@
 <meta name="author" content="Esmeralda G. Legarda" />
 
 
-<meta name="date" content="2024-01-05" />
+<meta name="date" content="2024-01-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -255,7 +255,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="distances-with-clustering-in-clans" class="section level1 hasAnchor" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Distances with clustering in CLANS<a href="distances-with-clustering-in-clans.html#distances-with-clustering-in-clans" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>In this chapter, we proceed to parse the output of the clustering performed with CLANS (CLuster ANalysis of Sequences) software <span class="citation">(<a href="#ref-Frickey2004">Frickey and Lupas 2004</a>)</span>. CLANS conducts an all-against-all comparison of sequences and calculates p-values for the High-Scoring Segment Pairs (HSPs)<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. The output is a .clans file structured with the following sections:</p>
+<p>In this chapter, we proceed to parse the output of the clustering performed with the CLANS (CLuster ANalysis of Sequences) software <span class="citation">(<a href="#ref-Frickey2004">Frickey and Lupas 2004</a>)</span>. CLANS conducts an all-against-all comparison of sequences and calculates p-values for the High-Scoring Segment Pairs (HSPs)<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. The output is a .clans file structured with the following sections:</p>
 <ul>
 <li>Parameters</li>
 <li>Coordinates of the last 3D visualization with CLANS software</li>
@@ -298,7 +298,7 @@ div.csl-indent {
 <span id="cb2-20"><a href="distances-with-clustering-in-clans.html#cb2-20" tabindex="-1"></a>            listobjects.append(line.strip().split(<span class="st">&quot; &quot;</span>))</span>
 <span id="cb2-21"><a href="distances-with-clustering-in-clans.html#cb2-21" tabindex="-1"></a></span>
 <span id="cb2-22"><a href="distances-with-clustering-in-clans.html#cb2-22" tabindex="-1"></a>        line <span class="op">=</span> fileopen.readline().strip()</span></code></pre></div>
-<p>We retrieve the names of the groups previously assigned by the CLANS software.</p>
+<p>The names of the groups previously assigned by the CLANS software are retrieved now:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="distances-with-clustering-in-clans.html#cb3-1" tabindex="-1"></a><span class="kw">def</span> getgroups(groups):</span>
 <span id="cb3-2"><a href="distances-with-clustering-in-clans.html#cb3-2" tabindex="-1"></a>    sep_groups <span class="op">=</span> []</span>
 <span id="cb3-3"><a href="distances-with-clustering-in-clans.html#cb3-3" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> groups:</span>
@@ -341,7 +341,7 @@ div.csl-indent {
 </div>
 <div id="create-a-dataframe" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Create a DataFrame<a href="distances-with-clustering-in-clans.html#create-a-dataframe" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We create a DataFrame that includes information about the position and group for each sequence.</p>
+<p>A DataFrame is created that includes information about the position and group for each sequence.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="distances-with-clustering-in-clans.html#cb4-1" tabindex="-1"></a><span class="kw">def</span> joininfo(info, coord, groups_names):</span>
 <span id="cb4-2"><a href="distances-with-clustering-in-clans.html#cb4-2" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="distances-with-clustering-in-clans.html#cb4-3" tabindex="-1"></a>    info_df <span class="op">=</span> pd.Series([ x <span class="cf">for</span> x <span class="kw">in</span> info <span class="cf">if</span> info.index(x) <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span> ])</span>
@@ -357,7 +357,7 @@ div.csl-indent {
 </div>
 <div id="calculate-centroids-and-distances" class="section level2 hasAnchor" number="3.3">
 <h2><span class="header-section-number">3.3</span> Calculate centroids and distances<a href="distances-with-clustering-in-clans.html#calculate-centroids-and-distances" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We will use <a href="https://en.wikipedia.org/wiki/Euclidean_distance">Euclidean distance</a> as a measure of similarity between two groups. The purpose of the <code>calculate_centroids</code> function is to calculate the centroids of each group. Subsequently, the <code>calculate_distances</code> function returns a DataFrame with pairwise distances.</p>
+<p>Euclidean distance is used as a measure of similarity between two groups. The purpose of the <code>calculate_centroids</code> function is to calculate the centroids of each group. Subsequently, the <code>calculate_distances</code> function returns a DataFrame with pairwise distances.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="distances-with-clustering-in-clans.html#cb5-1" tabindex="-1"></a><span class="kw">def</span> calculate_centroids(info_df, names):</span>
 <span id="cb5-2"><a href="distances-with-clustering-in-clans.html#cb5-2" tabindex="-1"></a>    centroids <span class="op">=</span> {}</span>
 <span id="cb5-3"><a href="distances-with-clustering-in-clans.html#cb5-3" tabindex="-1"></a>    <span class="cf">for</span> element <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(names)):</span>
@@ -380,7 +380,7 @@ div.csl-indent {
 <span id="cb5-20"><a href="distances-with-clustering-in-clans.html#cb5-20" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(matrix_distances, columns <span class="op">=</span> names, index <span class="op">=</span> names)</span></code></pre></div>
 <div id="plot-the-clustermap" class="section level3 hasAnchor" number="3.3.1">
 <h3><span class="header-section-number">3.3.1</span> Plot the clustermap<a href="distances-with-clustering-in-clans.html#plot-the-clustermap" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>This function plots the distances using hierarchical clustering, which can be performed with various methods. The <a href="https://en.wikipedia.org/wiki/Cophenetic_correlation#cite_note-1">cophenetic correlation coefficient</a> serves as a metric to assess their ability to recreate pairwise distances, with higher values indicating better explanation of the pairwise relationships. Some instances of methods include <code>simple</code>, <code>average</code>, <code>complete</code>, or <code>centroid</code>.</p>
+<p>This function plots the distances using hierarchical clustering, which can be performed with various methods. The cophenetic correlation coefficient serves as a metric to assess their ability to recreate pairwise distances, with higher values indicating better explanation of the pairwise relationships. Some instances of methods include <code>simple</code>, <code>average</code>, <code>complete</code>, or <code>centroid</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="distances-with-clustering-in-clans.html#cb6-1" tabindex="-1"></a><span class="kw">def</span> plot_clans_distances(data, method):</span>
 <span id="cb6-2"><a href="distances-with-clustering-in-clans.html#cb6-2" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="distances-with-clustering-in-clans.html#cb6-3" tabindex="-1"></a>    cmap <span class="op">=</span> sns.color_palette(<span class="st">&quot;YlGn&quot;</span>, as_cmap<span class="op">=</span><span class="va">True</span>)</span>

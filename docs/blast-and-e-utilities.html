@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Blast and E-utilities | Nested genes code</title>
+  <title>Chapter 2 Blast and E-utilities | References</title>
   <meta name="description" content="This is the description of the code employed in the research." />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Blast and E-utilities | Nested genes code" />
+  <meta property="og:title" content="Chapter 2 Blast and E-utilities | References" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is the description of the code employed in the research." />
   <meta name="github-repo" content="https://github.com/llobarts/nestedgenes" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Blast and E-utilities | Nested genes code" />
+  <meta name="twitter:title" content="Chapter 2 Blast and E-utilities | References" />
   
   <meta name="twitter:description" content="This is the description of the code employed in the research." />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Esmeralda G. Legarda" />
 
 
-<meta name="date" content="2024-01-05" />
+<meta name="date" content="2024-01-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -245,7 +245,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Nested genes code</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">References</a>
           </h1>
         </div>
 
@@ -299,12 +299,12 @@ div.csl-indent {
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="blast-and-e-utilities.html#cb3-1" tabindex="-1"></a><span class="ex">elink</span> <span class="at">-db</span> protein <span class="at">-id</span> CAG38136.1 <span class="at">-target</span> nuccore <span class="kw">|</span> <span class="ex">efetch</span> <span class="at">-format</span> gbc <span class="kw">|</span> <span class="ex">xtract</span> <span class="at">-insd</span> protein_id CDS sub_sequence</span></code></pre></div>
 <p>It is also possible to obtain information in a GFF-like format for a nucleotide accession.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="blast-and-e-utilities.html#cb4-1" tabindex="-1"></a><span class="ex">esearch</span> <span class="at">-db</span> nuccore <span class="at">-query</span> OP477335.1 <span class="kw">|</span> <span class="ex">efetch</span> <span class="at">-format</span> ft</span></code></pre></div>
-<p>Or in a genbank-like format.</p>
+<p>Or in a GenBank-like format.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="blast-and-e-utilities.html#cb5-1" tabindex="-1"></a><span class="ex">esearch</span> <span class="at">-db</span> nuccore <span class="at">-query</span> OP477335.1 <span class="kw">|</span> <span class="ex">efetch</span> <span class="at">-format</span> gb</span></code></pre></div>
 </div>
 <div id="species-to-family" class="section level2 hasAnchor" number="2.3">
 <h2><span class="header-section-number">2.3</span> Species to family<a href="blast-and-e-utilities.html#species-to-family" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The following code allows us to generate a list of unique families (or other ranks) by providing a file containing species as input. The file should have one species per line.</p>
+<p>The following code allows to generate a list of unique families (or other ranks) by providing a file containing species as input. The file should have one species per line.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="blast-and-e-utilities.html#cb6-1" tabindex="-1"></a><span class="im">import</span> subprocess</span>
 <span id="cb6-2"><a href="blast-and-e-utilities.html#cb6-2" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb6-3"><a href="blast-and-e-utilities.html#cb6-3" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
