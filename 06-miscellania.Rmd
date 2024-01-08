@@ -1,0 +1,380 @@
+# Miscellania
+
+Here, you can explore how we implement some calculations and their visualizations of various issues using Python.
+
+
+## Representation of predicted disordered amino acid data
+
+We import some libraries.
+
+```{python mis1-lib, eval = FALSE, python.reticulate = FALSE}
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+```
+
+
+Now, we read a CSV file containing disordered data and a few other characteristics of each protein.
+
+```{python mis1-read, eval = FALSE, python.reticulate = FALSE}
+df_disorder = pd.read_csv("/Users/esmeralda/Documents/TFM/article/disorder_data.csv", sep=";")
+df_disorder['Length'] = pd.to_numeric(df_disorder['Length'], errors='coerce')
+
+```
+
+
+We define for the following plots in Seaborn:
+
+- The style
+- The palette
+
+```{python mis1-settings, eval = FALSE, python.reticulate = FALSE}
+# Set Seaborn style to match a similar style to Plotly
+sns.set(rc={'axes.facecolor': 'white',
+ 'axes.edgecolor': 'white',
+            "axes.grid": True, 
+            "grid.linestyle": "--", 
+            "font.size": 15, 
+            "axes.labelsize": 15, 
+            "xtick.labelsize": 12, 
+            "ytick.labelsize": 12,
+            'xtick.bottom': True,
+            'figure.facecolor': 'white',
+ 'xtick.top': False,
+ 'xtick.bottom': False,
+ 'ytick.left': True,
+ 'ytick.right': False,
+ "grid.color": "#DFDFDF",
+ 'font.sans-serif': 'Helvetica'})
+
+safe_colorblind_palette = ["#E69F00", "#6D0000", "#56B4E9", "#97E4CF", "#F0E442", "#0F425F", "#D55E00", "#000877", "#CA4E93", "#ABB6D3", "#D9F221"]
+
+# Create a figure and axes
+plt.figure(figsize=(10, 6))
+ax = sns.boxplot(data=df_disorder[df_disorder["Movement protein"] == "Movement protein"], 
+                 x="Taxonomy origin", 
+                 y="Percentage", 
+                 color="white",
+                 boxprops=dict(edgecolor='black'),
+                 whiskerprops=dict(color='black'),
+                 medianprops=dict(color='black'),
+                 capprops=dict(linewidth=2),
+                 width=0.7, 
+                 linewidth=0.6)
+
+marker_style = []
+for i in df_disorder["Movement protein"]:
+    if i == 'o':
+        marker_style.append('o')
+    else:
+        marker_style.append('X')
+
+```
+
+We can plot disorder data classified by taxonomic families. 
+
+```{python mis1-plot1, eval = FALSE, python.reticulate = FALSE}
+ax = sns.swarmplot(data=df_disorder, 
+                   x="Taxonomy origin", 
+                   y="Percentage",
+                   color="black", 
+                   palette=safe_colorblind_palette,
+                   size=7,
+                   marker="X")
+
+ax = sns.swarmplot(data=df_disorder[df_disorder["Movement protein"] == "Movement protein"], 
+                   x="Taxonomy origin", 
+                   y="Percentage",
+                   color="black", 
+                   palette=safe_colorblind_palette,
+                   marker="o",
+                   size=7)
+
+# Set plot labels and title
+plt.xlabel("Genus")
+plt.ylabel("% predicted disodered residues")
+
+# Adjust plot layout
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+plt.savefig("percentage_taxonomy.pdf", format="pdf")
+# Display the plot
+plt.show()
+```
+
+In this case, we create a plot for all the proteins, categorizing them based on whether their corresponding open reading frames are overprinted.
+
+```{python mis1-plot2, eval = FALSE, python.reticulate = FALSE}
+safe_colorblind_palette_2 = ["#054C6F", "#44AA99"]
+
+# Create a figure and axes
+plt.figure(figsize=(5, 6))
+ax = sns.boxplot(data=df_disorder[df_disorder["Movement protein"] == "Movement protein"], 
+                 x="Overlap", 
+                 y="Percentage", 
+                 color="white",
+                 boxprops=dict(edgecolor='black'),
+                 whiskerprops=dict(color='black'),
+                 medianprops=dict(color='black'),
+                 capprops=dict(linewidth=2),
+                 width=0.7, 
+                 linewidth=0.6)
+
+ax = sns.swarmplot(data=df_disorder,  
+                   x="Overlap", 
+                   y="Percentage", 
+                   color="black", 
+                   palette=safe_colorblind_palette_2,
+                   marker="X",      
+                   size=7)
+
+ax = sns.swarmplot(data=df_disorder[df_disorder["Movement protein"] == "Movement protein"],  
+                   x="Overlap", 
+                   y="Percentage", 
+                   color="black", 
+                   palette=safe_colorblind_palette_2, 
+                   marker="o",   
+                   size=7)
+
+# Set plot labels and title
+plt.xlabel("")
+plt.ylabel("% predicted disodered residues")
+
+# Adjust plot layout
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+plt.savefig("percentage_overprinted.pdf", format="pdf")
+
+# Display the plot
+plt.show()
+```
+
+
+Then, we can also create a scatter plot, utilizing the length of our proteins as a variable.
+
+```{python mis1-plot3, eval = FALSE, python.reticulate = FALSE}
+plt.figure(figsize=(8, 6))
+markers = {"Movement protein": "o", "p19": "X"}
+sns.scatterplot(data=df_disorder, x='Length', y='Disordered residues', hue='Taxonomy origin', style="Movement protein", markers=markers, palette=safe_colorblind_palette, s=40)
+plt.legend([],[], frameon=False)
+
+plt.xlabel("Length")
+plt.ylabel("Predicted disordered residues")
+
+plt.savefig("disorder_scatter_taxonomy_legend.pdf", format="pdf")
+
+plt.show()
+```
+
+
+Last but not least, in the previous plot, we can use color to distinguish proteins based on whether they were overprinted or not.
+
+```{python mis1-plot4, eval = FALSE, python.reticulate = FALSE}
+plt.figure(figsize=(8, 6))
+ax = sns.scatterplot(data=df_disorder, x='Length', y='Disordered residues', hue='Overlap',style="Movement protein", palette=safe_colorblind_palette_2, s=40)
+
+
+plt.xlabel("Length")
+plt.ylabel("Predicted disordered residues")
+plt.legend([],[], frameon=False)
+
+
+plt.savefig("disorder_scatter_overlap_legend.pdf", format="pdf")
+
+plt.show()
+```
+
+
+## Shannon's entropy
+
+In this final section, we demonstrate how to implement Shannon's entropy in Python and visually represent the data.
+
+First of all, we load the following libraries.
+
+```{python mis2-lib, eval = FALSE, python.reticulate = FALSE}
+from Bio import SeqIO
+import pandas as pd
+import scipy.stats
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+from statannotations.Annotator import Annotator
+import itertools
+```
+
+We have created two functions — one to read and another to drop the dashes from the data.
+
+```{python mis2-readandparse, eval = FALSE, python.reticulate = FALSE}
+def reading_alignment(name_file):
+    record_dict = SeqIO.to_dict(SeqIO.parse(name_file, "fasta"))
+    df_init = pd.DataFrame.from_dict(record_dict)
+    
+    return df_init
+
+def dropping_dashes(datafr):
+
+    datafr_res = []
+    indexes_dash = []
+
+    for i in range(len(datafr.index)):
+        total = datafr.iloc[i].value_counts()
+        if "-" in total.index and len(total.index) == 1:
+            indexes_dash.append(i)
+    datafr_res.append(datafr.drop(datafr.index[indexes_dash]))
+
+    return datafr_res
+```
+
+The following function is designed to calculate and store the entropy values.
+
+```{python mis2-calc, eval = FALSE, python.reticulate = FALSE}
+def calc_entropy(df, base=2):
+
+    entropies = []
+    for row in df.index:
+        counts = (df.loc[row].value_counts())
+        entropies.append(scipy.stats.entropy(counts, base=base))
+
+    return pd.DataFrame(entropies, columns=["Entropy"])
+
+```
+
+Finally, we used two functions to generate a visualization of the entropy along the sequences of each sequence analyzed and their distributions. For the distribution plots, the package `statannotations` allows us to add significance indicators calculated with the Mann-Whitney U test. Both plots are then saved as PDF files. 
+
+```{python mis2-plot, eval = FALSE, python.reticulate = FALSE}
+def plot_positions(dataframe, name, type):
+    with sns.plotting_context('notebook', font_scale = 1.2):  
+        plt.figure(figsize=(12, 5))
+        plt.bar(x=dataframe.index, height=dataframe["Entropy"], color=dataframe["Color"])
+
+        # plt.title('Shannon Entropy per Position')
+        plt.xlabel('Position (' + type + ')')
+        plt.ylabel("Shannon's Entropy")
+        plt.xlim(0,len(dataframe.index))
+        plt.savefig(name, format='pdf')
+        plt.show()
+
+def plot_distribution(result_df, color_orf, x_labels, type, name):
+    categories = list(set(result_df["Color"]))
+
+    pairs = []
+    p_values = []
+    group_pairs = list(itertools.combinations(categories, 2))
+
+    # Perform Mann-Whitney U test for each pair
+    for pair in group_pairs:
+        categ, categ_2 = pair
+
+        #print(result_df_clean[nan_mask.any(axis=1)])
+        p_values.append(scipy.stats.mannwhitneyu(result_df[result_df["Color"] == categ]["Entropy"], 
+                                                     result_df[result_df["Color"] == categ_2]["Entropy"], 
+                                                     alternative="two-sided").pvalue)
+        pairs.append((categ, categ_2))
+
+
+    formatted_pvalues = [f'p={pvalue:.3e}' for pvalue in p_values]
+    with sns.plotting_context('notebook', font_scale = 1.2):  
+        fig, ax = plt.subplots(figsize=(6, 6))
+        
+        sns.stripplot(data=result_df, x="Color", y="Entropy", ax=ax, palette=color_orf, jitter=True, size=2)
+        sns.boxplot(data=result_df, x="Color", y="Entropy", zorder=0, dodge=True, ax=ax, boxprops={'facecolor':'None'})
+        
+        ax.set_xticks(ax.get_xticks())  
+        ax.set_xticklabels(x_labels)
+        ax.set_xlabel(type)
+        ax.set_ylabel("Shannon's Entropy")
+
+        # Add annotations
+        annot = Annotator(ax=ax, pairs = pairs, data=result_df, x="Color", y="Entropy")
+        annot.set_custom_annotations(formatted_pvalues)
+        annot.configure(test_short_name="MWW")  # text_format is still simple
+        annot.set_pvalues_and_annotate(p_values)
+        
+        plt.savefig(name, format='pdf')
+        plt.show()
+
+```
+
+Now, we apply the functions and select specific features as colors for display. We repeat these steps twice, once for nucleotides and once for amino acids.
+
+```{python mis2-main, eval = FALSE, python.reticulate = FALSE}
+def main():
+    ############################################################################
+    #                                NUCLEOTIDES                               #
+    ############################################################################
+
+    RdRp_nt_file = "/Users/esmeralda/Documents/TFM/article/alignments/RdRp_nt_aligned.fasta"
+    cp_nt_file = "/Users/esmeralda/Documents/TFM/article/alignments/cp_nt_aligned_filtered.fasta"
+    p22_nt_file = "/Users/esmeralda/Documents/TFM/article/alignments/p22_nt_alignment.fasta"
+
+    list_df = [RdRp_nt_file, cp_nt_file, p22_nt_file]
+    all_res = []
+    for name_df in list_df:
+        df_init = reading_alignment(name_df)
+        df_filtered = dropping_dashes(df_init)
+        all_res.append(calc_entropy(df_filtered[0]))
+    
+    color_orf = ["#E07A5F", "#ECBC6F", "#81B29A", "#3D405B"]
+    len_orf1 = 993 + 81
+    all_res[0]["Color"] = [color_orf[0]]*len_orf1 + [color_orf[1]]*(len(all_res[0].index)-len_orf1)
+    all_res[1]["Color"] = color_orf[2]
+    all_res[2]["Color"] = color_orf[3]
+
+    result_df = pd.concat(all_res, ignore_index=True)
+    plot_positions(result_df, 
+                   '/Users/esmeralda/Documents/TFM/Review/entropy_plot.pdf', 
+                   type="nucleotides")
+
+    x_labels = ["ORF1","RdRp", "CP", "p22/p19"]
+    plot_distribution(result_df, color_orf, x_labels, "CDS",
+                    '/Users/esmeralda/Documents/TFM/Review/entropy_dist_nt.pdf')
+    
+    results_codons = result_df["Entropy"]
+
+
+
+    ############################################################################
+    #                                AMINO ACIDS                               #
+    ############################################################################
+
+    RdRp_file = "/Users/esmeralda/Documents/TFM/article/alignments/RdRp_aligned.fa"
+    cp_file = "/Users/esmeralda/Documents/TFM/article/alignments/cp_aligned.fa"
+    p22_file = "/Users/esmeralda/Documents/TFM/article/alignments/p22_alignment_33.fa"
+    p19_file = "/Users/esmeralda/Documents/TFM/article/alignments/p19_aligned.fa"
+    list_df = [RdRp_file, cp_file, p22_file, p19_file]
+    
+    all_res = []
+    for name_df in list_df:
+        df_init = reading_alignment(name_df)
+        df_filtered = dropping_dashes(df_init)
+        all_res.append(calc_entropy(df_filtered[0]))
+
+    color_orf = ["#E07A5F", "#ECBC6F", "#81B29A", "#3D405B", "#B5AA9D"]
+    len_orf1 = (993 + 81)//3
+    all_res[0]["Color"] = [color_orf[0]]*len_orf1 + [color_orf[1]]*(len(all_res[0].index)-(len_orf1))
+    all_res[1]["Color"] = color_orf[2]
+    all_res[2]["Color"] = color_orf[3]
+    all_res[3]["Color"] = color_orf[4]
+
+    result_df = pd.concat(all_res, ignore_index=True)
+    plot_positions(result_df, 
+                   '/Users/esmeralda/Documents/TFM/Review/entropy_plot_aa.pdf',
+                   'amino acids')
+    
+    x_labels = ["p33","p92", "CP", "p22", "p19"]
+    plot_distribution(result_df, color_orf, x_labels, "Product",
+                    '/Users/esmeralda/Documents/TFM/Review/entropy_dist_aa.pdf')
+    
+    results_aa = result_df["Entropy"]
+
+    # Kruskal-Wallis test
+    statistic, p_value = scipy.stats.kruskal(results_codons, results_aa)
+    print(statistic, p_value)
+
+if __name__ == "__main__":
+    main()
+```
+
+

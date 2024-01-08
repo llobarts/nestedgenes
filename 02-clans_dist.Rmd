@@ -1,0 +1,200 @@
+# Distances with clustering in CLANS
+
+In this chapter, we proceed to parse the output of the clustering performed with the CLANS (CLuster ANalysis of Sequences) software [@Frickey2004]. CLANS conducts an all-against-all comparison of sequences and calculates p-values for the High-Scoring Segment Pairs (HSPs)^[High-Scoring Segment Pairs: regions of local similarity found during sequence comparison with BLAST (Basic Local Alignment Search Tool)]. The output is a .clans file structured with the following sections:
+
+- Parameters
+- Coordinates of the last 3D visualization with CLANS software
+- Sequences
+- Clusters of sequences
+- Positions for each sequence in 3D space
+- HSP values
+
+Our aim here is to generate a matrix of distances between protein groups clustered with CLANS for their hierarchical clustering, using Euclidean distances.
+
+## Read the CLANS file
+
+```{python clans-lib, eval = FALSE, python.reticulate = FALSE}
+import os
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy.cluster.hierarchy import linkage
+from scipy.spatial.distance import squareform
+from scipy.cluster import hierarchy
+```
+
+There are two functions responsible for reading information. The first one, `read_clans_file`, collects three types of information at the sequence, group, and position per sequence levels, using the second function, `get_info_chunk`.
+
+```{python clans-read1, eval = FALSE, python.reticulate = FALSE}
+def read_clans_file(filename):
+    listobjects = [[],[],[]]
+    wordinit_list = ["<seq>", "<seqgroups>", "<pos>"]
+    wordend_list = ["</seq>", "</seqgroups>", "</pos>"]
+
+    with open(filename, 'r') as fileopen:
+        for i in range(len(wordinit_list)):
+            get_info_chunk(wordinit_list[i], wordend_list[i], listobjects[i], 
+                                                    fileopen)
+    return listobjects
+  
+def get_info_chunk(wordinit, wordend, listobjects, fileopen):
+    end = True
+    line = fileopen.readline().strip()
+
+    while not line.startswith(wordend):
+        if line.startswith(wordinit):
+            end = False
+        elif not end:
+            listobjects.append(line.strip().split(" "))
+
+        line = fileopen.readline().strip()
+```
+
+The names of the groups previously assigned by the CLANS software are retrieved now:
+
+```{python clans-read2, eval = FALSE, python.reticulate = FALSE}
+def getgroups(groups):
+    sep_groups = []
+    for i in groups:
+        for l in i:
+            if l.startswith("numbers"):
+                sep_groups.append(l.replace("numbers=", "").split(";")[:-1])
+
+    return sep_groups
+
+def assign_groups(groups, size):
+    last_group = len(groups)
+    numbers_group = [last_group] * size
+    cont = 0
+    
+    for group in range(len(groups)):
+        for i in range(len(groups[group])):
+            numbers_group[int(groups[group][i])] = cont
+        cont += 1
+
+    return numbers_group
+  
+def assingnamegroup(groups, numbers_group):
+
+    names_group = []
+    names = []
+    for i in groups:
+        for l in i:
+            if l.startswith("name") and l.find("_") > 0:
+                names.append(l.replace("name=", "").replace("_", ", "))
+            elif l.startswith("name"):
+                names.append(l.replace("name=", ""))
+    cont = 0
+    for i in numbers_group:
+        if i < len(names):
+            names_group.append(names[i])
+        else: 
+            names_group.append("NaN")
+
+    return names, names_group
+```
+
+## Create a DataFrame
+
+A DataFrame is created that includes information about the position and group for each sequence.
+
+```{python clans-join, eval = FALSE, python.reticulate = FALSE}
+def joininfo(info, coord, groups_names):
+
+    info_df = pd.Series([ x for x in info if info.index(x) % 2 == 0 ])
+    info_df_aux = pd.Series([ x for x in info if info.index(x) % 2 != 0 ])
+
+    coords_df = pd.DataFrame(coord, columns = ["number", "x", "y", "z"])
+    del coords_df["number"]
+
+    group_df = pd.DataFrame(groups_names, columns = ["group"])
+    info_df = pd.concat([info_df, info_df_aux, coords_df, group_df], axis=1)
+    
+    return info_df
+```
+
+
+## Calculate centroids and distances
+
+Euclidean distance is used as a measure of similarity between two groups. The purpose of the `calculate_centroids` function is to calculate the centroids of each group. Subsequently, the `calculate_distances` function returns a DataFrame with pairwise distances.
+
+```{python clans-dist, eval = FALSE, python.reticulate = FALSE}
+def calculate_centroids(info_df, names):
+    centroids = {}
+    for element in range(len(names)):
+        info_df_group = info_df[info_df["group"] == names[element]]
+        centroids[element] = [np.mean([float(i) for i in list(info_df_group["x"])]), 
+            np.mean([float(i) for i in list(info_df_group["y"])]), 
+            np.mean([float(i) for i in list(info_df_group["z"])])]
+
+    return centroids
+
+def calculate_distances(centroids, names):
+    matrix_distances = np.zeros(shape=(len(centroids),len(centroids)))
+    for centroid_A in centroids.keys():
+        for centroid_B in centroids.keys():
+            matrix_distances[centroid_A][centroid_B] =  \
+            np.sqrt((centroids[centroid_B][0] - centroids[centroid_A][0])**2 + \
+            (centroids[centroid_B][1] - centroids[centroid_A][1])**2 + \
+                (centroids[centroid_B][2] - centroids[centroid_A][2])**2)
+
+    return pd.DataFrame(matrix_distances, columns = names, index = names)
+```
+
+
+### Plot the clustermap
+
+This function plots the distances using hierarchical clustering, which can be performed with various methods. The cophenetic correlation coefficient serves as a metric to assess their ability to recreate pairwise distances, with higher values indicating better explanation of the pairwise relationships. Some instances of methods include `simple`, `average`, `complete`, or `centroid`.
+
+```{python clans-plot, eval = FALSE, python.reticulate = FALSE}
+def plot_clans_distances(data, method):
+
+    cmap = sns.color_palette("YlGn", as_cmap=True)
+    cmap = cmap.reversed()
+
+    # Compute a hierarchical clustering
+    data_square = squareform(data)
+    linkage = hierarchy.linkage(data_square, method=method)
+
+    # Plot a heatmap with clustered rows and columns
+    sns.clustermap(data,
+                   figsize=(8,8),
+                   method=method,
+                   row_linkage=linkage,
+                   col_linkage=linkage,
+                   cmap=cmap,
+                   vmin=0, vmax=90,
+                   cbar_pos=(0.02, 0.8225, 0.02, 0.18))
+    
+    c, coph_dists = hierarchy.cophenet(linkage, data_square)
+
+    # Print, save pdf and show
+    print("Cophenetic correlation coefficient:", c)
+    plt.savefig("/Users/esmeralda/Documents/TFM/3_testprograms/familes_core_AF2/analyse/heatmap.pdf", format="pdf", bbox_inches="tight")
+    plt.show()
+```    
+
+
+## Run
+
+```{python clans-main, eval = FALSE, python.reticulate = FALSE}
+# Read information
+name =  "4406328_3D_comparison.clans"
+info, groups, coord = read_clans_file(name)
+
+# Parse assigned groups and their names
+sep_groups = getgroups(groups)
+numbers_group = assigngroups(sep_groups, len(coord))
+names, groups_names = assingnamegroup(groups, numbers_group)
+
+# Joined into a DataFrame
+info_df = joininfo(info, coord, groups_names)
+
+# Performing calculations for Euclidean distances in 3D space
+centroids = calculate_centroids(info_df, names)
+matrix_distances = calculate_distances(centroids, names)
+
+# Plot a clustermap
+plot_clans_distances(matrix_distances, method)
+```

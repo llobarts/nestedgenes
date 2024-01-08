@@ -1,0 +1,156 @@
+# Distances with ChimeraX
+
+UCSF ChimeraX-1.6.1 [@Pettersen2021] includes routines implemented in Python 3.9 that can be leveraged. The objective of this chapter is to obtain a matrix of RMSD (root-mean-square deviation) distances using a ChimeraX tool called MatchMaker. This matrix will be utilized for hierarchical clustering.
+
+## Obtaining RMSD with ChimeraX
+
+Given a list of 29 PDB files, the following code implements automated pairwise comparisons. The code from this initial section should be compiled and saved in a Python file (.py) that can be opened using the 'open' option in the menu bar of the ChimeraX software.
+
+### Import libraries and data
+
+We use the package chimerax, which was previously installed using the pip command. For the pairwise comparison, all the structures in PDB format were saved in the same directory.
+
+```{python chimx-lib, eval = FALSE, python.reticulate = FALSE}
+import os
+from chimerax.core.commands import run
+
+# Directory containing the PDB files
+pdb_dir = '/Users/esmeralda/Documents/TFM/article/structures'
+
+# List all PDB files in the directory
+pdb_files = [f for f in os.listdir(pdb_dir) if f.endswith('.pdb')]
+
+# Load PDB structures
+structures = []
+for pdb_file in pdb_files:
+    file_path = os.path.join(pdb_dir, pdb_file)
+    structure = run(session, "open " + file_path)
+    structures.append(structure[0])  # Append the first (and only) structure from the result list
+```
+
+### MatchMaker
+
+This step involves configuring various parameters, such as the type of alignment and the weight of secondary structure in the alignment. The names of the structures were formatted according to the chosen PDB file nomenclature type. It's worth noting that the function `run` provides flexibility for users to input any Chimera command, and `session` refers to the current session. In this case, we have opted to save full RMSD values.
+
+```{python chimx-mmker, eval = FALSE, python.reticulate = FALSE}
+# Parameters for MatchMaker alignment
+alignment_type = 'Needleman-Wunsch'  # Type of alignment: 'default', 'sequence', 'secondary_structure'
+ss_weight = 0.7  # Weight of secondary structure in alignment (0.0 to 1.0)
+
+rmsd_values = []
+# Calculate RMSD all-against-all
+for i, structure1 in enumerate(structures):
+    for j, structure2 in enumerate(structures[i+1:]):
+        rmsd_result = run(session, f"matchmaker #{structure2.id_string} to #{structure1.id_string} alg {alignment_type} ssFraction {ss_weight}")
+        rmsd_value = rmsd_result[0]
+        print(rmsd_value.keys())
+        name1 = structure1.name.split('_')[0]
+        name2 = structure2.name.split('_')[0]
+        
+        rmsd_values.append([name1, name2, rmsd_value["full RMSD"]])
+```
+
+### Save csv file
+
+The pairwise RMSD values are stored in a CSV file, with one comparison per line.
+
+```{python chimx-save, eval = FALSE, python.reticulate = FALSE}
+# Save RMSD values to CSV file
+csv_file = '/Users/esmeralda/Documents/TFM/Chimera_compare/rmsd_values.csv'
+with open(csv_file, 'w') as file:
+    file.write('Structure 1,Structure 2,RMSD\n')
+    for row in rmsd_values:
+        file.write(','.join(str(value) for value in row) + '\n')
+```
+
+Please remember to close the files. We have completed the data acquisition process in ChimeraX software.
+
+```{python chimx-close, eval = FALSE, python.reticulate = FALSE}
+# Close the structures
+for structure in structures:
+    run(session, f'close #{structure.id_string}')
+```
+
+## Hiarachical clustering
+
+Now that we have the RMSD values in a CSV file, we proceed to construct the matrix of distances in our preferred code editor using the following code.
+
+### Libraries and read csv
+
+```{python chimx-lib2, eval = FALSE, python.reticulate = FALSE}
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from scipy.cluster.hierarchy import linkage
+from scipy.spatial.distance import squareform
+from scipy.cluster import hierarchy
+
+# Read node pairs and corresponding distances from a CSV file
+df = pd.read_csv('/Users/esmeralda/Documents/TFM/Chimera_compare/rmsd_values.csv', sep=",")
+```
+
+### Create matrix
+
+A matrix as a DataFrame is created using the pandas package.
+
+```{python chimx-matrix, eval = FALSE, python.reticulate = FALSE}
+# Extract unique node labels
+nodes = sorted(set(df['Structure 1']).union(df['Structure 2']))
+
+# Create a dictionary to map node labels to matrix indices
+node_indices = {node: index for index, node in enumerate(nodes)}
+
+# Initialize the distance matrix as a DataFrame
+matrix = pd.DataFrame(index=nodes, columns=nodes)
+matrix = matrix.fillna(0.0)
+
+# Assign distances to matrix based on node pairs
+for _, row in df.iterrows():
+    node1 = row['Structure 1']
+    node2 = row['Structure 2']
+    distance = row['RMSD']
+    matrix.loc[node1, node2] = distance
+    matrix.loc[node2, node1] = distance
+```
+
+### Plot the clustermap
+
+This function generates a hierarchical clustering plot for the distances using various methods. The cophenetic correlation coefficient serves as a metric to assess their ability to recreate the pairwise distances — higher values indicate a better explanation of pairwise relationships.
+
+```{python chimx-plot, eval = FALSE, python.reticulate = FALSE}
+def plot_rmsd_distances(data, method):
+
+    # Compute a hierarchical clustering
+    data_square = squareform(data)
+    linkage = hierarchy.linkage(data_square, method=method, optimal_ordering=True)
+
+    # Plot a heatmap with clustered rows and columns
+    sns.clustermap(data,
+                   method=method,
+                   figsize=(8,8),
+                   row_linkage=linkage,
+                   col_linkage=linkage,
+                   cmap="viridis",
+                   vmin=0, vmax=25,
+                   cbar_pos=(0.02, 0.8225, 0.02, 0.18)
+                   )
+    # Calculate the cophenetic correlation coefficient
+    c, coph_dists = hierarchy.cophenet(linkage, data_square)
+
+    # Print the cophenetic correlation coefficient
+    print("Cophenetic correlation coefficient:", c)
+  
+    # Save in pdf format and show
+    plt.savefig("heatmap_structure.pdf", format="pdf", bbox_inches="tight")
+    plt.show()
+```
+
+We run the preceding function to generate the plot and display the cophenetic correlation coefficient. Examples of methods include `simple`, `average`, `complete` or `centroid`.
+
+```{python chimx-main, eval = FALSE, python.reticulate = FALSE}
+method = "centroid"
+plot_rmsd_distances(matrix, method)
+```
+
+<!-- **IMAGE PLOT** -->

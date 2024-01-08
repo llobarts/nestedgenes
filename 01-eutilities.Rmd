@@ -1,0 +1,105 @@
+# Blast and E-utilities
+
+## PSI-BLAST
+
+This section shows a Bash file that enables the quick execution of PSI-BLAST [@Altschul1997] with a simple command for various inputs, all saved in the same directory.
+
+```{bash util-psiblast, eval = FALSE}
+#!/bin/bash
+# This program generates results from running PSI-BLAST software
+# Reading FLAGS
+while getopts :p:e:i:d:D:t: flag
+do
+    case ${flag} in
+        p) psiblast=${OPTARG};;
+        e) evalue=${OPTARG};;
+        i) iter=${OPTARG};;
+        d) dbname=${OPTARG};;
+        D) dbpath=${OPTARG};;
+        t) threads=${OPTARG};;
+    esac
+done
+
+# Initial settings
+format='7 qaccver saccver pident length mismatch gapopen qstart qend sstart send stitle ssciname sskingdom'
+currpath=$(pwd)
+evalue_float=$(expr $evalue)
+num_itera=$(expr $iter)
+
+# Create directory
+OUTPUT_DIR=${currpath}/Results/temp/psiblast_${evalue}_${iter}
+cd $dbpath
+
+for INPUT in $(ls ${currpath}/Results/temp/Fastafiles)
+do
+# Run PSI-BLAST
+OUTPUT=${OUTPUT_DIR}/${INPUT%.*}_${evalue}_${iter}
+code=$($psiblast -query ${currpath}/Results/temp/Fastafiles/$INPUT -db $dbname -evalue $evalue_float -num_iterations $num_itera -outfmt "$format" -out $OUTPUT.blast -out_pssm $OUTPUT.matrix.smp -seg yes -save_pssm_after_last_round -num_threads $threads)
+eval $code
+done
+```
+
+Run the following code in the terminal:
+
+```{bash util-psiblast2, eval = FALSE}
+/bin/sh Models/dopsiblast.sh -p path_psiblast -e e_value -i max_iter -d db_name -D db_path -t num_threads
+```
+
+
+## Protein ID to nucleotides
+
+Here is a command that proves highly useful when changing to nucleotide analysis. The output comprises three columns: the accession number of the protein, the accession number of the nucleotide, and the nucleotide sequence.
+
+```{bash util-idid, eval = FALSE}
+elink -db protein -id CAG38136.1 -target nuccore | efetch -format gbc | xtract -insd protein_id CDS sub_sequence
+```
+
+It is also possible to obtain information in a GFF-like format for a nucleotide accession.
+
+```{bash util-gff, eval = FALSE}
+esearch -db nuccore -query OP477335.1 | efetch -format ft
+```
+
+Or in a GenBank-like format.
+
+```{bash util-gff2, eval = FALSE}
+esearch -db nuccore -query OP477335.1 | efetch -format gb
+```
+
+## Species to family
+
+The following code allows to generate a list of unique families (or other ranks) by providing a file containing species as input. The file should have one species per line.
+
+```{python eutils-taxon, eval = FALSE, python.reticulate = FALSE}
+import subprocess
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Read a list of species from a file
+with open('virus_species.txt', 'r') as f:
+    virus_list = [line.strip() for line in f]
+
+# Initialize an empty dictionary to store frequencies of different families.
+family_counts = {}
+
+# Create a loop to iterate through the virus list and retrieve lineage information
+for virus in virus_list:
+    command = f'esearch -db taxonomy -query "{virus}[Organism]" | efetch -format docsum | xtract -pattern DocumentSummary -element Lineage'
+    output = subprocess.check_output(command, shell=True)
+    lineage = output.decode().strip()
+    
+    # Extract the family name from the lineage and increment the frequency count.
+    if len(lineage) != 0:
+        family = lineage.split(";")[2].strip()
+        family_counts[family] = family_counts.get(family, 0) + 1
+
+print(len(family_counts.keys()))
+print(len(family_counts.keys()))
+
+# Convert the family counts into a Pandas Data Frame and visualize them as a bar chart.
+df = pd.DataFrame.from_dict(family_counts, orient='index', columns=['Frequency'])
+ax = df.plot(kind='bar', rot=0, legend=None)
+ax.set_xlabel('Virus Family')
+ax.set_ylabel('Frequency')
+plt.show()
+```

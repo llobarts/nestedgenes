@@ -1,0 +1,430 @@
+# Compositional analyses of biological sequences
+
+Compositional data can be valuable for comparing two or more groups, potentially revealing over represented characteristics. Here, we present code for comparing movement proteins and their corresponding encoding genes, both with and without overlapping frames.
+
+```{python comp-lib, eval = FALSE, python.reticulate = FALSE}
+from Bio import SeqIO
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import scipy.stats
+import seaborn as sns
+from statannotations.Annotator import Annotator
+```
+
+We define a table of codons and amino acids, accompanied by a classification of amino acids based on their physicochemical properties. It's worth noting that the table of codons is ordered by the degeneracy of the genetic code.
+
+```{python comp-classif, eval = FALSE, python.reticulate = FALSE}
+table_DNA_to_codon = {"M": ["ATG"],
+                      "W": ["TGG"],
+                      "C": ["TGT", "TGC"],
+                      "D": ["GAT", "GAC"],
+                      "E": ["GAA", "GAG"],
+                      "F": ["TTT", "TTC"],
+                      "H": ["CAT", "CAC"],
+                      "K": ["AAA", "AAG"],
+                      "N": ["AAT", "AAC"], 
+                      "Q": ["CAA", "CAG"],
+                      "Y": ["TAT", "TAC"],
+                      "I": ["ATT", "ATC", "ATA"],
+                      "A": ["GCT", "GCC", "GCA", "GCG"], 
+                      "G": ["GGT", "GGC", "GGA", "GGG"],
+                      "P": ["CCT", "CCC", "CCA", "CCG"],
+                      "T": ["ACT", "ACC", "ACA", "ACG"],
+                      "V": ["GTT", "GTC", "GTA", "GTG"],
+                      "L": ["CTT", "CTC", "CTA", "CTG", "TTA", "TTG"],
+                      "R": ["CGT", "CGC", "CGA", "CGG", "AGA", "AGG"],
+                      "S": ["TCT", "TCC", "TCA", "TCG", "AGT", "AGC"],
+                      "STOP": ["TAA", "TGA", "TAG"]
+                      }
+
+features_aa = {"nonpolarbig": ["F", "W", "L", "I", "M"],
+               "nonpolar": ["V", "P", "A", "G"],
+               "polar": ["S", "C", "N", "Q", "T", "Y"],
+               "basic": ["K", "R", "H"],
+               "acidic": ["D", "E"]}
+
+# Bind the codon correspondence of amino acids and amino acid features
+codons_byfeatures = {}
+for feat in features_aa:
+    codons_byfeatures[feat] = []
+    for aminoacid in features_aa[feat]:
+        for codon in table_DNA_to_codon[aminoacid]:
+            codons_byfeatures[feat].append(codon)
+
+# Add STOP codons
+codons_byfeatures["STOP"] = table_DNA_to_codon["STOP"]
+```
+
+
+## Amino acids
+
+We counted the number of amino acids within each group of sequences, encompassing the 20 essential amino acids.
+
+```{python comp-aa-read, eval = FALSE, python.reticulate = FALSE}
+
+def getAA(seq, letter):
+	return(round((sum([1.0 for nucl in seq if nucl in [letter]]) / (len(seq)-seq.count("-"))), ndigits=2))
+
+paths = ["p19_aligned.fa", "p22_aligned.fa", "p22 core_aligned.fa", "other cores_allMP.fa", "RdRp_aligned.fa", "CP_aligned.fa"] 
+letters = ["M", "W", "C", "D", "E", "F", "H", "K", "N", "Q", 
+            "Y", "I", "A", "G", "P", "T", "V", "L", "R", "S"]
+df_aa = []
+aa_means = []
+aa_medians = []
+aa_std = []
+
+for i, aminoacid in enumerate(letters): 
+    AA_content = []
+    for alignment in paths:
+        name = alignment[0:alignment.find("_")]
+        for record in SeqIO.parse(alignment, "fasta"):
+            count = getAA(str(record.seq), aminoacid)
+            AA_content.append([count, name])
+    name = aminoacid
+    df_aa.append(pd.DataFrame(AA_content, columns=[name, "Sequence"]))
+
+    aa_means.append(df_aa[i].groupby("Sequence").mean())
+    aa_medians.append(df_aa[i].groupby("Sequence").median())
+    aa_std.append(df_aa[i].groupby("Sequence").std())
+```
+
+In this case, we chose to plot and compare the medians of amino acid proportions (out of the total number of amino acids in the sequence).
+
+```{python comp-aa-plot, eval = FALSE, python.reticulate = FALSE}
+hm_medians = pd.concat(aa_medians, axis = 1)
+hm_medians = hm_medians.reindex(index = ['RdRp','CP','p19', 'p22', 'p22 core', 'other cores'])
+
+fig, ax = plt.subplots()
+plt.rcParams["figure.figsize"] = [12,1.5]
+sns.heatmap(hm_medians, ax=ax, cmap="viridis")
+plt.xlabel("Amino acid")
+
+plt.tight_layout()
+```
+
+
+## Nucleotides
+
+Our initial approach involved quantifying the proportion of nucleotides in various genes, with special attention to the overlapping region of the p19 and p22 genes.
+
+```{python comp-nt-read1, eval = FALSE, python.reticulate = FALSE}
+def getNT(seq, letter):
+	return(round((sum([1.0 for nucl in seq if nucl in [letter]]) / (len(seq)- seq.count("-"))), ndigits=2))
+
+paths = ["RdRp_nt_aligned.fa", "CP_nt_aligned.fa", "p19_nt_aligned.fa", "p22_nt_aligned.fa", "/Users/esmeralda/Documents/TFM/RevTrans/final/nt/alignments/concatenate/p22 core_nt_alignment.fa", "other cores_nt.fa"] 
+letters = ["A", "T", "C", "G"]
+df_nt = []
+nt_only_means = []
+nt_only_medians = []
+nt_only_std = []
+
+for i, nucleot in enumerate(letters):
+    NT_content = []
+    for alignment in paths:
+        name = alignment[0:alignment.find("_")]
+        if len(name) > 50:
+             name = "p22 core"
+        for record in SeqIO.parse(alignment, "fasta"):
+            count = getNT(str(record.seq), nucleot)
+            NT_content.append([count, name])
+    if nucleot == "T":
+        nucleot = "U"
+    
+    name = nucleot
+    df_nt.append(pd.DataFrame(NT_content, columns=[name, "Sequence"]))
+
+    nt_only_means.append(df_nt[i].groupby("Sequence").mean())
+    nt_only_medians.append(df_nt[i].groupby("Sequence").median())
+    nt_only_std.append(df_nt[i].groupby("Sequence").std())
+```
+
+Additionally, we were interested in the positions of codons (1st, 2nd, and 3rd nucleotides) and their nucleotide abundances.
+
+```{python comp-nt-read2, eval = FALSE, python.reticulate = FALSE}
+def getPosCodon(seq, letter, start):
+    count = 0
+    for nucl in range(start, len(seq), 3):
+        if seq[nucl] == letter:
+            count += 1.0
+	
+    return round(count/((len(seq)- seq.count("-"))/3), ndigits=2)
+
+general = []
+
+for start in range(3):
+    df_nt = []
+    nt_pos_means = []
+    nt_pos_medians = []
+    nt_pos_std = []
+
+    for i, nucleot in enumerate(letters):
+        NT_content = []
+        for alignment in paths:
+            name = alignment[0:alignment.find("_")]
+            if len(name) > 50:
+                name = "p22 core"
+            for record in SeqIO.parse(alignment, "fasta"):
+                count = getPosCodon(str(record.seq), nucleot, start)
+                NT_content.append([count, name])
+        
+        if nucleot == "T":
+            name = "U" + str(start + 1)
+        else:
+            name = nucleot + str(start + 1)
+            
+        df_nt.append(pd.DataFrame(NT_content, columns=[name, "Sequence"]))
+
+        nt_pos_means.append(df_nt[i].groupby("Sequence").mean())
+        nt_pos_medians.append(df_nt[i].groupby("Sequence").median())
+        nt_pos_std.append(df_nt[i].groupby("Sequence").std())
+
+    general.append(nt_pos_medians)
+```
+
+
+We now combine all nucleotide data and generate a heatmap.
+
+```{python comp-nt-plot, eval = FALSE, python.reticulate = FALSE}
+nucleotides_matrix = pd.concat([nt_only_medians[0],nt_only_medians[1],nt_only_medians[2],nt_only_medians[3],
+                                                general[0][0], general[0][1], general[0][2], general[0][3],
+                                                general[1][0], general[1][1], general[1][2], general[1][3],
+                                                general[2][0],general[2][1], general[2][2], general[2][3]],
+                                                axis=1)
+fig, ax = plt.subplots()
+plt.rcParams["figure.figsize"] = [20,1.5]
+nucleotides_matrix = nucleotides_matrix.reindex(index = ['RdRp','CP','p19', 'p22', 'p22 core', 'other cores'])
+sns.heatmap(nucleotides_matrix, ax=ax, cmap="viridis")
+plt.xlabel("Nucleotide")
+
+plt.tight_layout()
+```
+
+
+## Dinuclotides
+
+We read dinucleotides, calculate their relativized values, and plot the medians.
+
+```{python comp-dint-funtions, eval = FALSE, python.reticulate = FALSE}
+
+def read_diNT(path):
+    chains_dint = SeqIO.parse(path, "fasta")
+
+    chain_dint_p22_core = []
+    for chain in chains_dint:
+        dint = {}
+        seq = str(chain.seq)
+        for ch in range(len(seq)-1):
+            dinuc = seq[ch:ch+2].replace("T", "U")
+            if dinuc in dint:
+                dint[dinuc] += 1
+            else:
+                if dinuc.find("-")<0 and dinuc.find("N")<0:
+                    dint[dinuc] = 1
+        chain_dint_p22_core.append(dint)
+
+    return pd.DataFrame.from_dict(chain_dint_p22_core)
+
+def rel_diNT(df_dint):
+    return df_dint.divide(df_dint.sum(axis=1), axis=0)
+
+def stats_composition(df_composition, stat="median"):
+    if stat == "median":
+        return pd.DataFrame.from_dict(df_composition.mean())
+    elif stat == "mean":
+        return pd.DataFrame.from_dict(df_composition.median())
+    elif stat == "std":
+        return pd.DataFrame.from_dict(df_composition.std())
+    
+def join_medians(median_df):
+    dint_comparison = pd.concat([median_df[0],
+                                median_df[1],
+                                median_df[2],
+                                median_df[3],
+                                median_df[4],
+                                median_df[5][0][list(median_df[0].index)]], axis=1)
+
+    dint_comparison.columns = ["RdRp", "CP", "p19", "p22", "p22_core", "other cores"]
+
+    return dint_comparison.T
+```
+
+Then, we plot a heatmap with the shares of both nucleotides and nucleotides per codon position.
+
+```{python comp-dint-main, eval = FALSE, python.reticulate = FALSE}
+# Paths of fasta files with nucleotide sequences
+paths = ["RdRp_nt_aligned.fa",
+         "cp_nt_aligned.fa",
+         "p19_nt_aligned.fa",
+         "p22_nt_aligned.fa",
+         "/Users/esmeralda/Documents/TFM/RevTrans/final/nt/alignments/concatenate/p22 core_nt_alignment.fa",
+         "other cores_nt.fa"]
+
+order_names = []
+median_df = []
+
+for path in paths:
+    df_dint = read_diNT(path)
+    df_dint_rel = rel_diNT(df_dint)
+    median_df.append(stats_composition(df_dint_rel))
+
+summary_diNT = join_medians(median_df)
+
+fig, ax = plt.subplots()
+plt.rcParams["figure.figsize"] = [12,1.5]
+sns.heatmap(summary_diNT,ax=ax, cmap="viridis")
+plt.xlabel("Dinucleotide")
+
+plt.tight_layout()
+```
+
+
+## Codons
+
+We define the paths of the FASTA files.
+
+```{python comp-read-codons, eval = FALSE, python.reticulate = FALSE}
+concatenate_dir = "/Users/esmeralda/Documents/TFM/RevTrans/final/nt/alignments/concatenate/"
+paths = [ concatenate_dir + "RdRp_nt_aligned.fasta",
+         concatenate_dir + "cp_nt_aligned_filtered.fasta",
+         concatenate_dir + "p19_nt_alignment.fasta",
+         concatenate_dir + "p22_nt_alignment.fasta",
+         concatenate_dir + "p22 core_nt_alignment.fa",
+         # concatenate_dir + "union/sequence_data.fas",
+         "/Users/esmeralda/Documents/TFM/overlap_comparisons/other cores_nt.fa"]
+
+names = ["RdRp", "CP", "p19", "p22", "p22 core", "other cores"]
+```
+
+The subsequent steps involve reading and counting codons. To underscore the impact of codon usage, we calculated the percentage of each codon within its group of codons coding for the same amino acid. For example, if codons TGT and TGC are used 3 and 12 times, respectively, both encoding the amino acid C, the relative abundance is calculated as 0.2 for the former and 0.8 for the latter. Therefore, the comparison is made between different groups but within the same amino acid.
+
+```{python comp-funtions-codons, eval = FALSE, python.reticulate = FALSE}
+def read_codons(path):
+    n = 3
+    record_dict = SeqIO.to_dict(SeqIO.parse(path, "fasta"))
+    codon_dict = {}
+    for seq_name in record_dict.keys():
+        seq = str(record_dict[seq_name].seq)
+        codon_dict[seq_name] = [seq[i:i+n] for i in range(0, len(seq), n)]
+    
+    return pd.DataFrame.from_dict(codon_dict)
+
+def count_codons(df_codons):
+    counts = []
+
+    for column in df_codons.columns:
+        counts_num = df_codons[column].value_counts()
+        counts.append(counts_num)
+
+    codon_abs = pd.DataFrame.from_dict(counts)
+    codon_abs.fillna(0, inplace=True)
+
+    return codon_abs
+
+def relative_codons(codon_matrix, table_DNA_to_codon):
+    codon_rel = pd.DataFrame()
+    
+    for amino in table_DNA_to_codon.keys():
+        if len(table_DNA_to_codon[amino]) > 1 and amino != "STOP":
+            total = codon_matrix[table_DNA_to_codon[amino]].sum(axis=1)
+            res = codon_matrix[table_DNA_to_codon[amino]].div(total, axis=0)
+            codon_rel = pd.concat([codon_rel, res], axis=1)
+    
+    return codon_rel
+
+def join_codons(list_dfs, names):
+    for i in range(len(names)):
+        list_dfs[i]["Sequence"] = names[i]
+
+    return pd.concat([list_dfs[0],
+                     list_dfs[1], 
+                     list_dfs[2], 
+                     list_dfs[3], 
+                     list_dfs[4],
+                     list_dfs[5]], axis=0).T.fillna(0, inplace=True)
+
+def join_codons_medians(list_dfs):
+    return pd.concat([list_dfs[0].median(axis=0), 
+                          list_dfs[1].median(axis=0), 
+                          list_dfs[2].median(axis=0), 
+                          list_dfs[3].median(axis=0), 
+                          list_dfs[4].median(axis=0),
+                          list_dfs[5].median(axis=0)], axis = 1).T
+```
+
+Now we run the functions. 
+
+```{python comp-run-codons, eval = FALSE, python.reticulate = FALSE}
+dfs_codons = []
+
+for path in paths:
+    codons = read_codons(path)
+    codons_abs = count_codons(codons)
+    if path.find("p22 core") > 0:
+        codons_abs["CGT"] = 0.0
+    dfs_codons.append(relative_codons(codons_abs, table_DNA_to_codon))
+
+df_codon_all = join_codons(dfs_codons, names=names)
+df_codons_medians = join_codons_medians(dfs_codons)
+```
+
+Finally, we generate a heatmap using a seaborn function.
+
+```{python comp-plot-codons, eval = FALSE, python.reticulate = FALSE}
+plt.rcParams["figure.figsize"] = [16, 2]
+fig, ax = plt.subplots(nrows=1)
+
+new_columns = []
+for codon_name in df_codons_medians.columns:
+    new = codon_name.replace("T", "U")
+    new_columns.append(new)
+
+df_codons_medians.columns = new_columns
+df_codons_medians.index = ["RdRp", "CP", "p19", "p22", "p22 core", "other cores"]
+print(len(new_columns))
+
+sns.heatmap(df_codons_medians, cmap="viridis")
+plt.xlabel("Codon")
+plt.xticks(rotation=45)
+plt.yticks(rotation=0)
+ax.yaxis.set_ticks_position('none') 
+
+plt.tight_layout()
+```
+
+The following code is useful for assessing the significance between two groups. We employ the Mann-Whitney test to determine if there is statistical significance in the difference between p22 cores and non-overlapping cores.
+
+```{python comp-plot-test1, eval = FALSE, python.reticulate = FALSE}
+df_codon_all.fillna(0, inplace=True)
+codon = "CAT"
+df_plot = df_codon_all.T[[codon, "Sequence"]]
+p22_core = list(df_plot[df_plot["Sequence"] == "p22 core"][codon].values)
+other_cores = list(df_plot[df_plot["Sequence"] == "other cores"][codon].values)
+
+pvalues = [
+    scipy.stats.mannwhitneyu(p22_core, other_cores, alternative="two-sided").pvalue
+]
+formatted_pvalues = [f'p={pvalue:.2e}' for pvalue in pvalues]
+```
+
+Subsequently, we plot the data and indicate the significance between the two groups.
+
+```{python comp-plot-test-plot, eval = FALSE, python.reticulate = FALSE}
+plt.rcParams["figure.figsize"] = [16,9]
+sns.set_style("white")
+colors = sns.color_palette("colorblind", 5)
+fig, ax = plt.subplots()
+
+pairs = [('p22 core', 'other cores')]
+
+with sns.plotting_context('notebook', font_scale = 1.2):
+        sns.swarmplot(data=df_plot, x="Sequence", y=codon, ax=ax, palette=colors)
+        sns.boxplot(data=df_plot, x="Sequence", y=codon, zorder=0, dodge=True, ax=ax, boxprops={'facecolor':'None'})
+
+        # Add annotations
+        annotator = Annotator(ax=ax, pairs = pairs, data=df_plot, x="Sequence", y=codon)
+        annotator.set_custom_annotations(formatted_pvalues)
+        annotator.configure(test_short_name="MWW")  # text_format is still simple
+        annotator.set_pvalues_and_annotate(pvalues)
+```
+

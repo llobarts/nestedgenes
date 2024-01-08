@@ -1,0 +1,626 @@
+# Comparative analyses of selection
+
+## Evolution speed with aBSREL
+Here, we leverage the complete sequences of tombusvirus genomes available in NCBI. Using the adaptive branch-site random effects likelihood (aBSREL) method [@msv022], we estimate the omega (dN/dS rates ratio) per branch for p19 and p22, with RdRp as a reference. For each branch, the estimated omega values for p19 and p22 are normalized by the corresponding omega values for RdRp. This normalization brings all branches to a common relative scale, and the values are then asinh-transformed: ω_x^=ω_x⁄ω_RdRp  with x  {p19, p22}.
+
+### Libraries and json files
+
+```{python sel1-lib, eval = FALSE, python.reticulate = FALSE}
+import json
+import numpy as np
+import pandas as pd
+import scipy.stats
+from statannotations.Annotator import Annotator
+```
+
+First, we need to read the JSON files containing the results of aBSREL for different genes from the same genomes.
+
+```{python sel1-read, eval = FALSE, python.reticulate = FALSE}
+# Read json files of each gene
+paths = [path_p22, path_p19, path_RdRp, path_cp]
+for path in paths:
+  df = read_branches(path)
+  dfs.append(add_info(df, significance))
+```
+
+### Omega and significance
+
+Afterwards, we add significance information, and calculate the overall omega. Additionally, we identify nodes that are missing in the output of aBSREL. These nodes are then defined as null and non-significant.
+
+```{python sel1-info, eval = FALSE, python.reticulate = FALSE}
+def add_info(data, significance):
+    
+    data['omega_avg'] = (data['omega1']*data['prop1']) + (data['omega2']*data['prop2'])
+    data["signif"] = np.where(data['pvalue'] < significance, True, False)
+
+    return data
+
+def fill_missing_nodes(data, missing_nodes):
+    
+    for i in missing_nodes:
+        new_row = {"name": i,
+                   "type" : "Node",
+                   "omega1": 0.0,
+                   "prop1" : 0.0,
+                   "omega2": 0.0,
+                   "prop2" : 0.0,
+                   "pvalue" : 1.0,
+                   "omega_avg" : 0.0,
+                   "Signif." : False}
+    
+        data = data.append(new_row, ignore_index=True)
+
+    return data
+```
+
+### Relative asinh transformation
+
+The next step consists of calculating the relative measure for comparing different genes, using an asinh transformation.
+
+```{python sel1-rel, eval = FALSE, python.reticulate = FALSE}
+def relativize(genes, gene_ref):
+    
+    results = []
+    type_tree = []
+
+    for i in range(3):
+        results_gene = []
+        for name in gene_ref["name"]:
+
+            omega_x = float(genes[i][genes[i]["name"] == name]["omega_avg"])
+            omega_std = float(gene_ref[gene_ref["name"] == name]["omega_avg"])
+
+            results_gene.append(np.log(omega_x + (np.sqrt(omega_x**2 + 1))/(omega_std + (np.sqrt(omega_std**2 + 1)))))
+        
+        results.append(results_gene)
+
+    return results
+```
+
+### Utilities
+
+Other functions are employed to restructure the data for visualization, while additional functions are used to calculate p-values using the Wilcoxon-Mann-Whitney test.
+
+```{python sel1-fun, eval = FALSE, python.reticulate = FALSE}
+def divide_branches(results, gene_ref):
+    pos_tips = gene_ref.index[gene_ref['type'] == "Tip"].tolist()
+    tips = []
+    nodes = []
+
+    for gene in range(3):
+        tip_selection = []
+        node_selection = []
+        for i, value in enumerate(results[gene]):
+            if i in pos_tips:
+                tip_selection.append(value)
+            else:
+                node_selection.append(value)
+                
+        tips.append(tip_selection)
+        nodes.append(node_selection)
+    
+    return (tips, nodes)
+
+def calc_pvalues(chunk):
+    pvalues_tips = [scipy.stats.wilcoxon(chunk[0], chunk[1], alternative="two-sided").pvalue, # p22 vs p19
+    scipy.stats.wilcoxon(chunk[0], chunk[2], alternative="two-sided").pvalue, # p22 vs CP
+    scipy.stats.wilcoxon(chunk[1], chunk[2], alternative="two-sided").pvalue]   # p19 vs CP
+
+    return pvalues_tips
+
+def format_pvalues(pvalues_1to1):
+    return [[f'p={pvalue:.3e}' for pvalue in pvalues_1to1[0]], 
+            [f'p={pvalue:.3e}' for pvalue in pvalues_1to1[1]], 
+            [f'p={pvalue:.3e}' for pvalue in pvalues_1to1[2]]]
+
+def info_to_dataframe(data):
+    return pd.DataFrame.from_dict({"omega": data[0] + data[1] + data[2], 
+                            "Gene" : len(data[0])*['p22'] + len(data[0])*['p19'] + len(data[0])*['CP']})
+```
+
+### Boxplots with significance
+
+Two different plots can be generated using the following code. The first plot includes all elements, nodes (or branches), and tips, while the second plot is focused on the entire tree. Both plots include p-value annotations.
+
+```{python sel1-plots, eval = FALSE, python.reticulate = FALSE}
+def plot_diff_types(data, pvalues_1to1, formatted_pvalues):
+
+    colors = sns.color_palette("colorblind", 5)
+    fig, ax = plt.subplot_mosaic("ABC", figsize = (20,8))
+    axes = [ax["A"], ax["B"], ax["C"]]
+    annot = []
+    pairs = [("p22", "p19"),("p22", "CP"), ("p19", "CP")]
+    titles = ["TIPS", "BRANCHES", "TREE"]
+
+    for part in range(len(data)):
+        with sns.plotting_context('notebook', font_scale = 1.2):
+                        sns.swarmplot(data=data[part], x="Gene", y="omega", ax=axes[part],palette=colors, zorder=0)
+                        sns.boxplot(data=data[part], x="Gene", y="omega", dodge=True, ax=axes[part], boxprops={'facecolor':'None'})
+                        axes[part].set_title(titles[part])
+                        plt.axhline(1)
+
+                        # Add annotations
+                        annot.append(Annotator(ax=axes[part], pairs = pairs, data=data[part], x="Gene", y="omega")) 
+                        annot[part].set_custom_annotations(formatted_pvalues[part])
+                        annot[part].configure(test_short_name="MWW")  # text_format is still simple
+                        annot[part].set_pvalues_and_annotate(pvalues_1to1[part])
+    
+    plt.tight_layout(pad=1.5)
+    plt.show()
+
+def plot_one_type(data, pvalues_1to1, formatted_pvalues, one):
+    colors = ["#9867F4", "#FFD500"]
+    plt.style.use("default")
+    fig, ax = plt.subplots(figsize = (6,12))
+    part = 2 # 2: tree
+    annot = []
+    pairs = [("p22", "p19")]
+    size_labels = 24
+
+    with sns.plotting_context('notebook', font_scale = 1.2):
+        sns.set(font_scale=4)
+
+        sns.swarmplot(data=data[part][data[part]["Gene"] != "CP"], x="Gene", y="omega", palette=colors, zorder=0)
+        sns.boxplot(data=data[part][data[part]["Gene"] != "CP"], x="Gene", y="omega", dodge=True, boxprops={'facecolor':'None'})
+        plt.axhline(0, color='grey', linestyle='dotted')
+        ax.set_xlabel("Gene sequence", fontsize = size_labels)
+        ax.set_ylabel("Transformed omega ratio", fontsize = size_labels)
+        ax.yaxis.set_tick_params(labelsize = size_labels - 1)
+        ax.xaxis.set_tick_params(labelsize = size_labels - 1)
+
+        # Add annotations
+        annot = Annotator(ax=ax, pairs = pairs, data=data[part][data[part]["Gene"] != "CP"], x="Gene", y="omega")
+        annot.set_custom_annotations([formatted_pvalues[part][one]])
+        annot.configure(test_short_name="MWW")  # text_format is still simple
+        annot.set_pvalues_and_annotate([pvalues_1to1[part][one]])
+
+    plt.tight_layout(pad=1.5)
+    # plt.savefig("/Users/esmeralda/Documents/TFM/article/omegaratio.pdf", format= "pdf")
+    plt.show()
+```
+
+### Test selection
+
+Finally, we determine whether the omega values significantly deviate from zero, indicating the presence or absence of selection.
+
+```{python sel1-1sample, eval = FALSE, python.reticulate = FALSE}
+def test_one(df_values, mean):
+    results_test = {"Tips:": [scipy.stats.ttest_1samp(df_values[0][0], popmean=mean).pvalue,
+                              scipy.stats.ttest_1samp(df_values[0][1], popmean=mean).pvalue,
+                              scipy.stats.ttest_1samp(df_values[0][2], popmean=mean).pvalue],
+                    "Branches:": [scipy.stats.ttest_1samp(df_values[1][0], popmean=mean).pvalue,
+                                 scipy.stats.ttest_1samp(df_values[1][1], popmean=mean).pvalue,
+                                 scipy.stats.ttest_1samp(df_values[1][2], popmean=mean).pvalue],
+                    "Tree": [scipy.stats.ttest_1samp(df_values[2][0], popmean=mean).pvalue,
+                             scipy.stats.ttest_1samp(df_values[2][1], popmean=mean).pvalue,
+                             scipy.stats.ttest_1samp(df_values[2][2], popmean=mean).pvalue]}
+    
+    df = pd.DataFrame.from_dict(results_test)
+    df.index = ["p22", "p19", "CP"]
+
+    return df
+```
+
+### Run
+
+```{python sel1-run, eval = FALSE, python.reticulate = FALSE}
+def main():
+    dfs = [] 
+    significance = 0.1
+
+    path_p22 = 'p22_nt_alignment.fasta.ABSREL.json'
+    path_p19 = 'p19_nt_alignment.fasta.ABSREL.json'
+    path_RdRp = 'RdRp_nt_alignment.fasta.ABSREL.json'
+    path_cp = 'cp_nt_alignment.fasta.ABSREL.json'
+
+    # Read json files of each gene
+    paths = [path_p22, path_p19, path_RdRp, path_cp]
+    for path in paths:
+        df = read_branches(path)
+        dfs.append(add_info(df, significance))
+
+    # Filling missing nodes with zero values
+    missing_nodes_p22 = ["Node11", "Node18", "Node6"]
+    missing_nodes_p19 = ["Node11", "Node18", "Node3", "Node6"]
+
+    df_p22 = fill_missing_nodes(dfs[0], missing_nodes_p22)
+    df_p19 = fill_missing_nodes(dfs[1], missing_nodes_p19)
+    df_RdRp = dfs[2]
+    df_cp = dfs[3]
+
+    # Generate relative values for all, tips and nodes
+    genes = [df_p22, df_p19, df_cp]
+    results = relativize(genes, df_RdRp)
+    tips, nodes = divide_branches(results, df_RdRp)
+
+    # Calculate pvalues in pairs
+    pvalues_1to1 = []
+    df_values = []
+    sep_types = [tips, nodes, results]
+    
+    for chunk in sep_types:
+        pvalues_1to1.append(calc_pvalues(chunk))
+        df_values.append(info_to_dataframe(chunk))
+
+    # Get formatted pvalues
+    formatted_pvalues = format_pvalues(pvalues_1to1)
+
+    # Boxplots with significance
+    plot_diff_types(df_values, pvalues_1to1, formatted_pvalues)
+    plot_one_type(df_values,  pvalues_1to1, formatted_pvalues, 0)
+
+    # T test one sample vs mean = 0
+    print(test_one(sep_types, 0))
+```
+
+## FEL for correlations
+
+In this section, we read JSON files containing the results of p19 and p22 analyses, generated with the FEL method of Hyphy [@Kosakovsky2005]. The objective is to establish correlations between selection and infer the extent to which the correlation is influenced by the secondary structure of the proteins they encode.
+
+###Libraries and json files
+
+```{python sel2-lib, eval = FALSE, python.reticulate = FALSE}
+import json
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import scipy.stats
+import seaborn as sns
+```
+
+First, we need to read the JSON files containing the results of the FEL analysis for both genes.
+
+```{python sel2-read, eval = FALSE, python.reticulate = FALSE}
+def read_json(path):
+    with open(path) as user_file:
+        file_contents = user_file.read()
+    parsed_json = json.loads(file_contents)
+
+    values = {"codon": list(range(len(parsed_json['MLE']['content']["0"]))),
+               "alpha": [], 
+               "beta": [],
+               "pvalue": []}
+
+    for i in range(len(parsed_json['MLE']['content']["0"])):
+        values['alpha'].append(parsed_json['MLE']['content']["0"][i][0])
+        values['beta'].append(parsed_json['MLE']['content']["0"][i][1])
+        values['pvalue'].append(parsed_json['MLE']['content']["0"][i][4])
+
+    return pd.DataFrame.from_dict(values)
+```
+
+### Significance and difference
+
+Now, information about significance and the difference between the estimated rates of non-synonymous (beta) and synonymous (alpha) substitutions.
+
+```{python sel2-add, eval = FALSE, python.reticulate = FALSE}
+def add_info(data, significance):
+    data['beta - alpha'] = data['beta'] - data['alpha']
+    data["signif"] = np.where(data['pvalue'] < significance, True, False)
+
+    return data
+```
+
+We can even print the codon positions that are detected to be under significant selection.
+
+```{python sel2-sig, eval = FALSE, python.reticulate = FALSE}
+def significative_codons(data):
+    return (list(data[(data["signif"] == True) & (data["beta - alpha"] > 0)].index + 1) +\
+            list(data[(data["signif"] == True) & (data["beta - alpha"] < 0)].index + 1))
+```
+
+### Plot correlation
+
+As we know the frameshift of one gene, we can plot selection values, specifically the difference between beta and alpha, by positions in p19 and p22. Additionally, we can denote significance using colors.
+
+```{python sel2-plt-corr, eval = FALSE, python.reticulate = FALSE}
+def plot_correlation(data1, data2, shift, colors):
+    plt.style.use('default')
+    fig = plt.figure(figsize=(6,12))
+    ax = fig.add_subplot(111)
+    fontsize = 24
+    points_size = 20
+
+    plt.ylim(-14,11)
+    plt.xlim(-16,7)
+
+    plt.scatter(data2["beta - alpha"][shift:len(data1["beta - alpha"]) + shift], data1["beta - alpha"], s=points_size, c=colors)
+
+    plt.xlabel("$\\beta$ - $\\alpha$ (p22)")
+    plt.ylabel("$\\beta$ - $\\alpha$ (p19)")
+
+    plt.axhline(0,color='black',
+                linewidth=1,
+                ls="--", 
+                alpha=0.5) # x = 0
+    plt.axvline(0,color='black',
+                linewidth=1,
+                ls="--",
+                alpha=0.5) # x = 0
+
+    ax.xaxis.label.set_fontsize(fontsize)
+    ax.yaxis.label.set_fontsize(fontsize)
+    plt.xticks(fontsize=fontsize - 1)
+    plt.yticks(fontsize=fontsize - 1)
+
+    plt.tight_layout(pad=1.5)
+    plt.show()
+
+def define_colors(data1, data2):
+    color_p19 = "#FFD500"
+    color_p22 = "#9867F4"
+    color_both = "#242038"
+    others = "#A2A2A2"
+
+    colors = []
+
+    for i in range(len(data1)):
+        if data1["signif"][i] and data2["signif"][i]:
+            colors.append(color_both)
+        elif data2["signif"][i]:
+            colors.append(color_p22)
+        elif data1["signif"][i]:
+            colors.append(color_p19)
+        else:
+            colors.append(others)
+
+    return colors
+```
+
+### Test correlation of selection
+
+After creating a combined dataframe based on the shift between both genes, we proceed to search for correlation, considering all values or only those that were deemed significant (of p19, p22, both, or at least one of them). During this analysis, we observed a potential linear dependence in the upper left quadrant. As a result, we calculated the Pearson correlation coefficient and its corresponding p-value.
+
+```{python sel2-search-corr, eval = FALSE, python.reticulate = FALSE}
+def combine_genes(data1, data2, shift):
+    combi = pd.DataFrame()
+    combi["p22 diff"] = list(data2["beta - alpha"][shift:len(data1["beta - alpha"]) + shift])
+    combi["p19 diff"] = list(data1["beta - alpha"])
+
+    combi["p22_signif"] = list(data2["signif"][shift:len(data1["beta - alpha"]) + shift])
+    combi["p19_signif"] = list(data1["signif"])
+
+    return combi
+
+def search_correlation(combi, num):
+    if num == 0: # ALL
+        corr = correl_total(combi)
+    elif num == 1:  # p19
+        corr = correl_one(combi, num)
+    elif num == 2:  # p22
+        corr = correl_one(combi, num)
+    elif num == 3: # At least one
+        corr = correl_least_one(combi)
+    else: # Both significative
+        corr = correl_both(combi)
+    
+    return (corr, scipy.stats.fisher_exact(corr))
+
+def correl_total(combi):
+    total = [[len(combi[(combi["p22 diff"] > 0) & (combi["p19 diff"] > 0)]),
+    len(combi[(combi["p22 diff"] < 0) & (combi["p19 diff"] > 0)])],
+    [len(combi[(combi["p22 diff"] > 0) & (combi["p19 diff"] < 0)]),
+    len(combi[(combi["p22 diff"] < 0) & (combi["p19 diff"] < 0)])]]
+
+    return total
+
+def correl_least_one(combi):
+    one_atleast = [[len(combi[(((combi["p22 diff"] > 0) & (combi["p19 diff"] > 0)) & (combi["p22_signif"] | combi["p19_signif"]))]),
+    len(combi[(((combi["p22 diff"] < 0) & (combi["p19 diff"] > 0)) & (combi["p22_signif"] | combi["p19_signif"]))])],
+    [len(combi[(((combi["p22 diff"] > 0) & (combi["p19 diff"] < 0)) & (combi["p22_signif"] | combi["p19_signif"]))]),
+    len(combi[(((combi["p22 diff"] < 0) & (combi["p19 diff"] < 0)) & (combi["p22_signif"] | combi["p19_signif"]))])]]
+
+    return one_atleast
+
+def correl_both(combi):
+    both_sig_table = [[len(combi[(((combi["p22 diff"] > 0) & (combi["p19 diff"] > 0)) & (combi["p22_signif"] & combi["p19_signif"]))]),
+    len(combi[(((combi["p22 diff"] < 0) & (combi["p19 diff"] > 0)) & (combi["p22_signif"] | combi["p19_signif"]))])],
+    [len(combi[(((combi["p22 diff"] > 0) & (combi["p19 diff"] < 0)) & (combi["p22_signif"] | combi["p19_signif"]))]),
+    len(combi[(((combi["p22 diff"] < 0) & (combi["p19 diff"] < 0)) & (combi["p22_signif"] | combi["p19_signif"]))])]]
+
+    return both_sig_table
+
+def correl_one(combi, num):
+    if num == 1:
+        sig_table = [[len(combi[(((combi["p22 diff"] > 0) & (combi["p19 diff"] > 0)) & (combi["p19_signif"]))]),
+        len(combi[(((combi["p22 diff"] < 0) & (combi["p19 diff"] > 0)) & (combi["p19_signif"]))])],
+        [len(combi[(((combi["p22 diff"] > 0) & (combi["p19 diff"] < 0)) & (combi["p19_signif"]))]),
+        len(combi[(((combi["p22 diff"] < 0) & (combi["p19 diff"] < 0)) & (combi["p19_signif"]))])]]
+    else:
+        sig_table = [[len(combi[(((combi["p22 diff"] > 0) & (combi["p19 diff"] > 0)) & (combi["p22_signif"]))]),
+        len(combi[(((combi["p22 diff"] < 0) & (combi["p19 diff"] > 0)) & (combi["p22_signif"]))])],
+        [len(combi[(((combi["p22 diff"] > 0) & (combi["p19 diff"] < 0)) & (combi["p22_signif"]))]),
+        len(combi[(((combi["p22 diff"] < 0) & (combi["p19 diff"] < 0)) & (combi["p22_signif"]))])]]
+
+    return sig_table
+
+def pearson_upper_left(combi):
+    upper_left = combi[(combi["p19 diff"] > 0) & (combi["p22 diff"] < 0)]
+    y = upper_left["p19 diff"]
+    x = upper_left["p22 diff"]
+    
+    return scipy.stats.pearsonr(x, y)
+```
+
+### Correlation 2D
+
+Another point to be investigated is the possible correlation between the secondary structures of both proteins.
+
+```{python sel2-corr2D, eval = FALSE, python.reticulate = FALSE}
+def corr_struct(struct1, struct2, shift):
+    combinations_3d = pd.DataFrame(0, columns=["H", "S", "L"],
+                                    index=["H", "S", "L"])
+    for pos in range(len(struct1)):
+        combinations_3d[struct2[pos+shift]][struct1[pos]] += 1
+    res = list(scipy.stats.chi2_contingency(combinations_3d))
+    res.append(combinations_3d)
+    
+    return res
+```
+
+The resulting contingency table can be visually represented with colors, indicating the distribution of data. Additionally, this representation can be combined with the expected frequencies, allowing us to create a table displaying the ratio of observed to expected values. This ratio provides informative insights into the data distribution.
+
+```{python sel2-plot2D, eval = FALSE, python.reticulate = FALSE}
+def plot_dist_3D(combinations_3d, expected=0):
+    if isinstance(expected, int):
+        data = combinations_3d 
+    else:
+        data = combinations_3d / pd.DataFrame(expected, columns=["H", "S", "L"], index=["H", "S", "L"])
+
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(data, annot=True, cmap='YlGnBu')
+    plt.xlabel('p22')
+    plt.ylabel('p19')
+    plt.show()
+```
+
+### Selection in 2D
+
+This additional division aims to direct attention to the secondary structures separately. Using the following function, nine contingency tables (3x3) are calculated, considering neutral, positive, and negative selection in both frames. The distinction between these tables lies in the exclusive presence of codons that belong to regions forming helices, strands, or loops (or all).
+
+
+```{python sel2-tab-sel, eval = FALSE, python.reticulate = FALSE}
+def selection_structure(p19_struct, p22_struct, df_p19, df_p22, 
+                        comparison_letters, shift):
+    macro_results = []
+
+    for letters in comparison_letters:
+        result = pd.DataFrame(0, columns = ["Neg.", "Pos.", "-"], index = ["Neg.", "Pos.", "-"])
+        for i in range(len(p19_struct)):
+            if p19_struct[i] == letters[0] and p22_struct[i+shift] == letters[1]:
+                
+                p19_value = df_p19["beta - alpha"][i]
+                p22_value = df_p22["beta - alpha"][i+shift]
+
+                if p19_value == 0 and p22_value == 0:
+                    result["-"]["-"] += 1
+                elif p19_value == 0 and p22_value > 0:
+                    result["Pos."]["-"] += 1
+                elif p19_value == 0 and p22_value < 0:
+                    result["Neg."]["-"] += 1
+                elif p19_value > 0 and p22_value == 0:
+                    result["-"]["Pos."] += 1
+                elif p19_value < 0 and p22_value == 0:
+                    result["-"]["Neg."] += 1
+                elif p19_value > 0 and p22_value > 0:
+                    result["Pos."]["Pos."] += 1
+                elif p19_value < 0 and p22_value < 0:
+                    result["Neg."]["Neg."] += 1
+                elif p19_value > 0 and p22_value < 0:
+                    result["Neg."]["Pos."] += 1
+                elif p19_value < 0 and p22_value > 0:
+                    result["Pos."]["Neg."] += 1
+            
+        macro_results.append(result)
+
+    return macro_results
+```
+
+### Run
+
+Notice that, for every position in p19 and p22, we indicate the corresponding secondary structure. H: helix, S:strand and L: loop.
+
+```{python sel2-run, eval = FALSE, python.reticulate = FALSE}
+def main():
+    path_p19 = '/Users/esmeralda/Documents/TFM/RevTrans/final/nt/alignments/FEL_p19_local/p19_FEL.json'
+    path_p22 = '/Users/esmeralda/Documents/TFM/RevTrans/final/nt/alignments/FEL_p22_local/firts.json'
+    
+    # Read json files and add information
+    significance = 0.1
+    df_p19 = add_info(read_json(path_p19), significance)
+    df_p22 = add_info(read_json(path_p22), significance)
+
+    # Print significative codons
+    print("Signif. p19:", significative_codons(df_p19), 
+          "Signif. p22:", significative_codons(df_p22))
+
+    # Plot dots +10 and +11 codons
+    colors = define_colors(df_p19, df_p22)
+    plot_correlation(df_p19, df_p22, 10, colors)
+    plot_correlation(df_p19, df_p22, 11, colors)
+
+    # Combine both sequences with a shift
+    p19_p22 = combine_genes(df_p19, df_p22, 10)
+
+    # Search correlations
+    correlations = ["All", "Only p19 significant", "Only p22 significant", 
+                    "At least one significant", "Both significant"]
+    for option in range(5):
+        len_hyphen = (50-len(correlations[option]))//2
+        print("-"*len_hyphen, correlations[option], "-"*len_hyphen)
+        res = search_correlation(p19_p22, option)
+        print("Contingency table:\n", res[0])
+        print("Statistic (Fisher's exact test):\n", res[0][0])    
+        print("p value (Fisher's exact test):\n", res[0][1])
+
+    # Pearson correlation
+    correlation_coef, p_value = pearson_upper_left(p19_p22)
+    print("Pearson correlation coefficient:", correlation_coef)
+    print("p-value:", p_value)
+
+    # Info structure
+    order = ["H", "S", "L"]
+    p22_struct = ["L"]*16 + ["S"]*4 + ["L"]*4 + ["S"]*4 + ["L"]*6 + ["S"]*3 +\
+                 ["L"]*3 + ["H"]*10 + ["L"]*4 + ["S"]*13 + ["L"]*10 + ["S"]*5 +\
+                 ["L"]*9 + ["S"]*3 + ["L"]*9 + ["S"]*5 + ["L"]*15 + ["S"]*5 +\
+                 ["L"]*10 + ["S"]*14 + ["L"]*11 + ["S"]*4 + ["H"]*20 + ["L"]*2
+
+    p19_struct = ["L"]*5 + ["H"]*13 + ["L"]*19 + ["H"]*9 + ["L"]*11 + ["S"]*8 +\
+                 ["L"]*2 + ["S"]*8 + ["L"]*3 + ["H"]*10 + ["L"]*2 + ["H"]*11 +\
+                 ["L"]*7 + ["S"]*8 + ["L"]*2 + ["S"]*8 + ["L"]*2 + ["H"]*17 +\
+                 ["L"]*27
+    
+    # (+10) Combinations 3D; Columns: p22 ; Rows: p19 ; PLOT
+    chi2_stat, p_value, dof, expected, cont_table= \
+                                        corr_struct(p19_struct, p22_struct, 10)
+    expected = pd.DataFrame(expected, index=order, columns=order)
+    print("+10\nChi-Square Statistic:", chi2_stat)
+    print("P-value:", p_value)
+    print("Degrees of Freedom:", dof)
+    print("Expected Frequencies:\n", expected,
+           "\nCounts:\n", cont_table)
+    plot_dist_3D(cont_table)
+    plot_dist_3D(cont_table, expected)
+    
+    # (+11) Combinations 3D; Columns: p22 ; Rows: p19 ; PLOT
+    chi2_stat, p_value, dof, expected, cont_table = \
+                                        corr_struct(p19_struct, p22_struct, 11)
+    expected = pd.DataFrame(expected, index=order, columns=order)
+    print("+11\nChi-Square Statistic:", chi2_stat)
+    print("P-value:", p_value)
+    print("Degrees of Freedom:", dof)
+    print("Expected Frequencies:\n", expected,
+          "\nCounts:\n", cont_table)
+    plot_dist_3D(cont_table)
+    plot_dist_3D(cont_table, expected)
+
+    # Comparison selection structure
+    comparison_letters = [("H", "H"), 
+                      ("H", "S"),
+                      ("H", "L"),
+                      ("S", "S"),
+                      ("S", "L"),
+                      ("S", "H"),
+                      ("L", "L"),
+                      ("L", "S"),
+                      ("L", "H")]
+    
+    list_tables =  selection_structure(p19_struct, p22_struct, df_p19, 
+                                                df_p22, comparison_letters, 10)
+    print(25*"-" + "+10" + 25*"-")
+
+    for pos, res  in enumerate(comparison_letters):
+        print("\nComparison:", res)
+        print(list_tables[pos])
+    
+    list_tables =  selection_structure(p19_struct, p22_struct, df_p19, 
+                                                df_p22, comparison_letters, 11)
+    print(25*"-" + "+11" + 25*"-")
+    for pos, res  in enumerate(comparison_letters):
+        print("\nComparison:", res)
+        print(list_tables[pos])
+
+if __name__ == "__main__":
+    main()
+    
+```
